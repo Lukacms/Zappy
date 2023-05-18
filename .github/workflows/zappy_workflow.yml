@@ -1,4 +1,4 @@
-name: CI Zappy - run by @${{ github.actor }}
+name: CI Zappy
 
 on:
   workflow_run:
