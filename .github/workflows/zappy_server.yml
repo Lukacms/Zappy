@@ -1,0 +1,62 @@
+name: Zappy Server
+
+on:
+  pull_request:
+    branches-ignore:
+      - feature/ignore**
+  push:
+    branches-ignore:
+      - feature/ignore**
+
+defaults:
+  run:
+    shell: bash
+    working-directory: server
+
+env:
+  EXECUTABLE: "zappy_server"
+
+jobs:
+  check_repository_cleanliness:
+    name: "Check if the repository is clean and void of any unwanted files (temp, files, binary files, etc.)"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Scan files
+      run: |
+        arr=($(find . \( -name "#*#" -o -name "*~" \
+        -o -name "*.o" -o -name "*.a" \
+        -o -name "*.gcno" -o -name "*.gcda" -o -name "*.gcov" \
+         -o -path '*tmp/*' \)))
+        for i in ${arr[@]}; do echo "::error file=$i,line=1,endLine=1,title=Unwanted file detected::$i"; done
+        if ((${#arr[@]})); then
+          exit 1
+        fi
+
+  run_program:
+    container:
+      image: epitechcontent/epitest-docker:latest
+    needs: check_repository_cleanliness
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Compilation test
+      run: make
+      timeout-minutes: 2
+    - name: Check executable files exists for server
+      run: |
+        IFS=',' read -ra ADDR <<< $EXECUTABLES
+        for i in "${ADDR[@]}"; do
+          if [[ ! -x "./${i}" ]]; then
+            exit 1
+          fi
+        done
+    - name: Run tests
+      run: make tests_run
+      timeout-minutes: 2
+    - name: Clean repository
+      run: make fclean
