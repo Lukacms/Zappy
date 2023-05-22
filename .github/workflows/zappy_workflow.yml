@@ -17,32 +17,31 @@ env:
   MIRROR_URL: "git@github.com:EpitechPromo2026/B-YEP-400-BDX-4-1-zappy-luka.camus.git"
 
 jobs:
-        #  job_run_program:
-        #    needs: check_repository_cleanliness
-        #    runs-on: ubuntu-latest
-        #    steps:
-        #    - name : Install packages
-        #      run: |
-        #          sudo apt-get update -qq
-        #          sudo apt-get install -y ninja-build clang-tidy-12 ccache
-        #          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-12 100
-        #          sudo apt-get install -y --no-install-recommends nlohmann-json3-dev libsfml-dev catch2
-        #          clang++ --version
-        #          clang-tidy --version
-        #    - uses: actions/checkout@v3
-        #      with:
-        #        fetch-depth: 0
-        #    - name: Compilation test
-        #      run: make
-        #      timeout-minutes: 2
-        #    - name: Check executable files exists
-        #      run: |
-        #        IFS=',' read -ra ADDR <<< $EXECUTABLES
-        #        for i in "${ADDR[@]}"; do
-        #          if [[ ! -x "./${i}" ]]; then
-        #            exit 1
-        #          fi
-        #        done
+  job_run_program:
+    runs-on: ubuntu-latest
+    steps:
+    - name : Install packages
+      run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ninja-build clang-tidy-12 ccache make
+          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-12 100
+          sudo apt-get install -y --no-install-recommends libsfml-dev catch2
+          clang++ --version
+          clang-tidy --version
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Compilation test
+      run: make
+      timeout-minutes: 2
+    - name: Check executable files exists
+      run: |
+        IFS=',' read -ra ADDR <<< $EXECUTABLES
+        for i in "${ADDR[@]}"; do
+          if [[ ! -x "./${i}" ]]; then
+            exit 1
+          fi
+        done
 
   push_to_mirror:
     if: ${{ github.event_name == 'push' }} && ${{ github.event.workflow_run.conclusion == 'success' }}

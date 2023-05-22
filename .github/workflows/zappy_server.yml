@@ -17,7 +17,7 @@ env:
   EXECUTABLE: "zappy_server"
 
 jobs:
-  check_repository_cleanliness:
+  check_cleanliness_repo:
     name: "Check if the repository is clean and void of any unwanted files (temp, files, binary files, etc.)"
     runs-on: ubuntu-latest
     steps:
@@ -35,10 +35,34 @@ jobs:
           exit 1
         fi
 
+  check_coding_style:
+    container: ghcr.io/epitech/coding-style-checker:latest
+    needs: check_cleanliness_repo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout GH repositories
+        uses: actions/checkout@v3
+      - name: Run coding-style script
+        run: check.sh $(pwd) $(pwd)
+      - name: Display banana report
+        run: cat coding-style-reports.log
+      - name: Report banana result
+        run: |
+          ERRORS=$(cat coding-style-reports.log | tr " " ":")
+          exit_value=0
+          for line in $ERRORS; do
+            echo $line
+            line=$(echo $line | tr ":", " ")
+            linearray=($line)
+            echo ::error file=${linearray[0]},line=${linearray[1]}, title="${linearray[2]} coding style error"::${linearray[3]}
+            exit_value=1
+          done
+          exit $exit_value
+
   run_program:
     container:
       image: epitechcontent/epitest-docker:latest
-    needs: check_repository_cleanliness
+    needs: check_coding_style
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

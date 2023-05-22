@@ -104,3 +104,12 @@ _deps
 /zappy_server
 build
 unit_test
+
+# misc
+compile_commands.json
+.cache
+a.out
+unit_tests
+coding-style-reports.log
+.vscode
+vgcore.*
