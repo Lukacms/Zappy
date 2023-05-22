@@ -11,7 +11,6 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: gui
 
 env:
   EXECUTABLE: "zappy_gui"
@@ -26,7 +25,7 @@ jobs:
         fetch-depth: 0
     - name: Scan files
       run: |
-        arr=($(find . \( -name "#*#" -o -name "*~" \
+        arr=($(find gui \( -name "#*#" -o -name "*~" \
         -o -name "*.o" -o -name "*.a" \
         -o -name "*.so" -o -name "*.gcno" -o -name "*.gcda" -o -name "*.gcov" \
          -o -path '*tmp/*' \)))
@@ -52,7 +51,9 @@ jobs:
         fetch-depth: 0
     - name: Compilation test
       run: ./compile.sh --gcc
+      shell: bash
       timeout-minutes: 2
+      working-directory: gui
     - name: Back to root
       run:  cd ..
     - name: Check executable files exists

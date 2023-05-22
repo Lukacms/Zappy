@@ -1,3 +1,4 @@
+#!/bin/bash
 # rm -rf build && mkdir build
 set -euo pipefail
 mkdir build -p
