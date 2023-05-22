@@ -1,16 +1,16 @@
 name: CI Zappy
 
 on:
-  workflow_run:
-    workflows: ["Zappy Server"]
-    types:
-      - completed
   pull_request:
     branches-ignore:
       - feature/ignore**
   push:
     branches-ignore:
       - feature/ignore**
+
+defaults:
+  run:
+    shell: bash
 
 env:
   EXECUTABLE: "zappy_server,zappy_ai,zappy_gui"
@@ -45,6 +45,7 @@ jobs:
 
   push_to_mirror:
     if: ${{ github.event_name == 'push' }} && ${{ github.event.workflow_run.conclusion == 'success' }}
+    needs: job_run_program
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

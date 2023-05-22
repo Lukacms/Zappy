@@ -21,7 +21,7 @@ jobs:
     name: "Check if the repository is clean and void of any unwanted files (temp, files, binary files, etc.)"
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - name: Scan files
@@ -65,7 +65,7 @@ jobs:
     needs: check_coding_style
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - name: Compilation test
