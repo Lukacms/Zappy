@@ -162,6 +162,9 @@ message("${BoldWhite}Finished loading zappy_gui-core${ColourReset}")
 add_executable(
     zappy_gui
     src/main.cpp
+    src/GUI/GUI.cpp
+    src/Map/Map.cpp
+    src/Camera.cpp
     )
 
 # rules for zappy_gui project
@@ -169,6 +172,10 @@ target_link_libraries(
     zappy_gui PRIVATE
     zappy_gui-interface
     zappy_gui-core
+    sfml-window
+    sfml-graphics
+    sfml-system
+    sfml-audio
     )
 target_link_options(zappy_gui PRIVATE -rdynamic)
 target_compile_options(zappy_gui PRIVATE ${WARNING_FLAGS})
