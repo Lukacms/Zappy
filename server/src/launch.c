@@ -5,7 +5,9 @@
 ** launch
 */
 
-int launch(void)
+#include <zappy/config/arguments.h>
+
+int launch(args_config_t *args)
 {
     return 0;
 }
