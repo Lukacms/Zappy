@@ -19,7 +19,7 @@ namespace zappy {
 
     class Camera {
       public:
-        Camera(const sf::View &view);
+        Camera();
         Camera(Camera const& to_copy) = default;
         Camera(Camera&& to_move) = default;
         ~Camera() = default;
@@ -33,6 +33,6 @@ namespace zappy {
 
       private:
         sf::View m_view;
-        std::array<bool, 4> m_directions;
+        std::array<bool, 6> m_directions;
     };
 }

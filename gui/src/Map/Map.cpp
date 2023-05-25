@@ -9,7 +9,9 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Event.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
+#include <cstddef>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -38,6 +40,8 @@ zappy::Map::Map(unsigned int width, unsigned int height)
     }
     this->m_map_texture.loadFromFile(MAP_TEXTURE.data());
     this->m_cursor.m_rect = {0, TILE_SIZE, TILE_SIZE, TILE_SIZE};
+    this->m_cursor_rect[0] = this->m_cursor.m_rect;
+    this->m_cursor_rect[1] = {TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE};
 }
 
 // Methods
@@ -55,13 +59,14 @@ void zappy::Map::draw(sf::RenderWindow &window)
         }
     }
     if (this->isCursorActive) {
-        this->m_map_sprite.setTextureRect(this->m_cursor.m_rect);
+        animateCursor();
+        this->m_map_sprite.setTextureRect(this->m_cursor_rect[this->m_cursor_index]);
         this->m_map_sprite.setPosition(this->m_cursor.m_position);
         window.draw(this->m_map_sprite);
     }
 }
 
-void zappy::Map::selectTile(sf::Event &event, sf::RenderWindow &window)
+bool zappy::Map::selectTile(sf::Event &event, sf::RenderWindow &window)
 {
     sf::Vector2i tmp{event.mouseButton.x, event.mouseButton.y};
     const sf::Vector2f point = window.mapPixelToCoords(tmp);
@@ -76,9 +81,22 @@ void zappy::Map::selectTile(sf::Event &event, sf::RenderWindow &window)
             }
         }
     }
+    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+        this->isCursorActive = false;
+    return this->isCursorActive;
 }
 
 std::vector<std::vector<zappy::Tile>> zappy::Map::getMap() const
 {
     return m_map;
+}
+
+void zappy::Map::animateCursor()
+{
+    if (this->m_cursor_clock.getElapsedTime().asSeconds() > static_cast<float>(0.5)) {
+        this->m_cursor_index += 1;
+        this->m_cursor_clock.restart();
+    }
+    if (this->m_cursor_index > 1)
+        this->m_cursor_index = 0;
 }

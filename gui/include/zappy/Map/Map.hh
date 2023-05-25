@@ -11,8 +11,11 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/System/Clock.hpp>
+#include <cstddef>
 #include <string_view>
 #include <vector>
+#include <array>
 #include <zappy/Map/Tile.hh>
 
 constexpr std::string_view MAP_TEXTURE{"./gui/assets/sprites/map_texture.png"};
@@ -36,13 +39,17 @@ namespace zappy
 
             void draw(sf::RenderWindow &window);
             [[nodiscard]] std::vector<std::vector<Tile>> getMap() const;
-            void selectTile(sf::Event &event, sf::RenderWindow &window);
+            [[nodiscard]] bool selectTile(sf::Event &event, sf::RenderWindow &window);
+            void animateCursor();
 
         private:
             std::vector<std::vector<Tile>> m_map;
             sf::Texture m_map_texture;
             sf::Sprite m_map_sprite;
             Tile m_cursor;
+            std::array<sf::IntRect, 2> m_cursor_rect;
+            sf::Clock m_cursor_clock;
+            std::size_t m_cursor_index = 0;
             bool isCursorActive = false;
     };
 } // namespace zappy

@@ -8,6 +8,7 @@
 #pragma once
 
 #include "zappy/Camera.hh"
+#include "zappy/HUD/HUD.hh"
 #include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -47,6 +48,7 @@ namespace zappy
             sf::Music m_music;
             zappy::Map m_map;
             zappy::Camera m_camera;
+            zappy::HUD m_hud;
     };
 
 } // namespace zappy

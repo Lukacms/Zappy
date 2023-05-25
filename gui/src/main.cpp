@@ -10,8 +10,8 @@
 
 int main(int argc, const char *argv[])
 {
-    zappy::GUI gui{1920, 1080};
-    gui.createMap(20, 10);
+    zappy::GUI gui{600, 400};
+    gui.createMap(30, 30);
     gui.start();
     return SUCCESS;
 }
