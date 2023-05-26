@@ -17,6 +17,8 @@ SRC	=	src/utils/strisnum.c	\
 		src/load/parse_args.c	\
 		src/load/create_server.c	\
 		src/launch.c	\
+		src/server/server_loop.c	\
+		src/server/handle_signal.c	\
 
 SRC_MAIN	=	src/main.c
 

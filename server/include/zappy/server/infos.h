@@ -71,6 +71,13 @@ typedef struct team_s {
     size_t nb_clients;
 } team_t;
 
+// TODO need to add other elements to the map to complete it
+typedef struct map_s {
+    vector2i_t size;
+    // tile_t **tiles;
+    // // NOTE implement this structure, and size is determined by size element
+} map_t;
+
 typedef struct server_s {
     bool running;
     ssize_t server_fd;

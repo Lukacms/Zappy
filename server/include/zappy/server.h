@@ -8,6 +8,7 @@
 #pragma once
 
 #include <zappy/config/arguments.h>
+#include <zappy/server/infos.h>
 
 #define SUCCESS 0
 #define FAILURE 84
@@ -25,3 +26,7 @@
 #define SHORT_HELP "-h"
 
 int launch(args_config_t *args);
+void handle_sigint(int sigf);
+void set_server(server_t *server);
+server_t *get_server(void);
+int server_loop(server_t *server);
