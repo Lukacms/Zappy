@@ -8,9 +8,19 @@
 #include <zappy/config/arguments.h>
 #include <zappy/server.h>
 
-int main(int argc, char *const argv[])
+static args_config_t default_config(void)
 {
     args_config_t args = {0};
+
+    args.freq = DEFAULT_FREQ;
+    args.nb_clients_og = DEFAULT_CLIENTS;
+    args.world = (vector2i_t){DEFAULT_WIDTH, DEFAULT_HEIGHT};
+    return args;
+}
+
+int main(int argc, char *const argv[])
+{
+    args_config_t args = default_config();
 
     if (parse_args(&args, argc, argv) != SUCCESS)
         return FAILURE;

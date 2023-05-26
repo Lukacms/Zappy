@@ -22,6 +22,8 @@
 
 #define INVENTORY_SLOTS 7
 
+#define GUI_INDIC "GRAPHIC\n"
+
 typedef enum resource_s {
     FOOD,
     LINEMATE,
@@ -36,6 +38,12 @@ typedef enum action_s {
     NOTHING,
     RITUAL,
 } action_t;
+
+typedef enum player_s {
+    NONE,
+    GUI,
+    AI,
+} player_t;
 
 typedef struct inventory_s {
     resource_t resource;
@@ -53,6 +61,7 @@ typedef struct stats_s {
 typedef struct client_node_s {
     int cfd;
     char *uuid;
+    player_t state;
     char *uuid_team;
     stats_t stats;
     // linked list
@@ -75,7 +84,7 @@ typedef struct team_s {
 typedef struct map_s {
     vector2i_t size;
     // tile_t **tiles;
-    // // NOTE implement this structure, and size is determined by size element
+    // NOTE implement this structure, and size is determined by size element
 } map_t;
 
 typedef struct server_s {
@@ -86,4 +95,5 @@ typedef struct server_s {
     socklen_t sock_size;
     fd_set clients_fd;
     clients_t clients;
+    map_t map;
 } server_t;
