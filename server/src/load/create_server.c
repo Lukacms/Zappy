@@ -21,13 +21,12 @@ static struct sockaddr_in create_server_infos(int const port)
     return dest;
 }
 
-static int bind_listen_server(server_t *server)
+static int bind_listen_server(server_t *serv)
 {
-    if (bind(server->server_fd,
-             (const struct sockaddr *)(&server->socket_infos),
-             sizeof(struct sockaddr)) < 0)
+    if (bind(serv->server_fd, (const struct sockaddr *)(&serv->socket_infos),
+            sizeof(struct sockaddr)) < 0)
         return FAILURE;
-    if (listen(server->server_fd, FD_SETSIZE) < 0)
+    if (listen(serv->server_fd, FD_SETSIZE) < 0)
         return FAILURE;
     return SUCCESS;
 }
