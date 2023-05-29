@@ -34,6 +34,7 @@ OBJ	=	$(SRC:.c=.o) $(SRC_MAIN:.c=.o)
 
 SRC_TESTS	=	tests/redirect.c	\
 				tests/template.c	\
+				tests/load/tests_arguments.c	\
 
 OBJ_TESTS	=	$(SRC:.c=.o)  $(SRC_TESTS:.c=.o)
 

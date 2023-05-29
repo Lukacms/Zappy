@@ -30,12 +30,21 @@ static int fill_args(args_config_t *args, char *const argv[], int opt, int argc)
     return FAILURE;
 }
 
+static void default_config(args_config_t *args)
+{
+    args->freq = DEFAULT_FREQ;
+    args->nb_clients_og = DEFAULT_CLIENTS;
+    args->world = (vector2i_t){DEFAULT_WIDTH, DEFAULT_HEIGHT};
+    args->port = DEFAULT_PORT;
+}
+
 int parse_args(args_config_t *args, int argc, char *const argv[])
 {
     int opt = 0;
 
     if (!args || !argv)
         return FAILURE;
+    default_config(args);
     while ((opt = getopt(argc, argv, SHORT_ARGS)) != -1) {
         if (opt == '?')
             return FAILURE;

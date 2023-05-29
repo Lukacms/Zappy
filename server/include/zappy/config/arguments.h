@@ -8,6 +8,7 @@
 #pragma once
 
 /* default arguments */
+#define DEFAULT_PORT 4242
 #define DEFAULT_FREQ 100
 #define DEFAULT_HEIGHT 10
 #define DEFAULT_WIDTH 10
