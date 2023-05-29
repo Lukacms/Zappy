@@ -29,6 +29,8 @@ int n_handler(args_config_t *args, char *const argv[], int argc)
         size++;
         args->team_names =
             realloc_array(args->team_names, size, strlen(argv[optind]));
+        if (!args->team_names)
+            return FAILURE;
         args->team_names[size - 1] =
             strcpy(args->team_names[size - 1], argv[optind]);
         optind++;

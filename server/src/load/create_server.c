@@ -42,5 +42,6 @@ int create_server(server_t *server, args_config_t *args)
         return FAILURE;
     FD_ZERO(&server->clients_fd);
     FD_SET(server->server_fd, &server->clients_fd);
+    server->running = true;
     return SUCCESS;
 }

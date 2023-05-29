@@ -24,7 +24,7 @@ int main(int argc, char *const argv[])
     args_config_t args = default_config();
 
     if (parse_args(&args, argc, argv) != SUCCESS)
-        return FAILURE;
+        return print_help(FAILURE);
     if (args.help)
         return print_help(SUCCESS);
     return launch(&args);

@@ -15,8 +15,8 @@ int f_handler(args_config_t *args, char __attribute__((unused)) *const argv[],
               int __attribute__((unused)) argc)
 {
     if (!strisnum(optarg))
-        return FAILURE;
+        return set_error(STDERR_FILENO, ERROR_FREQ, false);
     if ((args->freq = atoi(optarg)) <= 0)
-        return FAILURE;
+        return set_error(STDERR_FILENO, ERROR_FREQ, false);
     return SUCCESS;
 }
