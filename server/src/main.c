@@ -7,6 +7,7 @@
 
 #include <zappy/config/arguments.h>
 #include <zappy/server.h>
+#include <zappy/server/utils.h>
 
 static args_config_t default_config(void)
 {
@@ -24,5 +25,7 @@ int main(int argc, char *const argv[])
 
     if (parse_args(&args, argc, argv) != SUCCESS)
         return FAILURE;
+    if (args.help)
+        return print_help(SUCCESS);
     return launch(&args);
 }

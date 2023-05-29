@@ -5,7 +5,7 @@
 ** char_in_str
 */
 
-int char_in_str(char *const str, char const to_find)
+int char_in_str(const char *const str, char const to_find)
 {
     if (!str)
         return 0;
