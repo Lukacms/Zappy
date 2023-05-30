@@ -24,6 +24,7 @@
     "\tfreq\tis the reciprocal of time unit for execution of actions\n"
 #define LONG_HELP "--help"
 #define SHORT_HELP "-h"
+#define PERROR_MSG "Zappy"
 
 int launch(args_config_t *args);
 void handle_sigint(int sigf);

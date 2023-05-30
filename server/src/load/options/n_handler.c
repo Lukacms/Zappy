@@ -37,6 +37,6 @@ int n_handler(args_config_t *args, char *const argv[], int argc)
     }
     for (unsigned int i = 0; args->team_names[i]; i++)
         if (check_doubles(args->team_names + i, args->team_names[i]) != SUCCESS)
-            return FAILURE;
+            return set_error(STDERR_FILENO, ERROR_TEAM_NAME, false);
     return SUCCESS;
 }

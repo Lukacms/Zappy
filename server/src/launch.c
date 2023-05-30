@@ -16,5 +16,6 @@ int launch(args_config_t *args)
         return FAILURE;
     if (create_server(&server, args) != SUCCESS)
         return FAILURE;
+    set_server(&server);
     return server_loop(&server);
 }
