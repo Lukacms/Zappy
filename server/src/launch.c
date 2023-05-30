@@ -5,7 +5,17 @@
 ** launch
 */
 
-int launch(void)
+#include <zappy/config/config.h>
+#include <zappy/server.h>
+
+int launch(args_config_t *args)
 {
-    return 0;
+    server_t server = {0};
+
+    if (!args)
+        return FAILURE;
+    if (create_server(&server, args) != SUCCESS)
+        return FAILURE;
+    set_server(&server);
+    return server_loop(&server);
 }

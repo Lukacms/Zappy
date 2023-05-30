@@ -1,9 +1,3 @@
-Checks: '
-    readability-*, -readability-implicit-bool-conversion,
-    clang-analyzer-*,
-    modernize-*, -modernize-use-trailing-return-type,
-    performance-unnecessary-value-param, -readability-braces-around-statements'
-
 CheckOptions:
   - key:             readability-identifier-naming.ClassCase
     value:           CamelCase
@@ -12,7 +6,7 @@ CheckOptions:
   - key:             readability-identifier-naming.ClassMethodCase
     value:           lower_case
   - key:             readability-identifier-naming.StructCase
-    value:           CamelCase
+    value:           lower_case
   - key:             readability-identifier-naming.MemberCase
     value:           aNy_CasE
   - key:             readability-identifier-naming.MethodCase
@@ -32,7 +26,6 @@ CheckOptions:
 
   - key:             readability-identifier-naming.GlobalVariableCase
     value:           UPPER_CASE
-
   - key:             readability-identifier-naming.NamespaceCase
     value:           CamelCase
 
@@ -41,3 +34,9 @@ CheckOptions:
     value:           lower_case
   - key:             readability-identifier-naming.TemplateParameterPrefix
     value:           T_
+
+Checks: '
+    readability-*, -redability-implicit-bool-conversion,
+    clang-analyzer-*, -readability-identifier-length,
+    modernize-*, -modernize-use-trailing-return-type,
+    performance-unnecessary-value-param, -readability-braces-around-statements'

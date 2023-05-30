@@ -104,6 +104,7 @@ _deps
 /zappy_server
 build
 unit_test
+/ref
 
 # misc
 compile_commands.json

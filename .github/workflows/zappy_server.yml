@@ -62,7 +62,7 @@ jobs:
   run_program:
     container:
       image: epitechcontent/epitest-docker:latest
-    needs: check_coding_style
+    needs: check_cleanliness_repo
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
