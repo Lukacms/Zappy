@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+from src.client.Client import Client
+from src.utils.Arguments import parse_arg
+
+def main():
+    (machine, port, name) = parse_arg()
+    client = Client(machine, port, name)
+    client.server_connexion()
+    client.client_launcher()
+    client.close()
+
+if __name__ == '__main__':
+    exit(main())

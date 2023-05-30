@@ -114,3 +114,4 @@ unit_tests
 coding-style-reports.log
 .vscode
 vgcore.*
+*__pycache__*
