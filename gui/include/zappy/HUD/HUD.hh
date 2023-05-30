@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include "zappy/Map/Tile.hh"
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -21,9 +20,9 @@
 #include <array>
 #include <string>
 #include <string_view>
+#include <zappy/Map/Tile.hh>
 
 constexpr std::string_view MAIN_FONT{"./gui/assets/fonts/botw.otf"};
-constexpr std::string_view HUD_TEXTURE{"./gui/assets/sprites/HUD_texture.png"};
 constexpr std::string_view LINEMATE{"Linemate"};
 constexpr std::string_view DERAUMEDE{"Deraumede"};
 constexpr std::string_view SIBUR{"Sibur"};
@@ -60,15 +59,15 @@ namespace zappy
             HUD &operator=(HUD const &to_copy) = default;
             HUD &operator=(HUD &&to_move) = default;
 
-            void draw(sf::RenderWindow &window);
+            void draw(sf::RenderWindow &window, sf::Sprite &sprite);
             void displayFocusedTile(zappy::Tile &focused_tile);
             void animateHUD();
             void animateRupees();
+            void setFocusedTile(zappy::Tile &tile);
             void eventManager(sf::Event &event, sf::RenderWindow &window);
             void turnHUD(bool status);
 
         private:
-
             void initializeParchment();
             void initializeRupees();
             void initializeTexts();
@@ -81,8 +80,6 @@ namespace zappy
 
             sf::Text m_text{};
             sf::Font m_font{};
-            sf::Texture m_texture{};
-            sf::Sprite m_sprite{};
             sf::Color m_color{};
             sf::Color m_color_text{69, 45, 16, 255};
             sf::Clock m_rupees_clock{};
@@ -90,5 +87,6 @@ namespace zappy
             zappy::Tile m_parchment{};
             std::array<Tile, 6> m_rupees{};
             std::array<Text, 6> m_texts{};
+            std::array<Text, 6> m_ressources{};
     };
 } // namespace zappy

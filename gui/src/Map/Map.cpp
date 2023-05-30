@@ -34,35 +34,35 @@ zappy::Map::Map(unsigned int width, unsigned int height)
             random = std::rand() % TILE_NUMBER;
             tile.m_position = {static_cast<float>(x) * (TILE_SIZE * SCALING),
                                static_cast<float>(y) * (TILE_SIZE * SCALING)};
-            tile.m_rect = {random * TILE_SIZE, 0, TILE_SIZE, TILE_SIZE};
+            tile.m_rect = {random * TILE_SIZE + 61, 56, TILE_SIZE, TILE_SIZE};
             this->m_map[y].emplace_back(tile);
         }
     }
-    this->m_map_texture.loadFromFile(MAP_TEXTURE.data());
-    this->m_cursor.m_rect = {0, TILE_SIZE, TILE_SIZE, TILE_SIZE};
+    m_map[0][0].m_inventory.linemate = 100;
+    m_map[0][1].m_inventory.linemate = 50;
+    this->m_cursor.m_rect = {61, 72, TILE_SIZE, TILE_SIZE};
     this->m_cursor_rect[0] = this->m_cursor.m_rect;
-    this->m_cursor_rect[1] = {TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE};
+    this->m_cursor_rect[1] = {61 + TILE_SIZE, 72, TILE_SIZE, TILE_SIZE};
 }
 
 // Methods
 
-void zappy::Map::draw(sf::RenderWindow &window)
+void zappy::Map::draw(sf::RenderWindow &window, sf::Sprite &sprite)
 {
-    this->m_map_sprite.setTexture(this->m_map_texture);
     for (auto &columns : this->m_map) {
         for (auto &tile : columns) {
-            this->m_map_sprite.setTextureRect(tile.m_rect);
-            this->m_map_sprite.setPosition(tile.m_position);
-            tile.m_box = this->m_map_sprite.getGlobalBounds();
-            m_map_sprite.setScale(sf::Vector2f{SCALING, SCALING});
-            window.draw(this->m_map_sprite);
+            sprite.setTextureRect(tile.m_rect);
+            sprite.setPosition(tile.m_position);
+            tile.m_box = sprite.getGlobalBounds();
+            sprite.setScale(sf::Vector2f{SCALING, SCALING});
+            window.draw(sprite);
         }
     }
-    if (this->isCursorActive) {
+    if (m_is_cursor_active) {
         animateCursor();
-        this->m_map_sprite.setTextureRect(this->m_cursor_rect[this->m_cursor_index]);
-        this->m_map_sprite.setPosition(this->m_cursor.m_position);
-        window.draw(this->m_map_sprite);
+        sprite.setTextureRect(this->m_cursor_rect[this->m_cursor_index]);
+        sprite.setPosition(this->m_cursor.m_position);
+        window.draw(sprite);
     }
 }
 
@@ -75,15 +75,16 @@ bool zappy::Map::selectTile(sf::Event &event, sf::RenderWindow &window)
         for (auto height : this->m_map) {
             for (auto width : height) {
                 if (width.m_box.contains(point)) {
-                    this->isCursorActive = true;
-                    this->m_cursor.m_position = width.m_position;
+                    m_is_cursor_active  = true;
+                    m_cursor.m_position = width.m_position;
+                    m_selected_tile = width;
                 }
             }
         }
     }
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-        this->isCursorActive = false;
-    return this->isCursorActive;
+        m_is_cursor_active = false;
+    return m_is_cursor_active;
 }
 
 std::vector<std::vector<zappy::Tile>> zappy::Map::getMap() const
@@ -100,3 +101,7 @@ void zappy::Map::animateCursor()
     if (this->m_cursor_index > 1)
         this->m_cursor_index = 0;
 }
+
+zappy::Tile &zappy::Map::getSelectedTile() {
+    return m_selected_tile;
+};

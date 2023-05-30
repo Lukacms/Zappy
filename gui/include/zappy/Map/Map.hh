@@ -18,7 +18,6 @@
 #include <array>
 #include <zappy/Map/Tile.hh>
 
-constexpr std::string_view MAP_TEXTURE{"./gui/assets/sprites/map_texture.png"};
 constexpr unsigned int TEXTURE_WIDTH{80};
 constexpr unsigned int TEXTURE_HEIGHT{16};
 constexpr unsigned int TILESIDE{32};
@@ -37,20 +36,20 @@ namespace zappy
             Map &operator=(Map const &to_copy) = default;
             Map &operator=(Map &&to_move) = default;
 
-            void draw(sf::RenderWindow &window);
+            void draw(sf::RenderWindow &window, sf::Sprite &sprite);
             [[nodiscard]] std::vector<std::vector<Tile>> getMap() const;
             [[nodiscard]] bool selectTile(sf::Event &event, sf::RenderWindow &window);
             void animateCursor();
+            Tile &getSelectedTile();
 
         private:
             std::vector<std::vector<Tile>> m_map;
-            sf::Texture m_map_texture;
-            sf::Sprite m_map_sprite;
             Tile m_cursor;
+            Tile m_selected_tile;
             std::array<sf::IntRect, 2> m_cursor_rect;
             sf::Clock m_cursor_clock;
             std::size_t m_cursor_index = 0;
-            bool isCursorActive = false;
+            bool m_is_cursor_active = false;
     };
 } // namespace zappy
 

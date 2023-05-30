@@ -9,6 +9,7 @@
 
 #include "zappy/Camera.hh"
 #include "zappy/HUD/HUD.hh"
+#include "zappy/Scenes/Game.hh"
 #include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -22,12 +23,15 @@ constexpr std::string_view GUI_TITLE{"Zappy Gui"};
 constexpr unsigned int FRAMELIMIT{60};
 constexpr std::string_view MUSIC_FILENAME{"./gui/assets/music/darkworld.ogg"};
 
+constexpr unsigned int WIDTH{1920};
+constexpr unsigned int HEIGHT{1080};
+
 namespace zappy
 {
     class GUI
     {
         public:
-            GUI(unsigned int width, unsigned int height);
+            GUI();
             GUI(GUI const &to_copy) = delete;
             GUI(GUI &&to_move) = delete;
             ~GUI() = default;
@@ -36,7 +40,6 @@ namespace zappy
             GUI &operator=(GUI &&to_move) = delete;
 
             [[nodiscard("PRENDS CETTE WINDOW")]] sf::RenderWindow &getWindow();
-            void createMap(unsigned int width, unsigned int height);
             void updateWindow();
             void clearWindow();
             void eventManager();
@@ -46,9 +49,8 @@ namespace zappy
         private:
             sf::RenderWindow m_window;
             sf::Music m_music;
-            zappy::Map m_map;
-            zappy::Camera m_camera;
-            zappy::HUD m_hud;
+
+            zappy::Game game_scene;
     };
 
 } // namespace zappy
