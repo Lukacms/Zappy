@@ -16,11 +16,9 @@ static void check_if_client_ready(server_t *server, size_t ind, fd_set *clients)
 {
     if (FD_ISSET(ind, clients)) {
         if (ind == (size_t)server->server_fd)
-            // connect_client(server);
             ind++;
         else
             ind++;
-        // handle_client(server, ind);
     }
 }
 

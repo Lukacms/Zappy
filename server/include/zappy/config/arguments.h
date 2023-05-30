@@ -12,8 +12,7 @@
 #define DEFAULT_FREQ 100
 #define DEFAULT_HEIGHT 10
 #define DEFAULT_WIDTH 10
-#define DEFAULT_TEAMS \
-    { \
+#define DEFAULT_TEAMS { \
         "Team1", "Team2", "Team3", "Team3", NULL \
     }
 #define DEFAULT_CLIENTS 3

@@ -12,7 +12,7 @@
 #include <zappy/server/utils.h>
 
 int f_handler(args_config_t *args, char __attribute__((unused)) *const argv[],
-              int __attribute__((unused)) argc)
+            int __attribute__((unused)) argc)
 {
     if (!strisnum(optarg))
         return set_error(STDERR_FILENO, ERROR_FREQ, false);

@@ -10,7 +10,7 @@
 #include <zappy/server.h>
 
 int h_handler(args_config_t *args, char __attribute__((unused)) *const argv[],
-              int __attribute__((unused)) argc)
+            int __attribute__((unused)) argc)
 {
     args->help = true;
     return SUCCESS;
