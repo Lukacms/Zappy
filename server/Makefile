@@ -27,6 +27,9 @@ SRC	=	src/launch.c	\
 		src/load/options/p_handler.c	\
 		src/server/server_loop.c	\
 		src/server/handle_signal.c	\
+		src/server/summons/add_summon.c	\
+		src/server/summons/pop_summon.c	\
+		src/server/summons/get_summon.c	\
 
 SRC_MAIN	=	src/main.c
 

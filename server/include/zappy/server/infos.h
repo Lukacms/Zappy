@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <zappy/config/arguments.h>
+#include <zappy/server/summons_infos.h>
 
 #define TCP 0
 #define ERROR -1
@@ -64,6 +65,7 @@ typedef struct client_node_s {
     player_t state;
     char *uuid_team;
     stats_t stats;
+    summon_queue_t queue[MAX_WAITING_SUMMONS];
     // linked list
     struct client_s *prev;
     struct client_s *next;
