@@ -114,4 +114,8 @@ unit_tests
 coding-style-reports.log
 .vscode
 vgcore.*
-*__pycache__*
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
