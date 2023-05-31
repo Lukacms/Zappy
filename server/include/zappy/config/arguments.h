@@ -8,12 +8,13 @@
 #pragma once
 
 /* default arguments */
+#include <stddef.h>
 #define DEFAULT_PORT 4242
 #define DEFAULT_FREQ 100
 #define DEFAULT_HEIGHT 10
 #define DEFAULT_WIDTH 10
 #define DEFAULT_TEAMS { \
-        "Team1", "Team2", "Team3", "Team3", NULL \
+        "Team1", "Team2", "Team3", "Team4", NULL \
     }
 #define DEFAULT_CLIENTS 3
 
@@ -30,8 +31,8 @@
 #define ERROR_TEAM_NAME "Team names must be unique.\n"
 
 typedef struct vector2i_s {
-    int x;
-    int y;
+    size_t x;
+    size_t y;
 } vector2i_t;
 
 /* store arguments information */
