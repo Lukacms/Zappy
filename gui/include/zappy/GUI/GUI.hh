@@ -8,6 +8,7 @@
 #pragma once
 
 #include "zappy/Camera.hh"
+#include "zappy/GuiClient/GuiClient.hpp"
 #include "zappy/HUD/HUD.hh"
 #include "zappy/Scenes/Game.hh"
 #include <SFML/Audio.hpp>
@@ -31,7 +32,7 @@ namespace zappy
     class GUI
     {
         public:
-            GUI();
+            GUI(const std::string &address, unsigned short port);
             GUI(GUI const &to_copy) = delete;
             GUI(GUI &&to_move) = delete;
             ~GUI() = default;
@@ -51,6 +52,7 @@ namespace zappy
             sf::Music m_music;
 
             zappy::Game game_scene;
+            zappy::Client m_client;
     };
 
 } // namespace zappy

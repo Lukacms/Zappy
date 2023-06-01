@@ -169,6 +169,7 @@ add_executable(
     src/Scenes/Game.cpp
     src/Player/Player.cpp
     src/Player/PlayerManager.cpp
+    src/GuiClient/GuiClient.cpp
     )
 
 # rules for zappy_gui project
@@ -180,6 +181,7 @@ target_link_libraries(
     sfml-graphics
     sfml-system
     sfml-audio
+    sfml-network
     )
 target_link_options(zappy_gui PRIVATE -rdynamic)
 target_compile_options(zappy_gui PRIVATE ${WARNING_FLAGS})

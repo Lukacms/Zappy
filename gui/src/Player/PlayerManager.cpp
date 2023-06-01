@@ -15,7 +15,7 @@
 void zappy::PlayerManager::animatePlayers()
 {
     for (auto &player : m_players)
-        player.animatePlayer();
+        player.animatePlayer(m_size);
 }
 
 void zappy::PlayerManager::depthManager()
@@ -29,5 +29,10 @@ void zappy::PlayerManager::depthManager()
 void zappy::PlayerManager::drawPlayers(sf::RenderWindow &window, sf::Sprite &sprite)
 {
     for (auto &player : m_players)
-        player.drawPlayer(window, sprite);
+        player.drawPlayer(window, sprite, m_size);
+}
+
+void zappy::PlayerManager::setMapSize(sf::Vector2i &size)
+{
+    m_size = size;
 }

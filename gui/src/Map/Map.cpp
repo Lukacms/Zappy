@@ -22,7 +22,7 @@
 
 // Constructor && Destructor
 
-zappy::Map::Map(unsigned int width, unsigned int height)
+zappy::Map::Map(int width, int height)
 {
     int random = 0;
     zappy::Tile tile = {};

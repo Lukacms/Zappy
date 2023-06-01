@@ -46,18 +46,18 @@ namespace zappy
             Player &operator=(Player &&to_move) = default;
 
             void movePlayer(int pos_x, int pos_y, Orientation orientation);
-            void animatePlayer();
-            void drawPlayer(sf::RenderWindow &window, sf::Sprite &sprite);
+            void animatePlayer(sf::Vector2i &size);
+            void drawPlayer(sf::RenderWindow &window, sf::Sprite &sprite, sf::Vector2i &size);
             void setPlayerLevel(int level);
 
             [[nodiscard]] int getId() const;
             [[nodiscard]] sf::Vector2f getPosition() const;
         private:
 
-            void animateNorth();
-            void animateEast();
-            void animateSouth();
-            void animateWest();
+            void animateNorth(sf::Vector2i &size);
+            void animateEast(sf::Vector2i &size);
+            void animateSouth(sf::Vector2i &size);
+            void animateWest(sf::Vector2i &size);
             int m_id;
             int m_level;
             Orientation m_orientation;

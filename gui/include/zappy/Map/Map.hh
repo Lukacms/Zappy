@@ -28,7 +28,7 @@ namespace zappy
     {
         public:
             Map() = default;
-            Map(unsigned int width, unsigned int height);
+            Map(int width, int height);
             Map(Map const &to_copy) = default;
             Map(Map &&to_move) = default;
             ~Map() = default;

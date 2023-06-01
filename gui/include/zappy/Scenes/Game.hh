@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "zappy/GuiCommand/GuiCommand.hh"
 #include "zappy/Player/Player.hh"
 #include "zappy/Player/PlayerManager.hh"
 #include <string_view>
@@ -34,7 +35,14 @@ namespace zappy
 
             void draw(sf::RenderWindow &window) final;
             void manageEvent(sf::RenderWindow &window, sf::Event &event) final;
-            void createMap(unsigned int width, unsigned int heigth);
+
+            void createMap(Msz &map);
+            void changeTileInventory(Bct &tile);
+
+            void addPlayer(Pnw &new_player);
+            void movePlayer(Ppo &player);
+            void changePlayerInventory(Pin &player);
+            void changePlayerLevel(Plv &player);
 
         private:
             zappy::HUD m_hud;
