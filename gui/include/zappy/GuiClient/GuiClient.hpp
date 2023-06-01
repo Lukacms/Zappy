@@ -30,7 +30,8 @@ namespace zappy
             bool WelcomeSuppressor();
 
         private:
-            zappy::Packet packet{};
+            char m_buff[30000]{0};
+            zappy::Packet m_packet{};
             sf::TcpSocket m_socket{};
     };
 

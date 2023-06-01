@@ -1,5 +1,4 @@
-/*
-** EPITECH PROJECT, 2023
+/* ** EPITECH PROJECT, 2023
 ** GuiClient
 ** File description:
 ** GuiClient
@@ -63,17 +62,16 @@ static std::vector<std::string> parser(const std::string &buff, char delim)
         sub_str.push_back(buff[i]);
     }
     parsed.push_back(sub_str);
-    for (auto str : parsed) {
-        std::cout << str << '\n';
-    }
     return parsed;
 }
 
-static zappy::Packet get_variant(const std::vector<std::string> &parsed)
+static zappy::Packet get_variant(std::string &parsed)
 {
     for (size_t i{0}; i < zappy::NB_MAX_CMD; i++) {
-        if (parsed[0] == zappy::VARIANT_LIST[i].name)
+        if (parsed.find(zappy::VARIANT_LIST[i].name) != std::string::npos) {
+
             return zappy::VARIANT_LIST[i].packet;
+        }
     }
     return zappy::Packet{zappy::Ukn{}};
 }
@@ -81,20 +79,18 @@ static zappy::Packet get_variant(const std::vector<std::string> &parsed)
 void zappy::Client::receiveCommand(zappy::Game &game)
 {
     std::vector<std::string> parsed{};
-    char buff[4096]; // NOLINT
-    std::memset(&buff, '\0', 4096);
+    std::memset(m_buff, '\0', 30000);
     std::size_t size{0};
     std::vector<std::string> parsed2{};
 
-    std::cout << "HERE\n";
-    if (m_socket.receive(&buff, 4096, size) != sf::Socket::Done)
+    if (m_socket.receive(m_buff, 30000, size) != sf::Socket::Done)
         return;
-    parsed = parser(buff, '\n');
+    parsed = parser(std::string{m_buff}, '\n');
 
     for (auto str : parsed) {
-        std::cout << str << std::endl;
+        std::vector<std::string> parsed2{};
         parsed2 = parser(str, ' ');
-        Packet variant = get_variant(parsed2);
+        Packet variant = get_variant(str);
         auto visitor = make_lambda_visitor(
             [&](Msz &arg) {
                 arg.x_map_size = std::atoi(parsed2[1].c_str());
@@ -120,6 +116,5 @@ void zappy::Client::receiveCommand(zappy::Game &game)
             [&](Ukn & /*arg*/) { return; }, [&](Sgt &arg) { ; }, [&](Sst &arg) { ; },
             [&](Seg &arg) { ; }, [&](Smg &arg) { ; });
         std::visit(visitor, variant);
-        // break;
     }
 }

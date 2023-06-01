@@ -5,8 +5,6 @@
 ** GUI
 */
 
-#include <zappy/Map/Tile.hh>
-#include <zappy/Scenes/Game.hh>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -19,11 +17,14 @@
 #include <vector>
 #include <zappy/GUI/GUI.hh>
 #include <zappy/Map/Map.hh>
+#include <zappy/Map/Tile.hh>
+#include <zappy/Scenes/Game.hh>
 
 // Constructor && Destructor
 
 zappy::GUI::GUI(const std::string &address, unsigned short port)
-    : m_window{{WIDTH, HEIGHT}, GUI_TITLE.data()}, game_scene{m_window, 20, 20}, m_client{address, port}
+    : m_window{{WIDTH, HEIGHT}, GUI_TITLE.data()}, game_scene{m_window, 20, 20}, m_client{address,
+                                                                                          port}
 {
     m_window.setFramerateLimit(FRAMELIMIT);
     m_music.openFromFile(MUSIC_FILENAME.data());
@@ -40,7 +41,8 @@ sf::RenderWindow &zappy::GUI::getWindow()
 int zappy::GUI::start()
 {
     m_music.play();
-    while (!m_client.WelcomeSuppressor());
+    while (!m_client.WelcomeSuppressor())
+        ;
     m_client.sendGraphic();
     while (m_window.isOpen()) {
         m_client.receiveCommand(game_scene);

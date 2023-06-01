@@ -34,6 +34,7 @@ namespace zappy
     struct Msz {
             int x_map_size{0};
             int y_map_size{0};
+            Msz() = default;
     };
 
     struct Bct {
