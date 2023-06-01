@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <zappy/server.h>
+#include <zappy/server/client.h>
 #include <zappy/server/infos.h>
 
 // TODO implement both methods
@@ -16,7 +17,7 @@ static void check_if_client_ready(server_t *server, size_t ind, fd_set *clients)
 {
     if (FD_ISSET(ind, clients)) {
         if (ind == (size_t)server->server_fd)
-            ind++;
+            connect_new_client(server);
         else
             ind++;
     }

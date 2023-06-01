@@ -62,13 +62,14 @@ typedef struct stats_s {
 typedef struct client_node_s {
     int cfd;
     char *uuid;
+    struct sockaddr_in socket_infos;
     player_t state;
     char *uuid_team;
     stats_t stats;
     summon_queue_t queue[MAX_WAITING_SUMMONS];
     // linked list
-    struct client_s *prev;
-    struct client_s *next;
+    struct client_node_s *prev;
+    struct client_node_s *next;
 } client_node_t;
 
 typedef struct clients_s {

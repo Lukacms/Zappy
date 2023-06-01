@@ -30,6 +30,10 @@ SRC	=	src/launch.c	\
 		src/server/summons/add_summon.c	\
 		src/server/summons/pop_summon.c	\
 		src/server/summons/get_summon.c	\
+		src/server/client/delete_client_node.c	\
+		src/server/client/connect_new_client.c	\
+		src/server/client/add_client_node.c	\
+		src/server/client/find_client.c	\
 
 SRC_MAIN	=	src/main.c
 
