@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <zappy/config/arguments.h>
+#include <zappy/server/clock.h>
 #include <zappy/server/summons_infos.h>
 
 #define TCP 0
@@ -99,4 +100,5 @@ typedef struct server_s {
     fd_set clients_fd;
     clients_t clients;
     map_t map;
+    zappy_clock_t clock;
 } server_t;

@@ -14,6 +14,24 @@
 #include <zappy/server/client.h>
 #include <zappy/server/utils.h>
 
+static const inventory_t INVENTORY[] = {
+    {.resource = FOOD, .units = 10},     {.resource = LINEMATE, .units = 0},
+    {.resource = DERAUMERE, .units = 0}, {.resource = SIBUR, .units = 0},
+    {.resource = MENDIANE, .units = 0},  {.resource = PHIRAS, .units = 0},
+    {.resource = THYSTAME, .units = 0},  {0},
+};
+
+static void set_stats(client_node_t *client)
+{
+    client->state = NONE;
+    client->stats.action = NOTHING;
+    client->stats.level = 1;
+    for (unsigned int i = 0; i < INVENTORY_SLOTS; i++) {
+        client->stats.inventory[i].resource = INVENTORY[i].resource;
+        client->stats.inventory[i].units = INVENTORY[i].units;
+    }
+}
+
 int connect_new_client(server_t *server)
 {
     client_node_t *new_client = malloc(sizeof(client_node_t));
@@ -28,6 +46,7 @@ int connect_new_client(server_t *server)
     FD_SET(new_client->cfd, &server->clients_fd);
     if (!(new_client->uuid = generate_uuid()))
         return set_error(new_client->cfd, "Creating unique uuid", true);
+    set_stats(new_client);
     add_client_node(new_client, server);
     return SUCCESS;
 }
