@@ -9,6 +9,7 @@
 
 #include "zappy/Camera.hh"
 #include "zappy/HUD/HUD.hh"
+#include <SFML/Audio.hpp>
 #include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -16,7 +17,6 @@
 #include <string_view>
 #include <vector>
 #include <zappy/Map/Map.hh>
-#include <SFML/Audio.hpp>
 
 constexpr std::string_view GUI_TITLE{"Zappy Gui"};
 constexpr unsigned int FRAMELIMIT{60};

@@ -14,10 +14,10 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <cstddef>
+#include <iostream>
 #include <vector>
 #include <zappy/GUI/GUI.hh>
 #include <zappy/Map/Map.hh>
-#include <iostream>
 
 // Constructor && Destructor
 

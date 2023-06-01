@@ -29,9 +29,9 @@ void zappy::Camera::cameraOnKeyPressed(sf::Event &event)
         m_directions[2] = true;
     if (event.key.code == sf::Keyboard::Left)
         m_directions[3] = true;
-    if (event.key.code == sf::Keyboard::Add)
+    if (event.key.code == sf::Keyboard::Add || event.key.code == sf::Keyboard::P)
         m_directions[4] = true;
-    if (event.key.code == sf::Keyboard::Subtract)
+    if (event.key.code == sf::Keyboard::Subtract || event.key.code == sf::Keyboard::M)
         m_directions[5] = true;
 }
 
@@ -47,9 +47,9 @@ void zappy::Camera::cameraOnKeyReleased(sf::Event &event)
         m_directions[2] = false;
     if (event.key.code == sf::Keyboard::Left)
         m_directions[3] = false;
-    if (event.key.code == sf::Keyboard::Add)
+    if (event.key.code == sf::Keyboard::Add || event.key.code == sf::Keyboard::P)
         m_directions[4] = false;
-    if (event.key.code == sf::Keyboard::Subtract)
+    if (event.key.code == sf::Keyboard::Subtract || event.key.code == sf::Keyboard::M)
         m_directions[5] = false;
 }
 
