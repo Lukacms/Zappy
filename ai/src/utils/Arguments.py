@@ -7,6 +7,7 @@
 
 from argparse import SUPPRESS, ArgumentParser
 
+# mettre classe
 def parse_arg():
     parser = ArgumentParser(description="zappy_ai", add_help=False)
     parser.add_argument("--help", action="help", help=SUPPRESS)

@@ -23,7 +23,7 @@ $(NAME_GUI):
 .PHONY: $(NAME_GUI)
 
 $(NAME_AI):
-	@echo "to be implemented"
+	make -C./ai
 .PHONY: $(NAME_AI)
 
 debug:

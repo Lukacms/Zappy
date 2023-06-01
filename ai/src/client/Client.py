@@ -1,9 +1,14 @@
-#!/usr/bin/env python3
+##
+## EPITECH PROJECT, 2023
+## Zappy
+## File description:
+## Client
+##
 
 import socket
 from socket import AF_INET, SOCK_STREAM
 
-BUFFER_SIZE = 4096
+BUFFER_SIZE = 1024
 EPITECH_SUCCESS = 0
 EPITECH_ERROR = 84
 
@@ -13,13 +18,18 @@ class Client():
         self.machine = hostname
         self.port = port
         self.socket = None
+        if self.socket is None:
+            self.socket = socket.socket(AF_INET, SOCK_STREAM)
+        else:
+            self.socket = socket
 
     def server_connexion(self):
         try:
             server_address = (self.machine, self.port)
-            self.socket = socket.socket(AF_INET, SOCK_STREAM)
             self.socket.connect(server_address)
             response: str = self.socket.recv(BUFFER_SIZE).decode("utf-8")
+            if not response:
+                raise ValueError("Server connexion error")
             print(f"{response}", end="")
             self.socket.sendall((self.name + '\n').encode())
             response: str = self.socket.recv(BUFFER_SIZE).decode("utf-8")

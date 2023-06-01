@@ -5,15 +5,14 @@
 ## Makefile
 ##
 
-SRC		=	src/zappy_ai
+SRC		=	src/main
 
 NAME	=	zappy_ai
 
 all:	$(NAME)
 
 $(NAME):
-	cp src/$(NAME) ../
-	chmod +x ../$(NAME)
+	cp $(SRC) ../$(NAME)
 
 clean:
 	@echo "project cleaning is in process [...]"
