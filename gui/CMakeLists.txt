@@ -166,6 +166,9 @@ add_executable(
     src/Map/Map.cpp
     src/Camera.cpp
     src/HUD/HUD.cpp
+    src/Scenes/Game.cpp
+    src/Player/Player.cpp
+    src/Player/PlayerManager.cpp
     )
 
 # rules for zappy_gui project

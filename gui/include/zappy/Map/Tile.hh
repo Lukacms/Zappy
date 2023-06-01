@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <Inventory.hh>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <string>
@@ -21,6 +22,7 @@ namespace zappy {
         sf::Vector2f m_position;
         sf::IntRect m_rect;
         sf::FloatRect m_box;
+        Inventory m_inventory;
     };
 
     struct Text {
