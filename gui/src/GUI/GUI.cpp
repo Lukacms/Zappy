@@ -39,9 +39,12 @@ sf::RenderWindow &zappy::GUI::getWindow()
 
 int zappy::GUI::start()
 {
-    this->m_music.play();
+    m_music.play();
+    while (!m_client.WelcomeSuppressor());
+    m_client.sendGraphic();
     while (m_window.isOpen()) {
-        this->m_window.clear(sf::Color{74, 173, 74});
+        m_client.receiveCommand(game_scene);
+        m_window.clear(sf::Color{74, 173, 74});
         eventManager();
         this->game_scene.draw(this->m_window);
         this->m_window.display();

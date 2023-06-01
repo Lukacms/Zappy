@@ -5,9 +5,9 @@
 ** Game
 */
 
-#include "zappy/GuiCommand/GuiCommand.hh"
-#include "zappy/Map/Map.hh"
-#include "zappy/Player/Player.hh"
+#include <zappy/GuiCommand/GuiCommand.hh>
+#include <zappy/Map/Map.hh>
+#include <zappy/Player/Player.hh>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <zappy/Scenes/Game.hh>

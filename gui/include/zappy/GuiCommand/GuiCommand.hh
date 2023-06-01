@@ -153,7 +153,7 @@ namespace zappy
             zappy::Packet packet;
     };
 
-    std::array<VariantBind, NB_MAX_CMD> VARIANT_LIST{{
+    static std::array<VariantBind, NB_MAX_CMD> VARIANT_LIST{{
         {"msz", Packet{Msz{}}}, {"bct", Packet{Bct{}}}, {"tna", Packet{Tna{}}},
         {"pnw", Packet{Pnw{}}}, {"ppo", Packet{Ppo{}}}, {"plv", Packet{Plv{}}},
         {"pin", Packet{Pin{}}}, {"pex", Packet{Pex{}}}, {"pbc", Packet{Pbc{}}},
@@ -161,7 +161,7 @@ namespace zappy
         {"pdr", Packet{Pdr{}}}, {"pgt", Packet{Pgt{}}}, {"pdi", Packet{Pdi{}}},
         {"enw", Packet{Enw{}}}, {"ebo", Packet{Ebo{}}}, {"edi", Packet{Edi{}}},
         {"sgt", Packet{Sgt{}}}, {"sst", Packet{Sst{}}}, {"seg", Packet{Seg{}}},
-        {"smg", Packet{Smg{}}},
+        {"smg", Packet{Smg{}}}
     }};
 
 } // namespace zappy

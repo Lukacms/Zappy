@@ -10,6 +10,7 @@
 #include <SFML/Network.hpp>
 #include <SFML/Network/TcpSocket.hpp>
 #include <zappy/GuiCommand/GuiCommand.hh>
+#include <zappy/Scenes/Game.hh>
 
 namespace zappy
 {
@@ -24,7 +25,9 @@ namespace zappy
             Client &operator=(Client &&to_move) = delete;
 
             void sendCommand(const std::string &cmd);
-            void receiveCommand();
+            void receiveCommand(zappy::Game &game);
+            void sendGraphic();
+            bool WelcomeSuppressor();
 
         private:
             zappy::Packet packet{};
