@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "zappy/RingBuffer.hh"
 #include <SFML/Network.hpp>
 #include <SFML/Network/TcpSocket.hpp>
 #include <zappy/GuiCommand/GuiCommand.hh>
@@ -32,7 +33,12 @@ namespace zappy
         private:
             char m_buff[30000]{0};
             zappy::Packet m_packet{};
+            bool fillRingBuffer();
+            void applyCommands(zappy::Game &game, const std::string &str);
+
+            zappy::Packet packet{};
             sf::TcpSocket m_socket{};
+            zappy::RingBuffer m_ring_buffer{};
     };
 
     template <typename... Ts> struct LambdaVisitor : Ts... {

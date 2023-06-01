@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <string>
 #include <vector>
 #include <zappy/GuiClient/GuiClient.hpp>
 #include <zappy/GuiCommand/GuiCommand.hh>
@@ -18,9 +19,6 @@
 
 zappy::Client::Client(const std::string &name, unsigned short port)
 {
-    char buff[4096]; // NOLINT
-    std::size_t size{0};
-
     if (m_socket.connect(sf::IpAddress{name}, port) != sf::Socket::Status::Done)
         throw;
     m_socket.setBlocking(false);
@@ -33,19 +31,18 @@ void zappy::Client::sendCommand(const std::string &cmd)
 
 void zappy::Client::sendGraphic()
 {
-    m_socket.send("GRAPHIC\n", 8);
+    if (m_socket.send("GRAPHIC\n", 8) != sf::Socket::Done)
+        throw;
 }
 
 bool zappy::Client::WelcomeSuppressor()
 {
-    char buff[4096]; // NOLINT
+    char buff[4096] = {0}; // NOLINT
     std::size_t size;
 
     if (m_socket.receive(&buff, 4096, size) != sf::Socket::Done)
         return false;
-    if (std::string{buff} == "WELCOME\n")
-        return true;
-    return false;
+    return std::string{buff} == "WELCOME\n";
 }
 
 static std::vector<std::string> parser(const std::string &buff, char delim)
@@ -65,56 +62,81 @@ static std::vector<std::string> parser(const std::string &buff, char delim)
     return parsed;
 }
 
-static zappy::Packet get_variant(std::string &parsed)
+static zappy::Packet get_variant(std::vector<std::string> &parsed)
 {
     for (size_t i{0}; i < zappy::NB_MAX_CMD; i++) {
-        if (parsed.find(zappy::VARIANT_LIST[i].name) != std::string::npos) {
-
+        if (parsed[0] == zappy::VARIANT_LIST[i].name)
             return zappy::VARIANT_LIST[i].packet;
-        }
     }
     return zappy::Packet{zappy::Ukn{}};
 }
 
 void zappy::Client::receiveCommand(zappy::Game &game)
 {
-    std::vector<std::string> parsed{};
-    std::memset(m_buff, '\0', 30000);
-    std::size_t size{0};
-    std::vector<std::string> parsed2{};
+    char buff[255] = {0}; // NOLINT
+    std::size_t index{0};
+    char tmp = -1;
 
-    if (m_socket.receive(m_buff, 30000, size) != sf::Socket::Done)
-        return;
-    parsed = parser(std::string{m_buff}, '\n');
-
-    for (auto str : parsed) {
-        std::vector<std::string> parsed2{};
-        parsed2 = parser(str, ' ');
-        Packet variant = get_variant(str);
-        auto visitor = make_lambda_visitor(
-            [&](Msz &arg) {
-                arg.x_map_size = std::atoi(parsed2[1].c_str());
-                arg.y_map_size = std::atoi(parsed2[2].c_str());
-                game.createMap(arg);
-            },
-            [&](Bct &arg) {
-                arg.x_tile_coord = std::atoi(parsed2[1].c_str());
-                arg.y_tile_coord = std::atoi(parsed2[2].c_str());
-                arg.ressources[0] = std::atoi(parsed2[3].c_str());
-                arg.ressources[1] = std::atoi(parsed2[4].c_str());
-                arg.ressources[2] = std::atoi(parsed2[5].c_str());
-                arg.ressources[3] = std::atoi(parsed2[6].c_str());
-                arg.ressources[4] = std::atoi(parsed2[7].c_str());
-                arg.ressources[5] = std::atoi(parsed2[8].c_str());
-                arg.ressources[6] = std::atoi(parsed2[9].c_str());
-                game.changeTileInventory(arg);
-            },
-            [&](Tna &arg) { ; }, [&](Pnw &arg) { ; }, [&](Ppo &arg) { ; }, [&](Plv &arg) { ; },
-            [&](Pin &arg) { ; }, [&](Pex &arg) { ; }, [&](Pbc &arg) { ; }, [&](Pic &arg) { ; },
-            [&](Pie &arg) { ; }, [&](Pkf &arg) { ; }, [&](Pdr &arg) { ; }, [&](Pgt &arg) { ; },
-            [&](Pdi &arg) { ; }, [&](Enw &arg) { ; }, [&](Ebo &arg) { ; }, [&](Edi &arg) { ; },
-            [&](Ukn & /*arg*/) { return; }, [&](Sgt &arg) { ; }, [&](Sst &arg) { ; },
-            [&](Seg &arg) { ; }, [&](Smg &arg) { ; });
-        std::visit(visitor, variant);
+    fillRingBuffer();
+    while ((tmp = m_ring_buffer.front()) != '\0') {
+        if (m_ring_buffer.isWritable()) {
+            if (!fillRingBuffer())
+                return;
+        } else if (tmp == '\n') {
+            applyCommands(game, std::string{buff});
+            index = 0;
+            std::cout << buff << std::endl;
+            std::memset(buff, '\0', 255);
+        } else {
+            buff[index] = tmp;
+            index += 1;
+        }
     }
+}
+
+bool zappy::Client::fillRingBuffer()
+{
+    char buffer[1364] = {0}; // NOLINT
+    std::size_t size{1364};
+    std::size_t read_size{0};
+
+    m_socket.receive(buffer, size, read_size);
+    if (size == 0)
+        return false;
+    for (auto chr : buffer)
+        m_ring_buffer.push(chr);
+    return true;
+}
+
+void zappy::Client::applyCommands(zappy::Game &game, const std::string &str)
+{
+    std::vector<std::string> parsed;
+
+    parsed = parser(str, ' ');
+    Packet variant = get_variant(parsed);
+    auto visitor = make_lambda_visitor(
+        [&](Msz &arg) {
+            arg.x_map_size = std::atoi(parsed[1].c_str());
+            arg.y_map_size = std::atoi(parsed[2].c_str());
+            game.createMap(arg);
+        },
+        [&](Bct &arg) {
+            arg.x_tile_coord = std::atoi(parsed[1].c_str());
+            arg.y_tile_coord = std::atoi(parsed[2].c_str());
+            arg.ressources[0] = std::atoi(parsed[3].c_str());
+            arg.ressources[1] = std::atoi(parsed[4].c_str());
+            arg.ressources[2] = std::atoi(parsed[5].c_str());
+            arg.ressources[3] = std::atoi(parsed[6].c_str());
+            arg.ressources[4] = std::atoi(parsed[7].c_str());
+            arg.ressources[5] = std::atoi(parsed[8].c_str());
+            arg.ressources[6] = std::atoi(parsed[9].c_str());
+            game.changeTileInventory(arg);
+        },
+        [&](Tna &arg) { ; }, [&](Pnw &arg) { ; }, [&](Ppo &arg) { ; }, [&](Plv &arg) { ; },
+        [&](Pin &arg) { ; }, [&](Pex &arg) { ; }, [&](Pbc &arg) { ; }, [&](Pic &arg) { ; },
+        [&](Pie &arg) { ; }, [&](Pkf &arg) { ; }, [&](Pdr &arg) { ; }, [&](Pgt &arg) { ; },
+        [&](Pdi &arg) { ; }, [&](Enw &arg) { ; }, [&](Ebo &arg) { ; }, [&](Edi &arg) { ; },
+        [&](Ukn & /*arg*/) { return; }, [&](Sgt &arg) { ; }, [&](Sst &arg) { ; },
+        [&](Seg &arg) { ; }, [&](Smg &arg) { ; });
+    std::visit(visitor, variant);
 }

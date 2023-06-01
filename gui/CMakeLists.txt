@@ -170,6 +170,7 @@ add_executable(
     src/Player/Player.cpp
     src/Player/PlayerManager.cpp
     src/GuiClient/GuiClient.cpp
+    src/RingBuffer.cpp
     )
 
 # rules for zappy_gui project
