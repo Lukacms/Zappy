@@ -37,6 +37,9 @@ SRC	=	src/launch.c	\
 		src/server/client/connect_new_client.c	\
 		src/server/client/add_client_node.c	\
 		src/server/client/find_client.c	\
+		src/server/client/find_team.c	\
+		src/server/client/add_client_to_team.c	\
+		src/server/client/delete_client_from_team.c	\
 
 SRC_MAIN	=	src/main.c
 
