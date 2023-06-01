@@ -43,11 +43,11 @@ int zappy::GUI::start()
     while (!m_client.WelcomeSuppressor());
     m_client.sendGraphic();
     while (m_window.isOpen()) {
-        m_client.receiveCommand(game_scene);
         m_window.clear(sf::Color{74, 173, 74});
         eventManager();
         this->game_scene.draw(this->m_window);
         this->m_window.display();
+        m_client.receiveCommand(game_scene);
     }
     this->m_music.stop();
     return 0;
