@@ -16,26 +16,27 @@ SRC	=	src/launch.c	\
 		src/utils/generate_uuid.c	\
 		src/utils/strndup_quotes.c	\
 		src/utils/str_to_word_array.c	\
-		src/load/parse_args.c	\
-		src/load/create_server.c	\
+		src/load/options/f_handler.c	\
 		src/load/options/x_handler.c	\
 		src/load/options/h_handler.c	\
-		src/load/options/f_handler.c	\
 		src/load/options/c_handler.c	\
 		src/load/options/y_handler.c	\
 		src/load/options/n_handler.c	\
 		src/load/options/p_handler.c	\
-		src/server/server_loop.c	\
-		src/server/handle_signal.c	\
+		src/load/parse_args.c	\
+		src/load/update_server_with_args.c	\
+		src/load/create_server.c	\
 		src/server/summons/add_summon.c	\
 		src/server/summons/pop_summon.c	\
 		src/server/summons/get_summon.c	\
+		src/server/clock/gettickselapsed.c	\
+		src/server/clock/update_ticks_clients.c	\
+		src/server/server_loop.c	\
+		src/server/handle_signal.c	\
 		src/server/client/delete_client_node.c	\
 		src/server/client/connect_new_client.c	\
 		src/server/client/add_client_node.c	\
 		src/server/client/find_client.c	\
-		src/server/clock/gettickselapsed.c	\
-		src/server/clock/update_ticks_clients.c	\
 
 SRC_MAIN	=	src/main.c
 

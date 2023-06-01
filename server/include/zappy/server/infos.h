@@ -84,8 +84,10 @@ typedef struct clients_s {
 
 typedef struct team_s {
     char *uuid;
+    char *team_name;
     char **uuid_clients;
     size_t nb_clients;
+    size_t spots_free;
 } team_t;
 
 // TODO need to add other elements to the map to complete it
@@ -101,6 +103,7 @@ typedef struct server_s {
     struct protoent *proto;
     struct sockaddr_in socket_infos;
     socklen_t sock_size;
+    team_t **teams;
     fd_set clients_fd;
     clients_t clients;
     map_t map;

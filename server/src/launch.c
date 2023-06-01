@@ -5,6 +5,7 @@
 ** launch
 */
 
+#include <stdio.h>
 #include <zappy/config/config.h>
 #include <zappy/server.h>
 

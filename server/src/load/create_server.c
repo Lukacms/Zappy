@@ -8,6 +8,7 @@
 #include <sys/select.h>
 #include <time.h>
 #include <unistd.h>
+#include <zappy/config/config.h>
 #include <zappy/server.h>
 #include <zappy/server/utils.h>
 
@@ -50,5 +51,5 @@ int create_server(server_t *server, args_config_t *args)
     FD_SET(server->server_fd, &server->clients_fd);
     server->running = true;
     init_clock(args->freq, server);
-    return SUCCESS;
+    return update_server_with_args(server, args);
 }
