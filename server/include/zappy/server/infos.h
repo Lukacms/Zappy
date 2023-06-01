@@ -11,8 +11,8 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <zappy/config/arguments.h>
-#include <zappy/server/clock.h>
-#include <zappy/server/summons_infos.h>
+#include <zappy/server/clock/infos.h>
+#include <zappy/server/summon/infos.h>
 
 #define TCP 0
 #define ERROR -1
@@ -38,7 +38,7 @@ typedef enum resource_s {
 
 typedef enum action_s {
     NOTHING,
-    RITUAL,
+    ACTION,
 } action_t;
 
 typedef enum player_s {
@@ -53,7 +53,11 @@ typedef struct inventory_s {
 } inventory_t;
 
 typedef struct stats_s {
-    action_t action;
+    struct {
+        action_t type;
+        int ticks;
+    } action;
+
     size_t level;
     vector2i_t pos;
     size_t vision;

@@ -35,6 +35,7 @@ SRC	=	src/launch.c	\
 		src/server/client/add_client_node.c	\
 		src/server/client/find_client.c	\
 		src/server/clock/gettickselapsed.c	\
+		src/server/clock/update_ticks_clients.c	\
 
 SRC_MAIN	=	src/main.c
 

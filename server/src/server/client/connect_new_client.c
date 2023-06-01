@@ -24,7 +24,8 @@ static const inventory_t INVENTORY[] = {
 static void set_stats(client_node_t *client)
 {
     client->state = NONE;
-    client->stats.action = NOTHING;
+    client->stats.action.type = NOTHING;
+    client->stats.action.ticks = -1;
     client->stats.level = 1;
     for (unsigned int i = 0; i < INVENTORY_SLOTS; i++) {
         client->stats.inventory[i].resource = INVENTORY[i].resource;

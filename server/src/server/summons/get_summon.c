@@ -9,7 +9,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <zappy/server.h>
-#include <zappy/server/summons.h>
+#include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
 int get_summon(server_t *server, client_node_t *client)
