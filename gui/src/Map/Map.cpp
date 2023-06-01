@@ -75,7 +75,7 @@ bool zappy::Map::selectTile(sf::Event &event, sf::RenderWindow &window)
         for (auto height : this->m_map) {
             for (auto width : height) {
                 if (width.m_box.contains(point)) {
-                    m_is_cursor_active  = true;
+                    m_is_cursor_active = true;
                     m_cursor.m_position = width.m_position;
                     m_selected_tile = width;
                 }
@@ -102,6 +102,25 @@ void zappy::Map::animateCursor()
         this->m_cursor_index = 0;
 }
 
-zappy::Tile &zappy::Map::getSelectedTile() {
+zappy::Tile &zappy::Map::getSelectedTile()
+{
     return m_selected_tile;
 };
+
+void zappy::Map::modifyTile(Bct &arg)
+{
+    m_map[static_cast<size_t>(arg.x_tile_coord)][static_cast<size_t>(arg.y_tile_coord)]
+        .m_inventory.food = static_cast<unsigned int>(arg.ressources[0]);
+    m_map[static_cast<size_t>(arg.x_tile_coord)][static_cast<size_t>(arg.y_tile_coord)]
+        .m_inventory.linemate = static_cast<unsigned int>(arg.ressources[1]);
+    m_map[static_cast<size_t>(arg.x_tile_coord)][static_cast<size_t>(arg.y_tile_coord)]
+        .m_inventory.deraumede = static_cast<unsigned int>(arg.ressources[2]);
+    m_map[static_cast<size_t>(arg.x_tile_coord)][static_cast<size_t>(arg.y_tile_coord)]
+        .m_inventory.sibur = static_cast<unsigned int>(arg.ressources[3]);
+    m_map[static_cast<size_t>(arg.x_tile_coord)][static_cast<size_t>(arg.y_tile_coord)]
+        .m_inventory.mendiane = static_cast<unsigned int>(arg.ressources[4]);
+    m_map[static_cast<size_t>(arg.x_tile_coord)][static_cast<size_t>(arg.y_tile_coord)]
+        .m_inventory.phiras = static_cast<unsigned int>(arg.ressources[5]);
+    m_map[static_cast<size_t>(arg.x_tile_coord)][static_cast<size_t>(arg.y_tile_coord)]
+        .m_inventory.thystame = static_cast<unsigned int>(arg.ressources[6]);
+}

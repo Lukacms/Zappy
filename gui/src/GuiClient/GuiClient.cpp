@@ -72,10 +72,10 @@ static std::vector<std::string> parser(const std::string &buff, char delim)
 static zappy::Packet get_variant(const std::vector<std::string> &parsed)
 {
     for (size_t i{0}; i < zappy::NB_MAX_CMD; i++) {
-        if (parsed[0] == zappy::VARIANT_LIST[0].name)
-            return zappy::VARIANT_LIST[0].packet;
+        if (parsed[0] == zappy::VARIANT_LIST[i].name)
+            return zappy::VARIANT_LIST[i].packet;
     }
-    return zappy::Packet{};
+    return zappy::Packet{zappy::Ukn{}};
 }
 
 void zappy::Client::receiveCommand(zappy::Game &game)
@@ -101,13 +101,25 @@ void zappy::Client::receiveCommand(zappy::Game &game)
                 arg.y_map_size = std::atoi(parsed2[2].c_str());
                 game.createMap(arg);
             },
-            [&](Bct &arg) { ; }, [&](Tna &arg) { ; }, [&](Pnw &arg) { ; }, [&](Ppo &arg) { ; },
-            [&](Plv &arg) { ; }, [&](Pin &arg) { ; }, [&](Pex &arg) { ; }, [&](Pbc &arg) { ; },
-            [&](Pic &arg) { ; }, [&](Pie &arg) { ; }, [&](Pkf &arg) { ; }, [&](Pdr &arg) { ; },
-            [&](Pgt &arg) { ; }, [&](Pdi &arg) { ; }, [&](Enw &arg) { ; }, [&](Ebo &arg) { ; },
-            [&](Edi &arg) { ; }, [&](Sgt &arg) { ; }, [&](Sst &arg) { ; }, [&](Seg &arg) { ; },
-            [&](Smg &arg) { ; });
+            [&](Bct &arg) {
+                arg.x_tile_coord = std::atoi(parsed2[1].c_str());
+                arg.y_tile_coord = std::atoi(parsed2[2].c_str());
+                arg.ressources[0] = std::atoi(parsed2[3].c_str());
+                arg.ressources[1] = std::atoi(parsed2[4].c_str());
+                arg.ressources[2] = std::atoi(parsed2[5].c_str());
+                arg.ressources[3] = std::atoi(parsed2[6].c_str());
+                arg.ressources[4] = std::atoi(parsed2[7].c_str());
+                arg.ressources[5] = std::atoi(parsed2[8].c_str());
+                arg.ressources[6] = std::atoi(parsed2[9].c_str());
+                game.changeTileInventory(arg);
+            },
+            [&](Tna &arg) { ; }, [&](Pnw &arg) { ; }, [&](Ppo &arg) { ; }, [&](Plv &arg) { ; },
+            [&](Pin &arg) { ; }, [&](Pex &arg) { ; }, [&](Pbc &arg) { ; }, [&](Pic &arg) { ; },
+            [&](Pie &arg) { ; }, [&](Pkf &arg) { ; }, [&](Pdr &arg) { ; }, [&](Pgt &arg) { ; },
+            [&](Pdi &arg) { ; }, [&](Enw &arg) { ; }, [&](Ebo &arg) { ; }, [&](Edi &arg) { ; },
+            [&](Ukn & /*arg*/) { return; }, [&](Sgt &arg) { ; }, [&](Sst &arg) { ; },
+            [&](Seg &arg) { ; }, [&](Smg &arg) { ; });
         std::visit(visitor, variant);
-        break;
+        // break;
     }
 }

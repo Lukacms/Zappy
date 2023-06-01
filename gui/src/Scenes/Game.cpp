@@ -5,11 +5,11 @@
 ** Game
 */
 
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/Map/Map.hh>
 #include <zappy/Player/Player.hh>
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/System/Vector2.hpp>
 #include <zappy/Scenes/Game.hh>
 
 // Constructor && Destructor
@@ -95,4 +95,9 @@ void zappy::Game::createMap(zappy::Msz &map)
 
     m_map = zappy::Map{map.x_map_size, map.y_map_size};
     m_player_manager.setMapSize(size);
+}
+
+void zappy::Game::changeTileInventory(Bct &tile)
+{
+    m_map.modifyTile(tile);
 }

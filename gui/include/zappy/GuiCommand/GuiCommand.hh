@@ -145,23 +145,25 @@ namespace zappy
             std::string servor_message{};
     };
 
+    struct Ukn {
+    };
+
     using Packet = std::variant<Msz, Bct, Tna, Pnw, Ppo, Plv, Pin, Pex, Pbc, Pic, Pie, Pkf, Pdr,
-                                Pgt, Pdi, Enw, Ebo, Edi, Sgt, Sst, Seg, Smg>;
+                                Pgt, Pdi, Enw, Ebo, Edi, Sgt, Sst, Seg, Smg, Ukn>;
 
     struct VariantBind {
             std::string name{};
             zappy::Packet packet;
     };
 
-    static std::array<VariantBind, NB_MAX_CMD> VARIANT_LIST{{
-        {"msz", Packet{Msz{}}}, {"bct", Packet{Bct{}}}, {"tna", Packet{Tna{}}},
-        {"pnw", Packet{Pnw{}}}, {"ppo", Packet{Ppo{}}}, {"plv", Packet{Plv{}}},
-        {"pin", Packet{Pin{}}}, {"pex", Packet{Pex{}}}, {"pbc", Packet{Pbc{}}},
-        {"pic", Packet{Pic{}}}, {"pie", Packet{Pie{}}}, {"pkf", Packet{Pkf{}}},
-        {"pdr", Packet{Pdr{}}}, {"pgt", Packet{Pgt{}}}, {"pdi", Packet{Pdi{}}},
-        {"enw", Packet{Enw{}}}, {"ebo", Packet{Ebo{}}}, {"edi", Packet{Edi{}}},
-        {"sgt", Packet{Sgt{}}}, {"sst", Packet{Sst{}}}, {"seg", Packet{Seg{}}},
-        {"smg", Packet{Smg{}}}
-    }};
+    static std::array<VariantBind, NB_MAX_CMD> VARIANT_LIST{
+        {{"msz", Packet{Msz{}}}, {"bct", Packet{Bct{}}}, {"tna", Packet{Tna{}}},
+         {"pnw", Packet{Pnw{}}}, {"ppo", Packet{Ppo{}}}, {"plv", Packet{Plv{}}},
+         {"pin", Packet{Pin{}}}, {"pex", Packet{Pex{}}}, {"pbc", Packet{Pbc{}}},
+         {"pic", Packet{Pic{}}}, {"pie", Packet{Pie{}}}, {"pkf", Packet{Pkf{}}},
+         {"pdr", Packet{Pdr{}}}, {"pgt", Packet{Pgt{}}}, {"pdi", Packet{Pdi{}}},
+         {"enw", Packet{Enw{}}}, {"ebo", Packet{Ebo{}}}, {"edi", Packet{Edi{}}},
+         {"sgt", Packet{Sgt{}}}, {"sst", Packet{Sst{}}}, {"seg", Packet{Seg{}}},
+         {"smg", Packet{Smg{}}}}};
 
 } // namespace zappy

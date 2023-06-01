@@ -12,10 +12,11 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Clock.hpp>
+#include <array>
 #include <cstddef>
 #include <string_view>
 #include <vector>
-#include <array>
+#include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/Map/Tile.hh>
 
 constexpr unsigned int TEXTURE_WIDTH{80};
@@ -39,6 +40,7 @@ namespace zappy
             void draw(sf::RenderWindow &window, sf::Sprite &sprite);
             [[nodiscard]] std::vector<std::vector<Tile>> getMap() const;
             [[nodiscard]] bool selectTile(sf::Event &event, sf::RenderWindow &window);
+            void modifyTile(Bct &arg);
             void animateCursor();
             Tile &getSelectedTile();
 
@@ -52,4 +54,3 @@ namespace zappy
             bool m_is_cursor_active = false;
     };
 } // namespace zappy
-
