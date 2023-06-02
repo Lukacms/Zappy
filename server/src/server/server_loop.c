@@ -12,6 +12,7 @@
 #include <zappy/server/client.h>
 #include <zappy/server/clock/utils.h>
 #include <zappy/server/infos.h>
+#include <zappy/server/summon/utils.h>
 
 // TODO implement both methods
 static void check_if_client_ready(server_t *server, size_t ind, fd_set *clients)
@@ -20,7 +21,7 @@ static void check_if_client_ready(server_t *server, size_t ind, fd_set *clients)
         if (ind == (size_t)server->server_fd)
             connect_new_client(server);
         else
-            ind++;
+            handle_summon(server, ind);
     }
 }
 

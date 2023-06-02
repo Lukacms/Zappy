@@ -29,6 +29,7 @@ SRC	=	src/launch.c	\
 		src/server/summons/add_summon.c	\
 		src/server/summons/pop_summon.c	\
 		src/server/summons/get_summon.c	\
+		src/server/summons/handle_summon.c	\
 		src/server/clock/gettickselapsed.c	\
 		src/server/clock/update_ticks_clients.c	\
 		src/server/server_loop.c	\
