@@ -7,6 +7,7 @@
 
 import socket
 from socket import AF_INET, SOCK_STREAM
+from ai.src.algorithm.Ai import Artifical_intelligence
 
 BUFFER_SIZE = 1024
 EPITECH_SUCCESS = 0
@@ -22,6 +23,7 @@ class Client():
             self.socket = socket.socket(AF_INET, SOCK_STREAM)
         else:
             self.socket = socket
+        self.ia = Artifical_intelligence
 
     def server_connexion(self):
         try:
