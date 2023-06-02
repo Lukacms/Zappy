@@ -29,7 +29,7 @@ int update_server_with_args(server_t *server, args_config_t *args)
         return FAILURE;
     server->map.size = args->world;
     if (!(server->teams =
-              malloc(sizeof(team_t *) * (array_len(args->team_names) + 1))))
+            malloc(sizeof(team_t *) * (array_len(args->team_names) + 1))))
         return FAILURE;
     for (unsigned int i = 0; args->team_names[i]; i++) {
         if (!(server->teams[i] = malloc(sizeof(team_t))))

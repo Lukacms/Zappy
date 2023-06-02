@@ -41,8 +41,8 @@ int connect_new_client(server_t *server)
     if (!server || !new_client)
         return FAILURE;
     if ((new_client->cfd = accept(server->server_fd,
-                                  (struct sockaddr *)&new_client->socket_infos,
-                                  (socklen_t *)&size_addr)) < 0)
+                        (struct sockaddr *)&new_client->socket_infos,
+                        (socklen_t *)&size_addr)) < 0)
         return set_error(STDERR_FILENO, "Accepting client", true);
     FD_SET(new_client->cfd, &server->clients_fd);
     if (!(new_client->uuid = generate_uuid()))

@@ -10,7 +10,7 @@
 #include <zappy/server/utils.h>
 
 int add_client_to_team(client_node_t *client, server_t *server,
-                       const char *team_name)
+                    const char *team_name)
 {
     team_t *team = NULL;
 
