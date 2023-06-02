@@ -28,6 +28,14 @@
 
 #define GUI_INDIC "GRAPHIC\n"
 
+#define GO_LEVEL_2 "1100000"
+#define GO_LEVEL_3 "2111000"
+#define GO_LEVEL_4 "2201020"
+#define GO_LEVEL_5 "4112010"
+#define GO_LEVEL_6 "4121300"
+#define GO_LEVEL_7 "6123010"
+#define GO_LEVEL_8 "6222221"
+
 #define ZAPPY_GUI_CONNECT "GRAPHIC"
 #define ZAPPY_MSG "msz"
 #define ZAPPY_BCT "bct"

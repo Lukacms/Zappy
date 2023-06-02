@@ -48,7 +48,7 @@ static int look_south(server_t *server, client_node_t *client)
                         client->stats.pos.y - j, client);
         }
     }
-    dprintf(client->cfd, "]\n");
+    dprintf(client->cfd, " ]\n");
     return 0;
 }
 
@@ -68,6 +68,10 @@ static int look_north(server_t *server, client_node_t *client)
 
 int look_func(server_t *server, char *args[], client_node_t *client)
 {
+    if (!args || !args[0] || args[1]) {
+        dprintf(client->cfd, "ko");
+        return 1;
+    }
     switch (client->stats.orientation) {
     case NORTH: return look_north(server, client);
     case SOUTH: return look_south(server, client);

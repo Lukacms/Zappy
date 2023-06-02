@@ -11,6 +11,10 @@ int connect_nbr_func(server_t *server, char *args[], client_node_t *client)
 {
     int result = 0;
 
+    if (!args || !args[0] || args[1] || !server) {
+        dprintf(client->cfd, "ko");
+        return 1;
+    }
     for (int i = 0; server->teams[i] != NULL; i += 1) {
         if (server->teams[i]->nb_clients != 0)
             result += 1;

@@ -30,6 +30,11 @@ int send_toall_guicli(server_t *server, char *str, ...);
 void dprint_tile(map_t map, size_t cord_x, size_t cord_y,
                         client_node_t *client);
 
+int forward_north(server_t *server, client_node_t *client);
+int forward_south(server_t *server, client_node_t *client);
+int forward_east(server_t *server, client_node_t *client);
+int forward_west(server_t *server, client_node_t *client);
+
 int gui_connect_func(server_t *server, char *args[], client_node_t *client);
 int msz_func(server_t *server, char *args[], client_node_t *client);
 int bct_func(server_t *server, char *args[], client_node_t *client);

@@ -9,6 +9,10 @@
 
 int inventory_func(server_t *server, char *args[], client_node_t *client)
 {
+    if (!args || !args[0] || args[1] || !server) {
+        dprintf(client->cfd, "ko");
+        return 1;
+    }
     dprintf(client->cfd,
             "[food %li, linemate %li, deraumere %li, sibur %li, \
             mendiane %li, phiras %li, thystame %li]",

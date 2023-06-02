@@ -7,54 +7,55 @@
 
 #include <zappy/server/infos.h>
 
-static int forward_north(server_t *server, client_node_t *client)
+int forward_north(server_t *server, client_node_t *client)
 {
     if (client->stats.pos.x > 0)
         client->stats.pos.x -= 1;
     else
         client->stats.pos.x = (server->map.size.x - 1);
-    dprintf(client->cfd, "ok\n");
     return 0;
 }
 
-static int forward_south(server_t *server, client_node_t *client)
+int forward_south(server_t *server, client_node_t *client)
 {
-    if (client->stats.pos.x < server->map.size.x)
+    if (client->stats.pos.x <  (server->map.size.x - 1))
         client->stats.pos.x += 1;
     else
         client->stats.pos.x = 0;
-    dprintf(client->cfd, "ok\n");
     return 0;
 }
 
-static int forward_east(server_t *server, client_node_t *client)
+int forward_east(server_t *server, client_node_t *client)
+{
+    if (client->stats.pos.y < (server->map.size.y - 1))
+        client->stats.pos.y += 1;
+    else
+        client->stats.pos.y = 0;
+    return 0;
+}
+
+int forward_west(server_t *server, client_node_t *client)
 {
     if (client->stats.pos.y > 0)
         client->stats.pos.y -= 1;
     else
         client->stats.pos.y = (server->map.size.y - 1);
-    dprintf(client->cfd, "ok\n");
-    return 0;
-}
-
-static int forward_west(server_t *server, client_node_t *client)
-{
-    if (client->stats.pos.y < server->map.size.y)
-        client->stats.pos.y += 1;
-    else
-        client->stats.pos.y = 0;
-    dprintf(client->cfd, "ok\n");
     return 0;
 }
 
 int forward_func(server_t *server, char *args[], client_node_t *client)
 {
+    if (!args || !args[0] || args[1]) {
+        dprintf(client->cfd, "ko");
+        return 1;
+    }
     switch (client->stats.orientation) {
-    case NORTH: return forward_north(server, client);
-    case SOUTH: return forward_south(server, client);
-    case EAST: return forward_east(server, client);
-    case WEST: return forward_west(server, client);
+    case NORTH: forward_north(server, client);
+    case SOUTH: forward_south(server, client);
+    case EAST: forward_east(server, client);
+    case WEST: forward_west(server, client);
     break;
     }
-    return 1;
+    dprintf(client->cfd, "ok\n");
+    return 0;
 }

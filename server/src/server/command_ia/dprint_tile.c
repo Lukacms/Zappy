@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <zappy/server/infos.h>
 
-static const char *RESOURCES_INVENTORY[7] = {
+static const char *RESOURCES_INVENTORY[INVENTORY_SLOTS] = {
     "food", "linemate", "deraumere", "sibur", "mendiane", "phiras", "thystame"};
 
 static size_t check_cord(size_t csize, size_t cord)
@@ -29,7 +29,7 @@ void dprint_tile(map_t map, size_t cord_x, size_t cord_y,
     size_t idx_x = check_cord(map.size.x, cord_x);
     size_t idx_y = check_cord(map.size.y, cord_y);
 
-    for (int i = 0; i <= THYSTAME; i += 1) {
+    for (int i = 0; i < INVENTORY_SLOTS; i += 1) {
         if (map.inventory[idx_x][idx_y]->units > 0)
             dprintf(client->cfd, " %s",
                     RESOURCES_INVENTORY[map.inventory[idx_x][idx_y]
