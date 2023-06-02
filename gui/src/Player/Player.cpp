@@ -17,7 +17,7 @@
 
 zappy::Player::Player(const zappy::PlayerInfo &infos)
     : m_id{infos.m_id}, m_level{infos.m_level},
-      m_orientation{infos.m_orientation}, m_team{infos.m_team}, m_position{infos.m_x, infos.m_y}
+      m_orientation{infos.m_orientation}, m_team{infos.m_team}, m_position{static_cast<int>(infos.m_x), static_cast<int>(infos.m_y)}
 {
     m_position_map.x = m_position.x * TILE_SIZE * SCALING + (TILE_SIZE * SCALING / 2);
     m_position_map.y = m_position.y * TILE_SIZE * SCALING + (TILE_SIZE * SCALING / 2);
@@ -48,16 +48,28 @@ void zappy::Player::drawPlayer(sf::RenderWindow &window, sf::Sprite &sprite, sf:
 void zappy::Player::movePlayer(int pos_x, int pos_y, Orientation orientation)
 {
     m_orientation = orientation;
+    if (m_orientation == Orientation::North) {
+        m_remain.y = -TILE_SIZE * SCALING;
+        if (pos_y == m_position.y)
+            m_remain.y = 0;
+    }
+    if (m_orientation == Orientation::East) {
+        m_remain.x = TILE_SIZE * SCALING;
+        if (pos_x == m_position.x)
+            m_remain.x = 0;
+    }
+    if (m_orientation == Orientation::South) {
+        m_remain.y = TILE_SIZE * SCALING;
+        if (pos_y == m_position.y)
+            m_remain.y = 0;
+    }
+    if (m_orientation == Orientation::West) {
+        m_remain.x = -TILE_SIZE * SCALING;
+        if (pos_x == m_position.x)
+            m_remain.x = 0;
+    }
     m_position.x = pos_x;
     m_position.y = pos_y;
-    if (m_orientation == Orientation::North)
-        m_remain.y = -TILE_SIZE * SCALING;
-    if (m_orientation == Orientation::East)
-        m_remain.x = TILE_SIZE * SCALING;
-    if (m_orientation == Orientation::South)
-        m_remain.y = TILE_SIZE * SCALING;
-    if (m_orientation == Orientation::West)
-        m_remain.x = -TILE_SIZE * SCALING;
 }
 
 void zappy::Player::animatePlayer(sf::Vector2i &size)

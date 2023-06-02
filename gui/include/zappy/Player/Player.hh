@@ -63,7 +63,7 @@ namespace zappy
             Orientation m_orientation;
             std::string m_team;
 
-            sf::Vector2f m_position;
+            sf::Vector2i m_position;
             sf::Vector2f m_position_map;
             sf::Vector2f m_remain;
             sf::IntRect m_rect;

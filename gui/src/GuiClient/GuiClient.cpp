@@ -11,6 +11,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <ostream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include <zappy/GuiClient/GuiClient.hpp>
@@ -45,20 +47,14 @@ bool zappy::Client::WelcomeSuppressor()
     return std::string{buff} == "WELCOME\n";
 }
 
-static std::vector<std::string> parser(const std::string &buff, char delim)
+static std::vector<std::string> parser(const std::string &buff)
 {
     std::vector<std::string> parsed{};
-    std::string sub_str{};
+    std::istringstream stringstream{buff};
+    std::string token;
 
-    for (size_t i{0}; i < buff.size() || buff[i] == '\0'; i++) {
-        if (buff[i] == delim) {
-            parsed.push_back(sub_str);
-            sub_str.clear();
-            i += 1;
-        }
-        sub_str.push_back(buff[i]);
-    }
-    parsed.push_back(sub_str);
+    while (std::getline(stringstream, token, ' '))
+        parsed.emplace_back(token);
     return parsed;
 }
 
@@ -78,28 +74,34 @@ void zappy::Client::receiveCommand(zappy::Game &game)
     char tmp = -1;
 
     fillRingBuffer();
+    std::memset(buff, '\0', 255);
     while ((tmp = m_ring_buffer.front()) != '\0') {
         if (m_ring_buffer.isWritable()) {
-            if (!fillRingBuffer())
+            if (!fillRingBuffer()) {
+                m_ring_buffer.clear();
                 return;
+            }
+            buff[index] = tmp;
+            index += 1;
         } else if (tmp == '\n') {
             applyCommands(game, std::string{buff});
             index = 0;
-            std::cout << buff << std::endl;
             std::memset(buff, '\0', 255);
         } else {
             buff[index] = tmp;
             index += 1;
         }
     }
+    m_ring_buffer.clear();
 }
 
 bool zappy::Client::fillRingBuffer()
 {
-    char buffer[1364] = {0}; // NOLINT
+    char buffer[1364]; // NOLINT
     std::size_t size{1364};
     std::size_t read_size{0};
 
+    std::memset(buffer, '\0', 1364);
     m_socket.receive(buffer, size, read_size);
     if (size == 0)
         return false;
@@ -112,7 +114,12 @@ void zappy::Client::applyCommands(zappy::Game &game, const std::string &str)
 {
     std::vector<std::string> parsed;
 
-    parsed = parser(str, ' ');
+    parsed = parser(str);
+    // std::cerr << "<---------------------------------------->" << std::endl;
+    // std::cerr << str << std::endl;
+    // for (auto yolo : parsed)
+    //     std::cerr << yolo << std::endl;
+
     Packet variant = get_variant(parsed);
     auto visitor = make_lambda_visitor(
         [&](Msz &arg) {

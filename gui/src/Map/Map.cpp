@@ -72,7 +72,7 @@ bool zappy::Map::selectTile(sf::Event &event, sf::RenderWindow &window)
     const sf::Vector2f point = window.mapPixelToCoords(tmp);
 
     if (event.mouseButton.button == sf::Mouse::Left) {
-        for (auto height : this->m_map) {
+        for (auto height : m_map) {
             for (auto width : height) {
                 if (width.m_box.contains(point)) {
                     m_is_cursor_active = true;

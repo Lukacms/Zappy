@@ -33,7 +33,7 @@ namespace zappy
             static const std::size_t m_capacity = 4092;
             std::size_t m_begin = 1364;
             std::size_t m_end = 1364;
-            std::array<char, m_capacity> m_array{1};
+            std::array<char, m_capacity> m_array{};
             bool m_is_write_okay = true;
     };
 } // namespace zappy

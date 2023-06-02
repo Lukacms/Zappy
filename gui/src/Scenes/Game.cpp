@@ -54,7 +54,7 @@ void zappy::Game::draw(sf::RenderWindow &window)
     }
     if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 3) {
         m_test_clock.restart();
-        m_test.movePlayer(19, 19, Orientation::North);
+        m_test.movePlayer(19, 20, Orientation::North);
         m_test_flag += 1;
     }
     if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 4) {

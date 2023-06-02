@@ -45,11 +45,11 @@ namespace zappy
             Tile &getSelectedTile();
 
         private:
-            std::vector<std::vector<Tile>> m_map;
-            Tile m_cursor;
-            Tile m_selected_tile;
-            std::array<sf::IntRect, 2> m_cursor_rect;
-            sf::Clock m_cursor_clock;
+            std::vector<std::vector<Tile>> m_map{};
+            Tile m_cursor{};
+            Tile m_selected_tile{};
+            std::array<sf::IntRect, 2> m_cursor_rect{};
+            sf::Clock m_cursor_clock{};
             std::size_t m_cursor_index = 0;
             bool m_is_cursor_active = false;
     };

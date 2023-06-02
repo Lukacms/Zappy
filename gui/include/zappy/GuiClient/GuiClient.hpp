@@ -31,7 +31,6 @@ namespace zappy
             bool WelcomeSuppressor();
 
         private:
-            char m_buff[30000]{0};
             zappy::Packet m_packet{};
             bool fillRingBuffer();
             void applyCommands(zappy::Game &game, const std::string &str);
