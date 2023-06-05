@@ -9,10 +9,13 @@
 
 #define MAX_WAITING_SUMMONS 10
 #define BUFFER_SIZE 4096
+#define SEPARATOR_CMD " \t\r\n"
 
-#define INVALID_ACTION "ko"
-#define UNKNOWN_COMMAND "ko"
+#define INVALID_ACTION "ko\n"
+#define UNKNOWN_COMMAND "ko\n"
+
 #define GUI_INDIC "GRAPHIC\n"
+#define GUI_UNKNOWN "suc\n"
 
 #define GO_LEVEL_2 "1100000"
 #define GO_LEVEL_3 "2111000"

@@ -14,7 +14,6 @@
 #include <zappy/server/infos.h>
 #include <zappy/server/summon/utils.h>
 
-// TODO implement both methods
 static void check_if_client_ready(server_t *server, size_t ind, fd_set *clients)
 {
     if (FD_ISSET(ind, clients)) {

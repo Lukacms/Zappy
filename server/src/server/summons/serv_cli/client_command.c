@@ -8,7 +8,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <zappy/server.h>
 #include <zappy/server/infos.h>
+#include <zappy/server/summon/infos.h>
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
@@ -35,23 +37,23 @@ static const summons_funptr_t SUMMON[] = {
 static int parse_command(char **summon, server_t *server, client_node_t *client)
 {
     if (!server || !summon || !(*summon))
-        return 1;
+        return FAILURE;
     for (int i = 0; SUMMON[i].handler; i += 1) {
         if (strcmp(SUMMON[i].summon, summon[0]) == 0 &&
             SUMMON[i].type == client->state)
             return SUMMON[i].handler(server, summon, client);
     }
-    return 1;
+    return FAILURE;
 }
 
 static void error_command(char **tab, server_t *server, client_node_t *client)
 {
     if (tab == NULL || parse_command(tab, server, client) != 0) {
         if (client->state == GUI) {
-            dprintf(client->cfd, "suc\n");
+            dprintf(client->cfd, GUI_UNKNOWN);
             return;
         }
-        dprintf(client->cfd, "ko\n");
+        dprintf(client->cfd, UNKNOWN_COMMAND);
     }
 }
 
@@ -62,12 +64,12 @@ void parse_event_client(server_t *server, const char *line,
 
     if (!server || !line || !client)
         return;
-    if (!(tab = str_to_array(line, " "))) {
+    if (!(tab = str_to_array(line, SEPARATOR_CMD))) {
         if (client->state == GUI) {
-            dprintf(client->cfd, "suc\n");
+            dprintf(client->cfd, GUI_UNKNOWN);
             return;
         }
-        dprintf(client->cfd, "ko\n");
+        dprintf(client->cfd, UNKNOWN_COMMAND);
         return;
     }
     error_command(tab, server, client);
