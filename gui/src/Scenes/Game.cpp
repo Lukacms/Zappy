@@ -118,7 +118,7 @@ void zappy::Game::addPlayer(Pnw &new_player)
         converter.m_orientation = zappy::Orientation::South;
     if (new_player.orientation == 4)
         converter.m_orientation = zappy::Orientation::West;
-    m_player_manager.addPlayer(converter);
+    //    m_player_manager.addPlayer(converter);
 }
 
 void zappy::Game::movePlayer(Ppo &player)
