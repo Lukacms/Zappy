@@ -25,12 +25,12 @@ int bct_func(server_t *server, char *args[], client_node_t *client)
         (pos_y == 0 && (strlen(args[2]) != 1 || args[2][0] != '0')))
         return FAILURE;
     dprintf(client->cfd, "bct %i %i %li %li %li %li %li %li %li\n", pos_x,
-            pos_y, server->map.inventory[pos_x][pos_y][FOOD].units,
-            server->map.inventory[pos_x][pos_y][LINEMATE].units,
-            server->map.inventory[pos_x][pos_y][DERAUMERE].units,
-            server->map.inventory[pos_x][pos_y][SIBUR].units,
-            server->map.inventory[pos_x][pos_y][MENDIANE].units,
-            server->map.inventory[pos_x][pos_y][PHIRAS].units,
-            server->map.inventory[pos_x][pos_y][THYSTAME].units);
+            pos_y, server->map.tiles[pos_x][pos_y].slots[FOOD].units,
+            server->map.tiles[pos_x][pos_y].slots[LINEMATE].units,
+            server->map.tiles[pos_x][pos_y].slots[DERAUMERE].units,
+            server->map.tiles[pos_x][pos_y].slots[SIBUR].units,
+            server->map.tiles[pos_x][pos_y].slots[MENDIANE].units,
+            server->map.tiles[pos_x][pos_y].slots[PHIRAS].units,
+            server->map.tiles[pos_x][pos_y].slots[THYSTAME].units);
     return SUCCESS;
 }

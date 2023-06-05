@@ -21,7 +21,8 @@ int set_func(server_t *server, char *args[], client_node_t *client)
     for (int i = 0; i < INVENTORY_SLOTS; i += 1) {
         if (client->stats.inventory[i].units != 0 &&
             strcmp(RESOURCES_INVENTORY[i], args[1]) == 0) {
-            server->map.inventory[client->stats.pos.x][client->stats.pos.y][i]
+            server->map.tiles[client->stats.pos.x][client->stats.pos.y]
+                .slots[i]
                 .units += client->stats.inventory[i].units;
             client->stats.inventory[i].units = 0;
             send_toall_guicli(server, "pdr %i %i\n", client->uuid,

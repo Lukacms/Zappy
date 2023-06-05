@@ -26,8 +26,9 @@ void dprint_tile(map_t map, size_t cord_x, size_t cord_y, client_node_t *client)
     if (!client)
         return;
     for (int i = 0; i < INVENTORY_SLOTS; i += 1) {
-        if (map.inventory[idx_x][idx_y]->units > 0)
-            dprintf(client->cfd, " %s",
-                    RESOURCES_INVENTORY[map.inventory[idx_x][idx_y]->resource]);
+        if (map.tiles[idx_x][idx_y].slots[i].units > 0)
+            dprintf(
+                client->cfd, " %s",
+                RESOURCES_INVENTORY[map.tiles[idx_x][idx_y].slots[i].resource]);
     }
 }

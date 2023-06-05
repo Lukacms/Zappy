@@ -7,24 +7,25 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <zappy/server/summon/infos.h>
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
 int take_func(server_t *server, char *args[], client_node_t *client)
 {
-    if (!args || !args[0] || !args[1] || args[2]) {
-        dprintf(client->cfd, "ko");
-        return 1;
-    }
+    if (!args || array_len(args) != 2)
+        return set_error(client->cfd, INVALID_ACTION, false);
     for (int i = 0; i < INVENTORY_SLOTS; i += 1) {
-        if (server->map.inventory[client->stats.pos.x][client->stats.pos.y][i]
+        if (server->map.tiles[client->stats.pos.x][client->stats.pos.y]
+                    .slots[i]
                     .units != 0 &&
             strcmp(RESOURCES_INVENTORY[i], args[1]) == 0) {
             client->stats.inventory[i].units +=
-                server->map
-                    .inventory[client->stats.pos.x][client->stats.pos.y][i]
+                server->map.tiles[client->stats.pos.x][client->stats.pos.y]
+                    .slots[i]
                     .units;
-            server->map.inventory[client->stats.pos.x][client->stats.pos.y][i]
+            server->map.tiles[client->stats.pos.x][client->stats.pos.y]
+                .slots[i]
                 .units = 0;
             send_toall_guicli(server, "pgt %i %i\n", client->uuid,
                               client->stats.inventory[i].resource);

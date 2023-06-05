@@ -93,6 +93,11 @@ typedef struct clients_s {
     size_t length;
 } clients_t;
 
+typedef struct egg_s {
+    int nb;
+    char *team_uuid;
+} egg_t;
+
 typedef struct team_s {
     char *uuid;
     char *team_name;
@@ -101,12 +106,18 @@ typedef struct team_s {
     size_t spots_free;
 } team_t;
 
-// TODO need to add other elements to the map to complete it
+typedef struct tile_s {
+    inventory_t slots[INVENTORY_SLOTS];
+    char **players_uuid;
+    int last_updated;
+    egg_t **eggs;
+    bool end;
+} tile_t;
+
 typedef struct map_s {
     vector2i_t size;
-    inventory_t **inventory[INVENTORY_SLOTS];
-    // tile_t **tiles;
-    // NOTE implement this structure, and size is determined by size element
+    tile_t **tiles;
+    int last_egg_id;
 } map_t;
 
 typedef struct server_s {
