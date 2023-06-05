@@ -14,6 +14,7 @@ static int handle_client_summon(const char *cmd, client_node_t *client,
 {
     if (!cmd)
         return SUCCESS;
+    parse_event_client(server, cmd, client);
     return SUCCESS;
 }
 

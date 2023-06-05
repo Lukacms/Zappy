@@ -31,8 +31,8 @@ const char *DEFAULT_TEAMS[] = {"Team1", "Team2", "Team3", "Team3", NULL};
 #define ERROR_TEAM_NAME "Team names must be unique.\n"
 
 typedef struct vector2i_s {
-    int x;
-    int y;
+    size_t x;
+    size_t y;
 } vector2i_t;
 
 /* store arguments information */

@@ -24,7 +24,10 @@
 
 #define INVENTORY_SLOTS 7
 
-#define GUI_INDIC "GRAPHIC\n"
+static const char __attribute__((unused)) *
+    RESOURCES_INVENTORY[INVENTORY_SLOTS] = {
+    "food", "linemate", "deraumere", "sibur", "mendiane", "phiras", "thystame",
+};
 
 typedef enum resource_s {
     FOOD,
@@ -40,6 +43,13 @@ typedef enum action_s {
     NOTHING,
     ACTION,
 } action_t;
+
+typedef enum orientation_s {
+    NORTH,
+    SOUTH,
+    EAST,
+    WEST,
+} orientation_t;
 
 typedef enum player_s {
     NONE,
@@ -61,6 +71,7 @@ typedef struct stats_s {
     size_t level;
     vector2i_t pos;
     size_t vision;
+    orientation_t orientation;
     inventory_t inventory[INVENTORY_SLOTS];
 } stats_t;
 
@@ -93,6 +104,7 @@ typedef struct team_s {
 // TODO need to add other elements to the map to complete it
 typedef struct map_s {
     vector2i_t size;
+    inventory_t **inventory[INVENTORY_SLOTS];
     // tile_t **tiles;
     // NOTE implement this structure, and size is determined by size element
 } map_t;
@@ -100,7 +112,6 @@ typedef struct map_s {
 typedef struct server_s {
     bool running;
     ssize_t server_fd;
-    struct protoent *proto;
     struct sockaddr_in socket_infos;
     socklen_t sock_size;
     team_t **teams;
@@ -109,3 +120,11 @@ typedef struct server_s {
     map_t map;
     zappy_clock_t clock;
 } server_t;
+
+typedef int (*cmd_handler_t)(server_t *, char *[], client_node_t *);
+
+typedef struct summons_funptr_s {
+    char *summon;
+    cmd_handler_t handler;
+    player_t type;
+} summons_funptr_t;

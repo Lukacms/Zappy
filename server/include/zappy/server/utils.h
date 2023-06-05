@@ -8,8 +8,7 @@
 #pragma once
 
 #include <stdbool.h>
-#include <stdio.h>
-#include <sys/types.h>
+#include <zappy/server/infos.h>
 
 #define QUOTATION "\""
 
@@ -20,6 +19,6 @@ char *generate_uuid(void);
 int print_help(int ret_value);
 int set_error(int fileno, char *str, bool perr);
 bool strisnum(const char *str);
-char *strndup_quotes(char *src, size_t n);
-char **str_to_array(char *src, char *delim);
+char *strndup_quotes(const char *src, size_t n);
+char **str_to_array(const char *src, char *delim);
 char **realloc_array(char **ptr, u_int y, u_int x);
