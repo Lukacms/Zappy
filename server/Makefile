@@ -26,6 +26,7 @@ SRC	=	src/launch.c	\
 		src/load/parse_args.c	\
 		src/load/update_server_with_args.c	\
 		src/load/create_server.c	\
+		src/map/utils_map.c	\
 		src/map/update_map.c	\
 		src/map/generate_map.c	\
 		src/server/summons/command_ia/dprint_tile.c	\

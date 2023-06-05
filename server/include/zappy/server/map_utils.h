@@ -17,5 +17,14 @@
 #define DENSITY_PHIRAS 0.08
 #define DENSITY_THYSTAME 0.05
 
+#define UPDATE_TICKS 20
+
+static const double DENSITY_INVENTORY[INVENTORY_SLOTS] = {
+    DENSITY_FOOD,     DENSITY_LINEMATE, DENSITY_DERAUMERE, DENSITY_SIBUR,
+    DENSITY_MENDIANE, DENSITY_PHIRAS,   DENSITY_THYSTAME,
+};
+
 int generate_map(server_t *server);
 int update_map(server_t *server);
+bool has_stock_left(const int *stock);
+int stock(vector2i_t size, double density, int *stock_left);
