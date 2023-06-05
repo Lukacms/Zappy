@@ -10,12 +10,12 @@
 #include "zappy/GuiCommand/GuiCommand.hh"
 #include "zappy/Player/Player.hh"
 #include "zappy/Player/PlayerManager.hh"
-#include <string_view>
-#include <zappy/Camera.hh>
-#include <zappy/Map/Map.hh>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
+#include <string_view>
+#include <zappy/Camera.hh>
 #include <zappy/HUD/HUD.hh>
+#include <zappy/Map/Map.hh>
 #include <zappy/Scenes/AScene.hh>
 
 constexpr std::string_view GAME_TEXTURE{"./gui/assets/sprites/Game_texture.png"};
@@ -43,6 +43,25 @@ namespace zappy
             void movePlayer(Ppo &player);
             void changePlayerInventory(Pin &player);
             void changePlayerLevel(Plv &player);
+            void explusePlayer(Pex &player);
+            void broadcast(Pbc &broadcast);
+            void startIncantation(Pic &player_incantation);
+            void endIncantation(Pie &player_incantation);
+            void eggGoingLayed(Pkf &player_layer);
+            void ressourceDropping(Pdr &ressourses);
+            void ressourceCollecting(Pgt &ressourses);
+            void playerDeath(Pdi &player);
+
+            void eggLayed(Enw &egg_infos);
+            void playerEggConnect(Ebo &player_infos);
+            void eggDeath(Edi &egg_infos);
+
+            void getTimeUnit(Sgt &time_unit);
+            void getTimeUnitModifier(Sst &time_unit_modifier);
+
+            void winTeam(Seg &winner);
+
+            void servorMsg(Smg &message);
 
         private:
             zappy::HUD m_hud;

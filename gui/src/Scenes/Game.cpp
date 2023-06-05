@@ -101,3 +101,26 @@ void zappy::Game::changeTileInventory(Bct &tile)
 {
     m_map.modifyTile(tile);
 }
+
+void zappy::Game::addPlayer(Pnw &new_player)
+{
+    PlayerInfo converter{};
+    converter.m_x = new_player.x_tile_coord;
+    converter.m_y = new_player.y_tile_coord;
+    converter.m_id = new_player.player_nb;
+    converter.m_team = new_player.team_name;
+    converter.m_level = new_player.incantation_level;
+    if (new_player.orientation == 1)
+        converter.m_orientation = zappy::Orientation::North;
+    if (new_player.orientation == 2)
+        converter.m_orientation = zappy::Orientation::East;
+    if (new_player.orientation == 3)
+        converter.m_orientation = zappy::Orientation::South;
+    if (new_player.orientation == 4)
+        converter.m_orientation = zappy::Orientation::West;
+    m_player_manager.addPlayer(converter);
+}
+
+void zappy::Game::movePlayer(Ppo &player)
+{
+}

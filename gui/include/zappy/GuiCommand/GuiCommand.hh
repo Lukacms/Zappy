@@ -44,7 +44,7 @@ namespace zappy
     };
 
     struct Tna {
-            std::string team_name{};
+            std::vector<std::string> team_name{};
     };
 
     struct Pnw {

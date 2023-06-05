@@ -113,13 +113,7 @@ bool zappy::Client::fillRingBuffer()
 void zappy::Client::applyCommands(zappy::Game &game, const std::string &str)
 {
     std::vector<std::string> parsed;
-
     parsed = parser(str);
-    // std::cerr << "<---------------------------------------->" << std::endl;
-    // std::cerr << str << std::endl;
-    // for (auto yolo : parsed)
-    //     std::cerr << yolo << std::endl;
-
     Packet variant = get_variant(parsed);
     auto visitor = make_lambda_visitor(
         [&](Msz &arg) {
@@ -139,11 +133,116 @@ void zappy::Client::applyCommands(zappy::Game &game, const std::string &str)
             arg.ressources[6] = std::atoi(parsed[9].c_str());
             game.changeTileInventory(arg);
         },
-        [&](Tna &arg) { ; }, [&](Pnw &arg) { ; }, [&](Ppo &arg) { ; }, [&](Plv &arg) { ; },
-        [&](Pin &arg) { ; }, [&](Pex &arg) { ; }, [&](Pbc &arg) { ; }, [&](Pic &arg) { ; },
-        [&](Pie &arg) { ; }, [&](Pkf &arg) { ; }, [&](Pdr &arg) { ; }, [&](Pgt &arg) { ; },
-        [&](Pdi &arg) { ; }, [&](Enw &arg) { ; }, [&](Ebo &arg) { ; }, [&](Edi &arg) { ; },
-        [&](Ukn & /*arg*/) { return; }, [&](Sgt &arg) { ; }, [&](Sst &arg) { ; },
-        [&](Seg &arg) { ; }, [&](Smg &arg) { ; });
+        [&](Tna &arg) {
+            for (size_t i{1}; i < parsed.size(); i++)
+                arg.team_name.push_back(parsed[i]);
+        },
+        [&](Pnw &arg) {
+            arg.player_nb = std::atoi(parsed[1].c_str());
+            arg.x_tile_coord = std::atoi(parsed[2].c_str());
+            arg.y_tile_coord = std::atoi(parsed[3].c_str());
+            arg.orientation = static_cast<short>(std::atoi(parsed[4].c_str()));
+            arg.incantation_level = static_cast<short>(std::atoi(parsed[5].c_str()));
+            arg.team_name = parsed[6];
+            //  game.addPlayer(arg);
+        },
+        [&](Ppo &arg) {
+            arg.player_nb = std::atoi(parsed[1].c_str());
+            arg.x_tile_coord = std::atoi(parsed[2].c_str());
+            arg.y_tile_coord = std::atoi(parsed[3].c_str());
+            arg.orientation = static_cast<short>(std::atoi(parsed[4].c_str()));
+            //   game.movePlayer(arg);
+        },
+        [&](Plv &arg) {
+            arg.player_nb = std::atoi(parsed[1].c_str());
+            arg.incantation_level = static_cast<short>(std::atoi(parsed[5].c_str()));
+            //   game.changePlayerLevel(arg);
+        },
+        [&](Pin &arg) {
+            arg.player_nb = std::atoi(parsed[1].c_str());
+            arg.x_tile_coord = std::atoi(parsed[2].c_str());
+            arg.y_tile_coord = std::atoi(parsed[3].c_str());
+            arg.ressources[0] = std::atoi(parsed[4].c_str());
+            arg.ressources[1] = std::atoi(parsed[5].c_str());
+            arg.ressources[2] = std::atoi(parsed[6].c_str());
+            arg.ressources[3] = std::atoi(parsed[7].c_str());
+            arg.ressources[4] = std::atoi(parsed[8].c_str());
+            arg.ressources[5] = std::atoi(parsed[9].c_str());
+            arg.ressources[6] = std::atoi(parsed[10].c_str());
+            // game.changePlayerInventory(arg);
+        },
+        [&](Pex &arg) {
+            arg.player_nb = std::atoi(parsed[1].c_str());
+            // game.expulsePlayer(arg);
+        },
+        [&](Pbc &arg) {
+            arg.player_nb = std::atoi(parsed[1].c_str());
+            arg.message = parsed[2];
+            // game.broadcast(arg);
+        },
+        [&](Pic &arg) {
+            arg.x_tile_coord = std::atoi(parsed[1].c_str());
+            arg.y_tile_coord = std::atoi(parsed[2].c_str());
+            arg.incantation_level = static_cast<short>(std::atoi(parsed[3].c_str()));
+            for (size_t i{4}; i < parsed.size(); i++)
+                arg.player_list.push_back(std::atoi(parsed[i].c_str()));
+            // game.startIncantation(arg);
+        },
+        [&](Pie &arg) {
+            arg.x_tile_coord = std::atoi(parsed[1].c_str());
+            arg.y_tile_coord = std::atoi(parsed[2].c_str());
+            arg.result = std::atoi(parsed[3].c_str());
+            // game.endIncantation(arg);
+        },
+        [&](Pkf &arg) {
+            arg.player_nb = std::atoi(parsed[1].c_str());
+            // game.eggGoingLayed(arg);
+        },
+        [&](Pdr &arg) {
+            arg.player_nb = std::atoi(parsed[1].c_str());
+            arg.ressource_nb = std::atoi(parsed[2].c_str());
+            // game.ressourceDropping(arg);
+        },
+        [&](Pgt &arg) {
+            arg.player_nb = std::atoi(parsed[1].c_str());
+            arg.ressource_nb = std::atoi(parsed[2].c_str());
+            // game.ressourceCollecting(arg);
+        },
+        [&](Pdi &arg) {
+            arg.player_nb = std::atoi(parsed[1].c_str());
+            // game.playerDeath(arg);
+        },
+        [&](Enw &arg) {
+            arg.egg_number = std::atoi(parsed[1].c_str());
+            arg.player_nb = std::atoi(parsed[2].c_str());
+            arg.x_tile_coord = std::atoi(parsed[3].c_str());
+            arg.y_tile_coord = std::atoi(parsed[4].c_str());
+            // game.eggLayed(arg);
+        },
+        [&](Ebo &arg) {
+            arg.egg_number = std::atoi(parsed[1].c_str());
+            // game.playerEggConnect(arg);
+        },
+        [&](Edi &arg) {
+            arg.egg_number = std::atoi(parsed[1].c_str());
+            // game.eggDeath(arg);
+        },
+        [&](Ukn & /*arg*/) { return; },
+        [&](Sgt &arg) {
+            arg.time_unit = std::atoi(parsed[1].c_str());
+            // game.getTimeUnit(arg);
+        },
+        [&](Sst &arg) {
+            arg.time_unit_modificator = std::atof(parsed[1].c_str());
+            // game.getTimeUnitModifier(arg);
+        },
+        [&](Seg &arg) {
+            arg.team_name = parsed[1];
+            // game.winTeam(arg);
+        },
+        [&](Smg &arg) {
+            arg.servor_message = parsed[1];
+            // game.servorMsg(arg);
+        });
     std::visit(visitor, variant);
 }
