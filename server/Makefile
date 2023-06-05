@@ -26,6 +26,8 @@ SRC	=	src/launch.c	\
 		src/load/parse_args.c	\
 		src/load/update_server_with_args.c	\
 		src/load/create_server.c	\
+		src/map/update_map.c	\
+		src/map/generate_map.c	\
 		src/server/summons/command_ia/dprint_tile.c	\
 		src/server/summons/command_ia/inventory_func.c	\
 		src/server/summons/command_ia/look_func.c	\
@@ -87,7 +89,7 @@ override CFLAGS	=	-W -Wall -Wextra -Wpedantic
 
 override CPPFLAGS	=	-I./include/
 
-override LDLIBS	=	-luuid
+override LDLIBS	=	-luuid -lm
 
 all:	../$(NAME)
 .PHONY:	all

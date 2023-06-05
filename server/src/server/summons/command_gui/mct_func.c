@@ -13,8 +13,8 @@ int mct_func(server_t *server, char __attribute__((unused)) * args[],
 {
     if (!server || !client)
         return FAILURE;
-    for (int pos_x = 0; server->map.tiles[pos_x] != NULL; pos_x += 1) {
-        for (int pos_y = 0; !server->map.tiles[pos_x][pos_y].end; pos_y += 1) {
+    for (u_int pos_x = 0; server->map.tiles[pos_x] != NULL; pos_x += 1) {
+        for (u_int pos_y = 0; pos_y < server->map.size.y; pos_y += 1) {
             dprintf(client->cfd, "bct %i %i %li %li %li %li %li %li %li\n",
                     pos_x, pos_y,
                     server->map.tiles[pos_x][pos_y].slots[FOOD].units,

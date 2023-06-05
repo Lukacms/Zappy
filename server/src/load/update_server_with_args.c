@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <zappy/server.h>
+#include <zappy/server/map_utils.h>
 #include <zappy/server/utils.h>
 
 static int fill_team_infos(team_t *team, args_config_t *args, u_int ind)
@@ -28,8 +29,9 @@ int update_server_with_args(server_t *server, args_config_t *args)
     if (!server || !args || !args->team_names)
         return FAILURE;
     server->map.size = args->world;
-    if (!(server->teams =
-            malloc(sizeof(team_t *) * (array_len(args->team_names) + 1))))
+    server->teams =
+        malloc(sizeof(team_t *) * (array_len(args->team_names) + 1));
+    if (!server->teams)
         return FAILURE;
     for (unsigned int i = 0; args->team_names[i]; i++) {
         if (!(server->teams[i] = malloc(sizeof(team_t))))
@@ -37,5 +39,5 @@ int update_server_with_args(server_t *server, args_config_t *args)
         if (fill_team_infos(server->teams[i], args, i) != SUCCESS)
             return FAILURE;
     }
-    return SUCCESS;
+    return generate_map(server);
 }
