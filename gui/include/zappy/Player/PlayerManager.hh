@@ -7,19 +7,22 @@
 
 #pragma once
 
-#include "zappy/GuiCommand/GuiCommand.hh"
+#include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <string_view>
 #include <vector>
+#include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/Player/Player.hh>
+
+constexpr std::string_view DEATH_SOUND{"./gui/assets/sound/death.ogg"};
 
 namespace zappy
 {
-
     class PlayerManager
     {
         public:
-            PlayerManager() = default;
+            PlayerManager();
             PlayerManager(PlayerManager const &to_copy) = default;
             PlayerManager(PlayerManager &&to_move) = default;
             ~PlayerManager() = default;
@@ -36,11 +39,14 @@ namespace zappy
             void eventManager(sf::RenderWindow &window, sf::Event &event);
             void setMapSize(sf::Vector2i &size);
             void explusePlayer(Pex &expulsed_player);
+            void playerDeath(Pdi &dead_player);
+            void deletePlayers();
 
         private:
             void depthManager();
 
             std::vector<Player> m_players;
             sf::Vector2i m_size;
+            sf::SoundBuffer m_death;
     };
 } // namespace zappy

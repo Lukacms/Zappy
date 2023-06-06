@@ -34,50 +34,56 @@ void zappy::Game::draw(sf::RenderWindow &window)
 {
     sf::Vector2i test{20, 20};
     m_sprite.setTexture(m_texture);
-    this->m_hud.setFocusedTile(this->m_map.getSelectedTile());
-    this->m_map.draw(window, m_sprite);
-    m_test.drawPlayer(window, m_sprite, test);
-    if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 0) {
-        m_test_clock.restart();
-        m_test.movePlayer(20, 0, Orientation::West);
-        m_test_flag += 1;
+    m_hud.setFocusedTile(this->m_map.getSelectedTile());
+    m_map.draw(window, m_sprite);
+    if (!m_test.canDeletePlayer()) {
+        m_test.drawPlayer(window, m_sprite, test);
+        if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 0) {
+            m_test_clock.restart();
+            m_test.movePlayer(20, 0, Orientation::West);
+            m_test_flag += 1;
+        }
+        if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 1) {
+            m_test_clock.restart();
+            m_test.movePlayer(19, 0, Orientation::West);
+            m_test_flag += 1;
+        }
+        if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 2) {
+            m_test_clock.restart();
+            m_test.movePlayer(19, 20, Orientation::North);
+            m_test_flag += 1;
+        }
+        if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 3) {
+            m_test_clock.restart();
+            m_test.movePlayer(19, 20, Orientation::North);
+            m_test_flag += 1;
+        }
+        if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 4) {
+            m_test_clock.restart();
+            m_test.movePlayer(19, 20, Orientation::South);
+            m_test_flag += 1;
+        }
+        if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 5) {
+            m_test_clock.restart();
+            m_test.movePlayer(19, 0, Orientation::South);
+            m_test_flag += 1;
+        }
+        if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 6) {
+            m_test_clock.restart();
+            m_test.movePlayer(20, 0, Orientation::East);
+            m_test_flag += 1;
+        }
+        if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 7) {
+            m_test_clock.restart();
+            m_test.movePlayer(0, 0, Orientation::East);
+            m_test_flag += 1;
+        }
+        if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 8) {
+            m_test_clock.restart();
+            m_test.triggerDeath();
+        }
     }
-    if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 1) {
-        m_test_clock.restart();
-        m_test.movePlayer(19, 0, Orientation::West);
-        m_test_flag += 1;
-    }
-    if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 2) {
-        m_test_clock.restart();
-        m_test.movePlayer(19, 20, Orientation::North);
-        m_test_flag += 1;
-    }
-    if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 3) {
-        m_test_clock.restart();
-        m_test.movePlayer(19, 20, Orientation::North);
-        m_test_flag += 1;
-    }
-    if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 4) {
-        m_test_clock.restart();
-        m_test.movePlayer(19, 20, Orientation::South);
-        m_test_flag += 1;
-    }
-    if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 5) {
-        m_test_clock.restart();
-        m_test.movePlayer(19, 0, Orientation::South);
-        m_test_flag += 1;
-    }
-    if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 6) {
-        m_test_clock.restart();
-        m_test.movePlayer(20, 0, Orientation::East);
-        m_test_flag += 1;
-    }
-    if (m_test_clock.getElapsedTime().asSeconds() > 2 && m_test_flag == 7) {
-        m_test_clock.restart();
-        m_test.movePlayer(0, 0, Orientation::East);
-        m_test_flag = 0;
-    }
-    this->m_hud.draw(window, m_sprite);
+    m_hud.draw(window, m_sprite);
 }
 
 void zappy::Game::manageEvent(sf::RenderWindow &window, sf::Event &event)

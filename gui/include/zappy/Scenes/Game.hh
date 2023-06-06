@@ -10,6 +10,7 @@
 #include "zappy/GuiCommand/GuiCommand.hh"
 #include "zappy/Player/Player.hh"
 #include "zappy/Player/PlayerManager.hh"
+#include <SFML/Audio/Sound.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 #include <string_view>
@@ -48,8 +49,8 @@ namespace zappy
             void startIncantation(Pic &player_incantation);
             void endIncantation(Pie &player_incantation);
             void eggGoingLayed(Pkf &player_layer);
-            void ressourceDropping(Pdr &ressourses);
-            void ressourceCollecting(Pgt &ressourses);
+            void ressourceDropping(Pdr &ressources);
+            void ressourceCollecting(Pgt &ressources);
             void playerDeath(Pdi &player);
 
             void eggLayed(Enw &egg_infos);
@@ -69,7 +70,9 @@ namespace zappy
             zappy::Camera m_camera;
             zappy::PlayerManager m_player_manager;
             zappy::Player m_test;
+
             sf::Clock m_test_clock;
+            sf::Sound m_sound;
             int m_test_flag = 0;
     };
 } // namespace zappy

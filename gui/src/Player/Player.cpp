@@ -5,8 +5,8 @@
 ** Player
 */
 
-#include "Inventory.hh"
-#include "zappy/Map/Tile.hh"
+#include <Inventory.hh>
+#include <zappy/Map/Tile.hh>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
@@ -17,8 +17,8 @@
 // Constructor && Destructor
 
 zappy::Player::Player(const zappy::PlayerInfo &infos)
-    : m_id{infos.m_id}, m_level{infos.m_level},
-      m_orientation{infos.m_orientation}, m_team{infos.m_team}, m_position{static_cast<int>(infos.m_x), static_cast<int>(infos.m_y)}
+    : m_id{infos.m_id}, m_level{infos.m_level}, m_orientation{infos.m_orientation},
+      m_team{infos.m_team}, m_position{static_cast<int>(infos.m_x), static_cast<int>(infos.m_y)}
 {
     m_position_map.x = m_position.x * TILE_SIZE * SCALING + (TILE_SIZE * SCALING / 2);
     m_position_map.y = m_position.y * TILE_SIZE * SCALING + (TILE_SIZE * SCALING / 2);
@@ -42,8 +42,10 @@ void zappy::Player::drawPlayer(sf::RenderWindow &window, sf::Sprite &sprite, sf:
     sprite.setOrigin({16, 26});
     sprite.setPosition(m_position_map);
     sprite.setTextureRect(m_rect);
+    sprite.setColor(m_color);
     window.draw(sprite);
     sprite.setOrigin({0, 0});
+    sprite.setColor(sf::Color{255, 255, 255});
 }
 
 void zappy::Player::movePlayer(int pos_x, int pos_y, Orientation orientation)
@@ -75,6 +77,10 @@ void zappy::Player::movePlayer(int pos_x, int pos_y, Orientation orientation)
 
 void zappy::Player::animatePlayer(sf::Vector2i &size)
 {
+    if (m_is_dead) {
+        animateDeath();
+        return;
+    }
     if (m_orientation == Orientation::North)
         animateNorth(size);
     if (m_orientation == Orientation::East)
@@ -175,4 +181,32 @@ void zappy::Player::setPlayerInventory(Inventory &inventory)
 zappy::Inventory zappy::Player::getInventory() const
 {
     return m_inventory;
+}
+
+void zappy::Player::animateDeath()
+{
+    if (m_rect.top != 306) {
+        m_rect.top = 306;
+        m_rect.left = 0;
+    }
+    if (m_clock.getElapsedTime().asSeconds() > 0.1F && m_rect.left < 128) {
+        m_rect.left += m_rect.width;
+        m_clock.restart();
+    }
+    if (m_rect.left >= 128 && m_clock.getElapsedTime().asSeconds() > 0.02F) {
+        m_color.a -= 1;
+        if (m_color.a <= 0)
+            m_delete = true;
+        m_clock.restart();
+    }
+}
+
+void zappy::Player::triggerDeath()
+{
+    m_is_dead = true;
+}
+
+bool zappy::Player::canDeletePlayer() const
+{
+    return m_delete;
 }

@@ -6,6 +6,7 @@
 */
 
 #include <Inventory.hh>
+#include <SFML/Audio/Sound.hpp>
 #include <algorithm>
 #include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/Player/Player.hh>
@@ -13,12 +14,18 @@
 
 // Constructor && Destructor
 
+zappy::PlayerManager::PlayerManager()
+{
+    m_death.loadFromFile(DEATH_SOUND.data());  
+}
+
 // Methods
 
 void zappy::PlayerManager::animatePlayers()
 {
     for (auto &player : m_players)
         player.animatePlayer(m_size);
+    deletePlayers();
 }
 
 void zappy::PlayerManager::depthManager()
@@ -95,6 +102,27 @@ void zappy::PlayerManager::explusePlayer(Pex &expulsed_player)
 {
     for (auto iterator = m_players.begin(); iterator != m_players.end(); iterator ++) {
         if (iterator->getId() == expulsed_player.player_nb)
+            m_players.erase(iterator);
+    }
+}
+
+void zappy::PlayerManager::playerDeath(Pdi &dead_player)
+{
+    sf::Sound sound{m_death};
+
+    for (auto player : m_players) {
+        if (player.getId() == dead_player.player_nb) {
+            player.triggerDeath();
+            sound.play();
+            break;
+        }
+    }
+}
+
+void zappy::PlayerManager::deletePlayers()
+{
+    for (auto iterator = m_players.begin(); iterator != m_players.end(); iterator ++) {
+        if (iterator->canDeletePlayer())
             m_players.erase(iterator);
     }
 }
