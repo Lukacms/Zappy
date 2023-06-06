@@ -32,6 +32,7 @@ zappy::HUD::HUD()
     initializeParchment();
     initializeRupees();
     initializeTexts();
+    initializeFood();
 }
 
 // Methods
@@ -65,6 +66,17 @@ void zappy::HUD::draw(sf::RenderWindow &window, sf::Sprite &sprite)
         window.draw(m_text);
         window.draw(sprite);
     }
+    sprite.setTextureRect(m_food.m_rect);
+    sprite.setPosition(m_food.m_position);
+    window.draw(sprite);
+    m_text.setCharacterSize(32);
+    m_text.setPosition(m_food_text.m_position);
+    m_text.setString(m_food_text.m_str);
+    window.draw(m_text);
+    m_text.setCharacterSize(24);
+    m_text.setPosition(m_food_count.m_position);
+    m_text.setString(m_food_count.m_str);
+    window.draw(m_text);
     sprite.setColor({255, 255, 255, 255});
     window.setView(world_view);
 }
@@ -73,6 +85,9 @@ void zappy::HUD::animateHUD()
 {
     if (m_is_active && m_parchment.m_position.y > (m_hud_view.getSize().y / 3) * 2) {
         m_parchment.m_position.y -= HUD_SPEED;
+        m_food.m_position.y -= HUD_SPEED;
+        m_food_count.m_position.y -= HUD_SPEED;
+        m_food_text.m_position.y -= HUD_SPEED;
         for (size_t i = 0; i < RUPEE_TYPES; i += 1) {
             m_rupees[i].m_position.y -= HUD_SPEED;
             m_texts[i].m_position.y -= HUD_SPEED;
@@ -81,6 +96,9 @@ void zappy::HUD::animateHUD()
     }
     if (!m_is_active && m_parchment.m_position.y < m_hud_view.getSize().y) {
         m_parchment.m_position.y += HUD_SPEED;
+        m_food.m_position.y += HUD_SPEED;
+        m_food_count.m_position.y += HUD_SPEED;
+        m_food_text.m_position.y += HUD_SPEED;
         for (size_t i = 0; i < RUPEE_TYPES; i += 1) {
             m_rupees[i].m_position.y += HUD_SPEED;
             m_texts[i].m_position.y += HUD_SPEED;
@@ -98,6 +116,7 @@ void zappy::HUD::animateHUD()
     if (!m_is_active)
         return;
     animateRupees();
+    animateFood();
 }
 
 void zappy::HUD::animateRupees()
@@ -176,9 +195,26 @@ void zappy::HUD::initializeTexts()
     }
     for (size_t i = 0; i < RUPEE_TYPES; i += 1) {
         m_ressources[i].m_str = "x0";
-        m_ressources[i].m_position = {m_rupees[i].m_position.x + m_rupees[i].m_rect.width * SCALING / 2,
-                                 m_rupees[i].m_position.y + m_rupees[i].m_rect.height * SCALING};
+        m_ressources[i].m_position = {
+            m_rupees[i].m_position.x + m_rupees[i].m_rect.width * SCALING / 2,
+            m_rupees[i].m_position.y + m_rupees[i].m_rect.height * SCALING};
     }
+}
+
+void zappy::HUD::initializeFood()
+{
+    m_food.m_rect.top = 88;
+    m_food.m_rect.left = 61;
+    m_food.m_rect.width = 16;
+    m_food.m_rect.height = 16;
+    m_food.m_position.x = static_cast<float>(m_hud_view.getSize().x / 10) * 2;
+    m_food.m_position.y = m_parchment.m_position.y + m_parchment.m_rect.height / 10 * 8 * SCALING;
+    m_food_text.m_str = "Food";
+    m_food_text.m_position = {m_food.m_position.x - m_food.m_rect.width * SCALING,
+                              m_food.m_position.y + m_food.m_rect.height * 2};
+    m_food_count.m_str = "x0";
+    m_food_count.m_position = {m_food.m_position.x + m_food.m_rect.width * SCALING / 2,
+                               m_food.m_position.y + m_food.m_rect.height * SCALING};
 }
 
 void zappy::HUD::setFocusedTile(zappy::Tile &tile)
@@ -189,4 +225,24 @@ void zappy::HUD::setFocusedTile(zappy::Tile &tile)
     m_ressources[3].m_str = "x" + std::to_string(tile.m_inventory.mendiane);
     m_ressources[4].m_str = "x" + std::to_string(tile.m_inventory.phiras);
     m_ressources[5].m_str = "x" + std::to_string(tile.m_inventory.thystame);
+    m_food_count.m_str = "x" + std::to_string(tile.m_inventory.food);
+}
+
+void zappy::HUD::animateFood()
+{
+    if (m_food_clock.getElapsedTime().asMilliseconds() > 75.0F &&
+        m_food_phases != 0) {
+        m_food_phases += 1;
+        if (m_food_phases >= 7) {
+            m_food_phases = 0;
+            m_food.m_rect.left = 61;
+        } else
+            m_food.m_rect.left += m_food.m_rect.width;
+        m_food_clock.restart();
+    } else if (m_food_clock.getElapsedTime().asSeconds() > 2.0F &&
+        m_food_phases == 0) {
+        m_food_phases += 1;
+        m_food.m_rect.left += m_food.m_rect.width;
+        m_food_clock.restart();
+    }
 }

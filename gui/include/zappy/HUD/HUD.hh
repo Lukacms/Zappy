@@ -61,8 +61,6 @@ namespace zappy
 
             void draw(sf::RenderWindow &window, sf::Sprite &sprite);
             void displayFocusedTile(zappy::Tile &focused_tile);
-            void animateHUD();
-            void animateRupees();
             void setFocusedTile(zappy::Tile &tile);
             void eventManager(sf::Event &event, sf::RenderWindow &window);
             void turnHUD(bool status);
@@ -71,20 +69,29 @@ namespace zappy
             void initializeParchment();
             void initializeRupees();
             void initializeTexts();
+            void initializeFood();
+            void animateHUD();
+            void animateRupees();
+            void animateFood();
 
             sf::View m_hud_view{};
             sf::Vector2f m_hud_scale{};
             bool m_is_active{false};
             bool m_is_faded{false};
             int m_rupees_phases{0};
+            int m_food_phases{0};
 
             sf::Text m_text{};
             sf::Font m_font{};
             sf::Color m_color{};
             sf::Color m_color_text{69, 45, 16, 255};
             sf::Clock m_rupees_clock{};
+            sf::Clock m_food_clock{};
 
             zappy::Tile m_parchment{};
+            zappy::Tile m_food{};
+            zappy::Text m_food_text{};
+            zappy::Text m_food_count{};
             std::array<Tile, 6> m_rupees{};
             std::array<Text, 6> m_texts{};
             std::array<Text, 6> m_ressources{};

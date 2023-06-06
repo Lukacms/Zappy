@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "Inventory.hh"
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -49,9 +50,11 @@ namespace zappy
             void animatePlayer(sf::Vector2i &size);
             void drawPlayer(sf::RenderWindow &window, sf::Sprite &sprite, sf::Vector2i &size);
             void setPlayerLevel(int level);
+            void setPlayerInventory(Inventory &inventory);
 
             [[nodiscard]] int getId() const;
             [[nodiscard]] sf::Vector2f getPosition() const;
+            [[nodiscard]] Inventory getInventory() const;
         private:
 
             void animateNorth(sf::Vector2i &size);
@@ -60,6 +63,7 @@ namespace zappy
             void animateWest(sf::Vector2i &size);
             int m_id;
             int m_level;
+            Inventory m_inventory;
             Orientation m_orientation;
             std::string m_team;
 

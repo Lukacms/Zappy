@@ -33,6 +33,6 @@ namespace zappy {
 
       private:
         sf::View m_view;
-        std::array<bool, 6> m_directions;
+        std::array<bool, 7> m_directions;
     };
 }

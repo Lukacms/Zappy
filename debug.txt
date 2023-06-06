@@ -1,0 +1,38 @@
+==20545== Memcheck, a memory error detector
+==20545== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==20545== Using Valgrind-3.20.0 and LibVEX; rerun with -h for copyright info
+==20545== Command: ./zappy_gui 127.0.0.1 4242
+==20545== 
+Warning: Partial sends might not be handled properly.
+==20545== Conditional jump or move depends on uninitialised value(s)
+==20545==    at 0x118F6E: zappy::Map::selectTile(sf::Event&, sf::RenderWindow&) (in /home/kane/Epitech/2e_Année/Zappy/zappy_gui)
+==20545==    by 0x11D0E2: zappy::Game::manageEvent(sf::RenderWindow&, sf::Event&) (in /home/kane/Epitech/2e_Année/Zappy/zappy_gui)
+==20545==    by 0x1186DD: zappy::GUI::start() (in /home/kane/Epitech/2e_Année/Zappy/zappy_gui)
+==20545==    by 0x117C4D: main (in /home/kane/Epitech/2e_Année/Zappy/zappy_gui)
+==20545==  Uninitialised value was created by a stack allocation
+==20545==    at 0x48A270F: ??? (in /usr/lib/libsfml-window.so.2.5.1)
+==20545== 
+==20545== Conditional jump or move depends on uninitialised value(s)
+==20545==    at 0x1190B3: zappy::Map::selectTile(sf::Event&, sf::RenderWindow&) (in /home/kane/Epitech/2e_Année/Zappy/zappy_gui)
+==20545==    by 0x11D0E2: zappy::Game::manageEvent(sf::RenderWindow&, sf::Event&) (in /home/kane/Epitech/2e_Année/Zappy/zappy_gui)
+==20545==    by 0x1186DD: zappy::GUI::start() (in /home/kane/Epitech/2e_Année/Zappy/zappy_gui)
+==20545==    by 0x117C4D: main (in /home/kane/Epitech/2e_Année/Zappy/zappy_gui)
+==20545==  Uninitialised value was created by a stack allocation
+==20545==    at 0x48A270F: ??? (in /usr/lib/libsfml-window.so.2.5.1)
+==20545== 
+==20545== 
+==20545== HEAP SUMMARY:
+==20545==     in use at exit: 310,923 bytes in 2,950 blocks
+==20545==   total heap usage: 65,956 allocs, 63,006 frees, 38,928,103 bytes allocated
+==20545== 
+==20545== LEAK SUMMARY:
+==20545==    definitely lost: 0 bytes in 0 blocks
+==20545==    indirectly lost: 0 bytes in 0 blocks
+==20545==      possibly lost: 0 bytes in 0 blocks
+==20545==    still reachable: 310,923 bytes in 2,950 blocks
+==20545==         suppressed: 0 bytes in 0 blocks
+==20545== Reachable blocks (those to which a pointer was found) are not shown.
+==20545== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==20545== 
+==20545== For lists of detected and suppressed errors, rerun with: -s
+==20545== ERROR SUMMARY: 1804 errors from 2 contexts (suppressed: 0 from 0)

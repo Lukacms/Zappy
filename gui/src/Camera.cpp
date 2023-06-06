@@ -11,7 +11,7 @@
 
 // Constructor && Destructor
 
-zappy::Camera::Camera() : m_directions{false, false, false, false, false}
+zappy::Camera::Camera() : m_directions{false, false, false, false, false, false}
 {
 }
 
@@ -33,6 +33,8 @@ void zappy::Camera::cameraOnKeyPressed(sf::Event &event)
         m_directions[4] = true;
     if (event.key.code == sf::Keyboard::Subtract || event.key.code == sf::Keyboard::M)
         m_directions[5] = true;
+    if (event.key.code == sf::Keyboard::LShift)
+        m_directions[6] = true;
 }
 
 void zappy::Camera::cameraOnKeyReleased(sf::Event &event)
@@ -51,20 +53,23 @@ void zappy::Camera::cameraOnKeyReleased(sf::Event &event)
         m_directions[4] = false;
     if (event.key.code == sf::Keyboard::Subtract || event.key.code == sf::Keyboard::M)
         m_directions[5] = false;
+    if (event.key.code == sf::Keyboard::LShift)
+        m_directions[6] = false;
 }
 
 void zappy::Camera::moveView(sf::RenderWindow &window)
 {
     sf::View tmp = window.getView();
+    float factor = 20 * (m_directions[6] ? 1 : 0);
 
     if (m_directions[0])
-        tmp.move(sf::Vector2f{0, -5});
+        tmp.move(sf::Vector2f{0, -5 - factor});
     if (m_directions[1])
-        tmp.move(sf::Vector2f{0, 5});
+        tmp.move(sf::Vector2f{0, 5 + factor});
     if (m_directions[2])
-        tmp.move(sf::Vector2f{5, 0});
+        tmp.move(sf::Vector2f{5 + factor, 0});
     if (m_directions[3])
-        tmp.move(sf::Vector2f{-5, 0});
+        tmp.move(sf::Vector2f{-5 - factor, 0});
     if (m_directions[4])
         tmp.zoom(static_cast<float>(ZOOM_ADD));
     if (m_directions[5])

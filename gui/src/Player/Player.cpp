@@ -5,6 +5,7 @@
 ** Player
 */
 
+#include "Inventory.hh"
 #include "zappy/Map/Tile.hh"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -164,4 +165,14 @@ void zappy::Player::animateWest(sf::Vector2i &size)
 sf::Vector2f zappy::Player::getPosition() const
 {
     return this->m_position_map;
+}
+
+void zappy::Player::setPlayerInventory(Inventory &inventory)
+{
+    m_inventory = inventory;
+}
+
+zappy::Inventory zappy::Player::getInventory() const
+{
+    return m_inventory;
 }

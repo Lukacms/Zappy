@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "zappy/GuiCommand/GuiCommand.hh"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <vector>
@@ -27,10 +28,14 @@ namespace zappy
             PlayerManager &operator=(PlayerManager &&to_move) = default;
 
             void animatePlayers();
-            void addPlayer(PlayerInfo &infos);
+            void addPlayer(Pnw &new_player);
+            void changePlayerStats(Ppo &position);
+            void changePlayerStats(Plv &level);
+            void changePlayerStats(Pin &inventory);
             void drawPlayers(sf::RenderWindow &window, sf::Sprite &sprite);
             void eventManager(sf::RenderWindow &window, sf::Event &event);
             void setMapSize(sf::Vector2i &size);
+            void explusePlayer(Pex &expulsed_player);
 
         private:
             void depthManager();
