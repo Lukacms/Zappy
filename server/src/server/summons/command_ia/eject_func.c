@@ -25,7 +25,7 @@ int eject_func(server_t *server, char *args[], client_node_t *client)
     if (!args || array_len(args) != 2 || !server ||
         !(tmp = server->clients.head))
         return set_error(client->cfd, "ko", false);
-    for (unsigned int ind = 0; ind < server->clients.length; tmp = tmp->next) {
+    for (unsigned int ind = 0; ind < server->clients.length; ind++) {
         if (same_tile(tmp->stats.pos, client->stats.pos) == true &&
             tmp->uuid != client->uuid) {
             dprintf(tmp->cfd, "eject: %i\n", client->stats.orientation + 1);
@@ -36,6 +36,7 @@ int eject_func(server_t *server, char *args[], client_node_t *client)
             case WEST: forward_west(server, tmp); break;
             }
         }
+        tmp = tmp->next;
     }
     return SUCCESS;
 }

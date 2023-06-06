@@ -17,7 +17,7 @@ int pin_func(server_t *server, char *args[], client_node_t *client)
 
     if (!args || array_len(args) != 3)
         return FAILURE;
-    for (u_int ind = 0; ind < server->clients.length; tmp = tmp->next) {
+    for (u_int ind = 0; ind < server->clients.length; ind++) {
         if (strcmp(args[1], tmp->uuid) == 0) {
             dprintf(client->cfd, "pin %s %zu %zu %li %li %li %li %li %li %li\n",
                     tmp->uuid, tmp->stats.pos.x, tmp->stats.pos.y,
@@ -30,6 +30,7 @@ int pin_func(server_t *server, char *args[], client_node_t *client)
                     tmp->stats.inventory[THYSTAME].units);
             return SUCCESS;
         }
+        tmp = tmp->next;
     }
     return FAILURE;
 }

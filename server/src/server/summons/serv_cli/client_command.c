@@ -57,21 +57,19 @@ static void error_command(char **tab, server_t *server, client_node_t *client)
     }
 }
 
-void parse_event_client(server_t *server, const char *line,
-                        client_node_t *client)
+int parse_event_client(server_t *server, const char *line,
+                       client_node_t *client)
 {
     char **tab = NULL;
 
     if (!server || !line || !client)
-        return;
+        return FAILURE;
     if (!(tab = str_to_array(line, SEPARATOR_CMD))) {
-        if (client->state == GUI) {
-            dprintf(client->cfd, GUI_UNKNOWN);
-            return;
-        }
-        dprintf(client->cfd, UNKNOWN_COMMAND);
-        return;
+        if (client->state == GUI)
+            return set_error(client->cfd, GUI_UNKNOWN, false);
+        return set_error(client->cfd, UNKNOWN_COMMAND, false);
     }
     error_command(tab, server, client);
     free_array(tab);
+    return SUCCESS;
 }

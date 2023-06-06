@@ -17,12 +17,13 @@ int ppo_func(server_t *server, char *args[], client_node_t *client)
 
     if (!args || array_len(args) != 3)
         return FAILURE;
-    for (u_int ind = 0; ind < server->clients.length; tmp = tmp->next) {
+    for (u_int ind = 0; ind < server->clients.length; ind++) {
         if (strcmp(args[1], tmp->uuid) == 0) {
             dprintf(client->cfd, "ppo %s %zu %zu %i\n", tmp->uuid,
                     tmp->stats.pos.x, tmp->stats.pos.y, tmp->stats.orientation);
             return SUCCESS;
         }
+        tmp = tmp->next;
     }
     return FAILURE;
 }
