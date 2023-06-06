@@ -5,12 +5,13 @@
 ** add_client_to_team
 */
 
+#include <stdio.h>
 #include <zappy/server.h>
 #include <zappy/server/client.h>
 #include <zappy/server/utils.h>
 
 int add_client_to_team(client_node_t *client, server_t *server,
-                    const char *team_name)
+                       const char *team_name)
 {
     team_t *team = NULL;
 
@@ -25,5 +26,7 @@ int add_client_to_team(client_node_t *client, server_t *server,
     for (unsigned int i = 0; i < team->nb_clients; i++)
         if (!team->uuid_clients[i])
             team->uuid_clients[i] = client->uuid;
+    dprintf(client->cfd, "%zu\n%zu %zu\n", team->spots_free, server->map.size.x,
+            server->map.size.y);
     return SUCCESS;
 }

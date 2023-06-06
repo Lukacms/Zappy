@@ -11,6 +11,8 @@
 #define BUFFER_SIZE 4096
 #define SEPARATOR_CMD " \t\r\n"
 
+#define CLIENT_CONNECT "WELCOME\n"
+
 #define INVALID_ACTION "ko\n"
 #define UNKNOWN_COMMAND "ko\n"
 

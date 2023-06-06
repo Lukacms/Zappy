@@ -109,7 +109,6 @@ typedef struct team_s {
 typedef struct tile_s {
     inventory_t slots[INVENTORY_SLOTS];
     char **players_uuid;
-    int last_updated;
     egg_t **eggs;
     bool end;
 } tile_t;
@@ -118,6 +117,7 @@ typedef struct map_s {
     vector2i_t size;
     tile_t **tiles;
     int init_stock[INVENTORY_SLOTS];
+    int last_updated;
     int last_egg_id;
 } map_t;
 

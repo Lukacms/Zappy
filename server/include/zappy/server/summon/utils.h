@@ -17,7 +17,7 @@ int handle_summon(server_t *server, int cfd);
 int send_toall_guicli(server_t *server, char *str, ...);
 void dprint_tile(map_t, size_t, size_t, client_node_t *);
 
-void parse_event_client(server_t *, const char *, client_node_t *);
+int parse_event_client(server_t *, const char *, client_node_t *);
 
 /* IA funptr */
 int forward_north(server_t *server, client_node_t *client);
