@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2023
-** incantation
+** incantation_func
 ** File description:
 ** zappy
 */
