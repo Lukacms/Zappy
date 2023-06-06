@@ -67,6 +67,9 @@ SRC	=	src/launch.c	\
 		src/server/client/find_team.c	\
 		src/server/client/find_client.c	\
 		src/server/client/add_client_to_team.c	\
+		src/destroy/destroy_teams.c	\
+		src/destroy/destroy_server.c	\
+		src/destroy/destroy_clients.c	\
 
 SRC_MAIN	=	src/main.c
 
