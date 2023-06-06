@@ -23,6 +23,8 @@ int add_client_to_team(client_node_t *client, server_t *server,
         return set_error(client->cfd, INVALID_ACTION, false);
     client->uuid_team = team->uuid;
     team->spots_free--;
+    if (from_egg_to_player(client, &team) != SUCCESS)
+        return FAILURE;
     for (unsigned int i = 0; i < team->nb_clients; i++)
         if (!team->uuid_clients[i])
             team->uuid_clients[i] = client->uuid;

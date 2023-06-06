@@ -15,6 +15,8 @@ void destroy_server(server_t *server)
     destroy_clients(&server->clients);
     destroy_teams(server->teams);
     for (u_int i = 0; server->map.tiles[i]; i++) {
+        free(server->map.tiles[i]->eggs);
+        free(server->map.tiles[i]->players_uuid);
         free(server->map.tiles[i]);
     }
     free(server->map.tiles);

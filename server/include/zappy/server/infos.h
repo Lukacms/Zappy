@@ -96,12 +96,14 @@ typedef struct clients_s {
 typedef struct egg_s {
     int nb;
     char *team_uuid;
+    vector2i_t pos;
 } egg_t;
 
 typedef struct team_s {
     char *uuid;
     char *team_name;
     char **uuid_clients;
+    egg_t **eggs;
     size_t nb_clients;
     size_t spots_free;
 } team_t;
@@ -109,7 +111,7 @@ typedef struct team_s {
 typedef struct tile_s {
     inventory_t slots[INVENTORY_SLOTS];
     char **players_uuid;
-    egg_t **eggs;
+    int **eggs;
     bool end;
 } tile_t;
 
