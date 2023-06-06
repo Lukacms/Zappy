@@ -58,7 +58,7 @@ static void error_command(char **tab, server_t *server, client_node_t *client)
 }
 
 int parse_event_client(server_t *server, const char *line,
-                       client_node_t *client)
+                    client_node_t *client)
 {
     char **tab = NULL;
 
