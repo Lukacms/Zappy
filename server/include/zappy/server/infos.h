@@ -9,12 +9,10 @@
 
 #include <netinet/in.h>
 #include <stdbool.h>
-#include <sys/select.h>
 #include <sys/types.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include <zappy/config/arguments.h>
+#include <zappy/server/clock/infos.h>
+#include <zappy/server/summon/infos.h>
 
 #define TCP 0
 #define ERROR -1
@@ -26,33 +24,10 @@
 
 #define INVENTORY_SLOTS 7
 
-#define GUI_INDIC "GRAPHIC\n"
-
-#define GO_LEVEL_2 "1100000"
-#define GO_LEVEL_3 "2111000"
-#define GO_LEVEL_4 "2201020"
-#define GO_LEVEL_5 "4112010"
-#define GO_LEVEL_6 "4121300"
-#define GO_LEVEL_7 "6123010"
-#define GO_LEVEL_8 "6222221"
-
-#define ZAPPY_GUI_CONNECT "GRAPHIC"
-#define ZAPPY_MSG "msz"
-#define ZAPPY_BCT "bct"
-#define ZAPPY_TNA "mct"
-#define ZAPPY_PNW "tna"
-#define ZAPPY_PPO "ppo"
-#define ZAPPY_PLV "plv"
-#define ZAPPY_PIN "pin"
-#define ZAPPY_SGT "sgt"
-#define ZAPPY_SST "sst"
-
-#define ZAPPY_FORWARD "Forward"
-#define ZAPPY_RIGHT "Right"
-#define ZAPPY_LEFT "Left"
-#define ZAPPY_LOOK "Look"
-#define ZAPPY_INVENTORY "Inventory"
-#define ZAPPY_CONNECT_NBR "Connect_nbr"
+static const char __attribute__((unused)) *
+    RESOURCES_INVENTORY[INVENTORY_SLOTS] = {
+    "food", "linemate", "deraumere", "sibur", "mendiane", "phiras", "thystame",
+};
 
 typedef enum resource_s {
     FOOD,
@@ -66,7 +41,7 @@ typedef enum resource_s {
 
 typedef enum action_s {
     NOTHING,
-    RITUAL,
+    ACTION,
 } action_t;
 
 typedef enum orientation_s {
@@ -88,7 +63,11 @@ typedef struct inventory_s {
 } inventory_t;
 
 typedef struct stats_s {
-    action_t action;
+    struct {
+        action_t type;
+        int ticks;
+    } action;
+
     size_t level;
     vector2i_t pos;
     size_t vision;
@@ -99,9 +78,11 @@ typedef struct stats_s {
 typedef struct client_node_s {
     int cfd;
     char *uuid;
+    struct sockaddr_in socket_infos;
     player_t state;
     char *uuid_team;
     stats_t stats;
+    summon_queue_t queue[MAX_WAITING_SUMMONS];
     // linked list
     struct client_node_s *prev;
     struct client_node_s *next;
@@ -112,34 +93,47 @@ typedef struct clients_s {
     size_t length;
 } clients_t;
 
+typedef struct egg_s {
+    int nb;
+    char *team_uuid;
+} egg_t;
+
 typedef struct team_s {
     char *uuid;
+    char *team_name;
     char **uuid_clients;
     size_t nb_clients;
+    size_t spots_free;
 } team_t;
 
-// TODO need to add other elements to the map to complete it
+typedef struct tile_s {
+    inventory_t slots[INVENTORY_SLOTS];
+    char **players_uuid;
+    egg_t **eggs;
+    bool end;
+} tile_t;
+
 typedef struct map_s {
     vector2i_t size;
-    inventory_t **inventory[INVENTORY_SLOTS];
-    // tile_t **tiles;
-    // NOTE implement this structure, and size is determined by size element
+    tile_t **tiles;
+    int init_stock[INVENTORY_SLOTS];
+    int last_updated;
+    int last_egg_id;
 } map_t;
 
 typedef struct server_s {
     bool running;
     ssize_t server_fd;
-    struct protoent *proto;
     struct sockaddr_in socket_infos;
     socklen_t sock_size;
+    team_t **teams;
     fd_set clients_fd;
     clients_t clients;
-    team_t **teams;
     map_t map;
-    u_int64_t time;
+    zappy_clock_t clock;
 } server_t;
 
-typedef int (*cmd_handler_t)(server_t *server, char *args[], client_node_t *client);
+typedef int (*cmd_handler_t)(server_t *, char *[], client_node_t *);
 
 typedef struct summons_funptr_s {
     char *summon;

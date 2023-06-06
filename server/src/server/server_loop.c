@@ -9,16 +9,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <zappy/server.h>
+#include <zappy/server/client.h>
+#include <zappy/server/clock/utils.h>
 #include <zappy/server/infos.h>
+#include <zappy/server/summon/utils.h>
 
-// TODO implement both methods
 static void check_if_client_ready(server_t *server, size_t ind, fd_set *clients)
 {
     if (FD_ISSET(ind, clients)) {
         if (ind == (size_t)server->server_fd)
-            ind++;
+            connect_new_client(server);
         else
-            ind++;
+            handle_summon(server, ind);
     }
 }
 
@@ -32,6 +34,7 @@ int server_loop(server_t *server)
     signal(SIGINT, &handle_sigint);
     while (server->running) {
         server = get_server();
+        update_ticks_clients(server);
         clients_ready = server->clients_fd;
         if (select(FD_SETSIZE + 1, &clients_ready, NULL, NULL, &val) < 0) {
             perror("Couldn't select a client ready");

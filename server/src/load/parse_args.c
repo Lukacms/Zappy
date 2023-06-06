@@ -5,9 +5,12 @@
 ** parse_args
 */
 
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <zappy/config/arguments.h>
 #include <zappy/server.h>
+#include <zappy/server/utils.h>
 
 static const flag_handler_binder_t OPTIONS[] = {
     {.cases = 'p', .handler = &p_handler},
@@ -38,6 +41,22 @@ static void default_config(args_config_t *args)
     args->port = DEFAULT_PORT;
 }
 
+static int fill_default_teams(args_config_t *args)
+{
+    int len = array_len(DEFAULT_TEAMS);
+
+    args->team_names = malloc(sizeof(char *) * (len + 1));
+    if (!args->team_names)
+        return FAILURE;
+    for (unsigned int i = 0; DEFAULT_TEAMS[i]; i++) {
+        args->team_names[i] = strdup(DEFAULT_TEAMS[i]);
+        if (!args->team_names[i])
+            return FAILURE;
+    }
+    args->team_names[len] = NULL;
+    return SUCCESS;
+}
+
 int parse_args(args_config_t *args, int argc, char *const argv[])
 {
     int opt = 0;
@@ -53,5 +72,7 @@ int parse_args(args_config_t *args, int argc, char *const argv[])
     }
     if (optind != argc)
         return FAILURE;
+    if (!args->team_names)
+        return fill_default_teams(args);
     return SUCCESS;
 }

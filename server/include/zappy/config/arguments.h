@@ -7,16 +7,16 @@
 
 #pragma once
 
-/* default arguments */
 #include <stddef.h>
+
+/* default arguments */
 #define DEFAULT_PORT 4242
 #define DEFAULT_FREQ 100
 #define DEFAULT_HEIGHT 10
 #define DEFAULT_WIDTH 10
-#define DEFAULT_TEAMS { \
-        "Team1", "Team2", "Team3", "Team4", NULL \
-    }
 #define DEFAULT_CLIENTS 3
+static __attribute__((unused))
+const char *DEFAULT_TEAMS[] = {"Team1", "Team2", "Team3", "Team3", NULL};
 
 /* OPTARGS */
 #define SHORT_ARGS "p:x:y:n:c:h"
