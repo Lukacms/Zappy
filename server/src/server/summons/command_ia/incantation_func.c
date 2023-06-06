@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <zappy/server.h>
+#include <zappy/server/clock/utils.h>
 #include <zappy/server/summon/infos.h>
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
@@ -31,5 +32,6 @@ int incantation(server_t *server, char *args[], client_node_t *client)
             return SUCCESS;
         }
     }
+    add_ticks_occupied(client, RESTRAINT_INCANTATION, server);
     return set_error(client->cfd, INVALID_ACTION, false);
 }

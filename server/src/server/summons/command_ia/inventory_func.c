@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <zappy/server.h>
+#include <zappy/server/clock/utils.h>
 #include <zappy/server/infos.h>
 
 int inventory_func(server_t *server, char *args[], client_node_t *client)
@@ -24,5 +25,6 @@ int inventory_func(server_t *server, char *args[], client_node_t *client)
             client->stats.inventory[MENDIANE].units,
             client->stats.inventory[PHIRAS].units,
             client->stats.inventory[THYSTAME].units);
+    add_ticks_occupied(client, RESTRAINT_INVENTORY, server);
     return SUCCESS;
 }

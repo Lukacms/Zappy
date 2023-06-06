@@ -6,29 +6,28 @@
 */
 
 #include <stdio.h>
-#include <zappy/server/infos.h>
+#include <zappy/server.h>
+#include <zappy/server/clock/utils.h>
 
-int right_func(server_t __attribute__((unused)) * server,
-               char __attribute__((unused)) * args[], client_node_t *client)
+static int set_client_orientation(server_t *server, client_node_t *client,
+                                  orientation_t orientation)
 {
+    client->stats.orientation = orientation;
+    dprintf(client->cfd, "ok\n");
+    add_ticks_occupied(client, RESTRAINT_LEFT, server);
+    return SUCCESS;
+}
+
+int right_func(server_t *server, char __attribute__((unused)) * args[],
+               client_node_t *client)
+{
+    if (!server || !client)
+        return FAILURE;
     switch (client->stats.orientation) {
-    case NORTH:
-        client->stats.orientation = EAST;
-        dprintf(client->cfd, "ok\n");
-        return 0;
-    case SOUTH:
-        client->stats.orientation = WEST;
-        dprintf(client->cfd, "ok\n");
-        return 0;
-    case EAST:
-        client->stats.orientation = SOUTH;
-        dprintf(client->cfd, "ok\n");
-        return 0;
-    case WEST:
-        client->stats.orientation = NORTH;
-        dprintf(client->cfd, "ok\n");
-        return 0;
-        break;
+        case NORTH: return set_client_orientation(server, client, EAST);
+        case SOUTH: return set_client_orientation(server, client, WEST);
+        case EAST: return set_client_orientation(server, client, SOUTH);
+        case WEST: return set_client_orientation(server, client, NORTH); break;
     }
     return 1;
 }

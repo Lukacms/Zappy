@@ -7,8 +7,7 @@
 
 #include <stdio.h>
 #include <zappy/server.h>
-#include <zappy/server/infos.h>
-#include <zappy/server/summon/utils.h>
+#include <zappy/server/clock/utils.h>
 #include <zappy/server/utils.h>
 
 int forward_north(server_t *server, client_node_t *client)
@@ -60,5 +59,6 @@ int forward_func(server_t *server, char *args[], client_node_t *client)
     case WEST: forward_west(server, client); break;
     }
     dprintf(client->cfd, "ok\n");
+    add_ticks_occupied(client, RESTRAINT_FORWARD, server);
     return SUCCESS;
 }

@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <zappy/server.h>
+#include <zappy/server/clock/utils.h>
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
@@ -38,5 +39,6 @@ int eject_func(server_t *server, char *args[], client_node_t *client)
         }
         tmp = tmp->next;
     }
+    add_ticks_occupied(client, RESTRAINT_EJECT, server);
     return SUCCESS;
 }

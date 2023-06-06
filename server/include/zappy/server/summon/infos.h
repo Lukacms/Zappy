@@ -27,6 +27,7 @@
 #define GO_LEVEL_7 "6123010"
 #define GO_LEVEL_8 "6222221"
 
+/* summons of GUIs */
 #define ZAPPY_GUI_CONNECT "GRAPHIC"
 #define ZAPPY_MSG "msz"
 #define ZAPPY_BCT "bct"
@@ -38,12 +39,26 @@
 #define ZAPPY_SGT "sgt"
 #define ZAPPY_SST "sst"
 
+/* summons of AIs */
 #define ZAPPY_FORWARD "Forward"
 #define ZAPPY_RIGHT "Right"
 #define ZAPPY_LEFT "Left"
 #define ZAPPY_LOOK "Look"
 #define ZAPPY_INVENTORY "Inventory"
 #define ZAPPY_CONNECT_NBR "Connect_nbr"
+
+/* delay for summons of AIs */
+#define RESTRAINT_FORWARD 7
+#define RESTRAINT_RIGHT 7
+#define RESTRAINT_LEFT 7
+#define RESTRAINT_LOOK 7
+#define RESTRAINT_INVENTORY 1
+#define RESTRAINT_BROADCAST 7
+#define RESTRAINT_FORK 42
+#define RESTRAINT_EJECT 7
+#define RESTRAINT_TAKE 7
+#define RESTRAINT_SET 7
+#define RESTRAINT_INCANTATION 300
 
 typedef struct summon_queue_s {
     char *summon;
