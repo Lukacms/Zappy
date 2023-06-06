@@ -27,10 +27,74 @@ class Artifical_intelligence():
         self.life_units = 10
         self.connect_nbr = 0
         self.team_name = team_name
+        self.previous_action = ""
+        self.action_to_do = ""
+        self.object_to_take = ""
 
     def check_tile_info():
         print("check_tile_info")
-        
 
-    def algo(self):
-        print("algo")
+
+    def move_forward(self):
+        self.action_to_do = "Forward"
+
+
+    def turn_left(self):
+        self.action_to_do = "Left"
+
+
+    def turn_right(self):
+        self.action_to_do = "Right"
+
+
+    def parse_inv(self, socket):
+        self.action_to_do = "Inventory"
+        socket.send((self.action_to_do + '\n').encode())
+        str_response = socket.recv(1024).decode("utf-8").split(',')
+        for item in str_response:
+            parts = item.strip().strip('[ ').strip(' ]').split(' ')
+            key = parts[0]
+            value = int(parts[1])
+            if key in self.inventory:
+                self.inventory[key] = value
+
+
+    def nb_player_in_team(self, socket):
+        self.action_to_do = "Connect_nbr"
+        socket.send((self.action_to_do + '\n').encode())
+        str_response = socket.recv(1024).decode("utf-8")
+        self.nb_player = int(str_response)
+
+
+    def broadcast(self):
+        # fonction pour ajouter le message à broadcast
+        # self.broadcast_text = ...
+        self.action_to_do = "Broadcast " + self.broadcast_text
+
+
+    def fork(self):
+        self.action_to_do = "Fork"
+
+
+    def eject(self):
+        self.action_to_do = "Eject"
+
+
+    def take_object(self):
+        # fonction pour ajouter le nom de l'objet qui nous interesse
+        # self.object_to_take = ...
+        self.action_to_do = "Take " + self.object_to_take
+
+
+    def set_object(self):
+        # fonction pour ajouter les objects à drop pour évolution
+        # self.object_to_take = ...
+        self.action_to_do = "Set " + self.object_to_take
+
+    def algo(self, socket):
+        # Exemple de fonction pour lancer une action
+        # self.parse_inv(socket)
+        # self.action_to_do = turn_left()
+
+        # self.look(socket)
+        return self.action_to_do

@@ -43,7 +43,9 @@ class Client():
     def client_launcher(self):
         try:
             while True:
-                request: str = input()
+                # request va contenir la commande à envoyer au serveur, une fois que l'IA aura décidé de ce qu'elle veut faire
+                core = Artifical_intelligence(self.name)
+                request: str = Artifical_intelligence.algo(core, self.socket)
                 self.socket.sendall((request + '\n').encode())
                 response: str = self.socket.recv(BUFFER_SIZE).decode("utf-8")
                 print(f"{response}", end="")
