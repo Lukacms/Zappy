@@ -29,3 +29,4 @@ void delete_client_from_team(client_node_t *client, server_t *server);
 // egg related
 int create_eggs(server_t *server);
 int from_egg_to_player(client_node_t *client, team_t **team);
+int add_egg_to_team(client_node_t *client, server_t *server);

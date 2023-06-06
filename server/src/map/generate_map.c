@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <zappy/server.h>
+#include <zappy/server/client.h>
 #include <zappy/server/map_utils.h>
 
 static void randomize_map(server_t *server)
@@ -45,5 +46,5 @@ int generate_map(server_t *server)
             return FAILURE;
     }
     randomize_map(server);
-    return SUCCESS;
+    return create_eggs(server);
 }

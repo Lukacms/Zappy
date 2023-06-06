@@ -68,6 +68,7 @@ SRC	=	src/launch.c	\
 		src/server/client/find_client.c	\
 		src/server/client/add_client_to_team.c	\
 		src/server/eggs/create_eggs.c	\
+		src/server/eggs/add_egg_to_team.c	\
 		src/server/eggs/from_egg_to_player.c	\
 		src/destroy/destroy_teams.c	\
 		src/destroy/destroy_server.c	\
