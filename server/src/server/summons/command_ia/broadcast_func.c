@@ -19,9 +19,11 @@ static const double ANGLES[7][3] = {
 
 static int get_angle(vector2i_t small_vector, client_node_t *client)
 {
-    double my_angle = ((atan2(small_vector.y, small_vector.x) * 180 / M_PI) +
-                       DIRECTIONNAL_VECTOR[client->stats.orientation]) % 360;
+    double my_angle = (atan2(small_vector.y, small_vector.x) * 180 / M_PI) +
+        DIRECTIONNAL_VECTOR[client->stats.orientation];
 
+    if (my_angle > 360)
+        my_angle -= 360;
     for (int i = 0; i < 8; i += 1) {
         if (my_angle > ANGLES[i][0] && my_angle < ANGLES[i][1])
             return ANGLES[i][2];
