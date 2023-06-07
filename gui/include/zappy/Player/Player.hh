@@ -19,10 +19,10 @@ namespace zappy
 {
 
     enum class Orientation {
-        North = 0,
-        East = 1,
-        South = 2,
-        West = 3,
+        North = 1,
+        East = 2,
+        South = 3,
+        West = 4,
     };
 
     struct PlayerInfo {
@@ -67,8 +67,8 @@ namespace zappy
 
             int m_id;
             int m_level;
-            bool m_is_dead = false;
-            bool m_delete = false;
+            bool m_is_dead;
+            bool m_delete;
             Inventory m_inventory;
             Orientation m_orientation;
             std::string m_team;

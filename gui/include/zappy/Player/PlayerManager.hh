@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Vector2.hpp>
@@ -48,5 +49,6 @@ namespace zappy
             std::vector<Player> m_players;
             sf::Vector2i m_size;
             sf::SoundBuffer m_death;
+            sf::Sound m_sound;
     };
 } // namespace zappy

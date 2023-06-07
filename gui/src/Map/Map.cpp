@@ -28,28 +28,28 @@ zappy::Map::Map(int width, int height)
     zappy::Tile tile = {};
 
     std::srand(static_cast<unsigned int>(time(nullptr)));
-    for (size_t y = 0; y < height; y += 1) {
-        this->m_map.emplace_back();
-        for (size_t x = 0; x < width; x += 1) {
+    for (size_t x = 0; x < width; x += 1) {
+        m_map.emplace_back();
+        for (size_t y = 0; y < height; y += 1) {
             random = std::rand() % TILE_NUMBER;
             tile.m_position = {static_cast<float>(x) * (TILE_SIZE * SCALING),
                                static_cast<float>(y) * (TILE_SIZE * SCALING)};
             tile.m_rect = {random * TILE_SIZE + 61, 56, TILE_SIZE, TILE_SIZE};
-            this->m_map[y].emplace_back(tile);
+            m_map[x].emplace_back(tile);
         }
     }
     m_map[0][0].m_inventory.linemate = 100;
     m_map[0][1].m_inventory.linemate = 50;
-    this->m_cursor.m_rect = {61, 72, TILE_SIZE, TILE_SIZE};
-    this->m_cursor_rect[0] = this->m_cursor.m_rect;
-    this->m_cursor_rect[1] = {61 + TILE_SIZE, 72, TILE_SIZE, TILE_SIZE};
+    m_cursor.m_rect = {61, 72, TILE_SIZE, TILE_SIZE};
+    m_cursor_rect[0] = m_cursor.m_rect;
+    m_cursor_rect[1] = {61 + TILE_SIZE, 72, TILE_SIZE, TILE_SIZE};
 }
 
 // Methods
 
 void zappy::Map::draw(sf::RenderWindow &window, sf::Sprite &sprite)
 {
-    for (auto &columns : this->m_map) {
+    for (auto &columns : m_map) {
         for (auto &tile : columns) {
             sprite.setTextureRect(tile.m_rect);
             sprite.setPosition(tile.m_position);
@@ -60,8 +60,8 @@ void zappy::Map::draw(sf::RenderWindow &window, sf::Sprite &sprite)
     }
     if (m_is_cursor_active) {
         animateCursor();
-        sprite.setTextureRect(this->m_cursor_rect[this->m_cursor_index]);
-        sprite.setPosition(this->m_cursor.m_position);
+        sprite.setTextureRect(m_cursor_rect[m_cursor_index]);
+        sprite.setPosition(m_cursor.m_position);
         window.draw(sprite);
     }
 }
@@ -94,12 +94,12 @@ std::vector<std::vector<zappy::Tile>> zappy::Map::getMap() const
 
 void zappy::Map::animateCursor()
 {
-    if (this->m_cursor_clock.getElapsedTime().asSeconds() > static_cast<float>(0.5)) {
-        this->m_cursor_index += 1;
-        this->m_cursor_clock.restart();
+    if (m_cursor_clock.getElapsedTime().asSeconds() > static_cast<float>(0.5)) {
+        m_cursor_index += 1;
+        m_cursor_clock.restart();
     }
-    if (this->m_cursor_index > 1)
-        this->m_cursor_index = 0;
+    if (m_cursor_index > 1)
+        m_cursor_index = 0;
 }
 
 zappy::Tile &zappy::Map::getSelectedTile()

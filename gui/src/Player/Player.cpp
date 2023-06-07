@@ -22,6 +22,8 @@ zappy::Player::Player(const zappy::PlayerInfo &infos)
 {
     m_position_map.x = m_position.x * TILE_SIZE * SCALING + (TILE_SIZE * SCALING / 2);
     m_position_map.y = m_position.y * TILE_SIZE * SCALING + (TILE_SIZE * SCALING / 2);
+    m_is_dead = false;
+    m_delete = false;
 }
 
 // Methods
@@ -112,7 +114,6 @@ void zappy::Player::animateNorth(sf::Vector2i &size)
 
 void zappy::Player::animateEast(sf::Vector2i &size)
 {
-
     if (m_remain.x > 0) {
         m_position_map.x += 1;
         m_remain.x -= 1;

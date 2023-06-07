@@ -8,6 +8,8 @@
 #include <Inventory.hh>
 #include <SFML/Audio/Sound.hpp>
 #include <algorithm>
+#include <ios>
+#include <iostream>
 #include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/Player/Player.hh>
 #include <zappy/Player/PlayerManager.hh>
@@ -16,7 +18,9 @@
 
 zappy::PlayerManager::PlayerManager()
 {
-    m_death.loadFromFile(DEATH_SOUND.data());  
+    m_death.loadFromFile(DEATH_SOUND.data());
+    m_sound.setBuffer(m_death);
+    m_sound.setVolume(100.0F);
 }
 
 // Methods
@@ -100,7 +104,7 @@ void zappy::PlayerManager::addPlayer(Pnw &new_player)
 
 void zappy::PlayerManager::explusePlayer(Pex &expulsed_player)
 {
-    for (auto iterator = m_players.begin(); iterator != m_players.end(); iterator ++) {
+    for (auto iterator = m_players.begin(); iterator != m_players.end(); iterator++) {
         if (iterator->getId() == expulsed_player.player_nb)
             m_players.erase(iterator);
     }
@@ -108,12 +112,10 @@ void zappy::PlayerManager::explusePlayer(Pex &expulsed_player)
 
 void zappy::PlayerManager::playerDeath(Pdi &dead_player)
 {
-    sf::Sound sound{m_death};
-
-    for (auto player : m_players) {
+    for (auto &player : m_players) {
         if (player.getId() == dead_player.player_nb) {
+            m_sound.play();
             player.triggerDeath();
-            sound.play();
             break;
         }
     }
@@ -121,8 +123,10 @@ void zappy::PlayerManager::playerDeath(Pdi &dead_player)
 
 void zappy::PlayerManager::deletePlayers()
 {
-    for (auto iterator = m_players.begin(); iterator != m_players.end(); iterator ++) {
-        if (iterator->canDeletePlayer())
+    for (auto iterator = m_players.cbegin(); iterator != m_players.cend(); iterator++) {
+        if (iterator->canDeletePlayer()) {
             m_players.erase(iterator);
+            break;
+        }
     }
 }

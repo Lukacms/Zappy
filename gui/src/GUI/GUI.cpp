@@ -23,12 +23,9 @@
 // Constructor && Destructor
 
 zappy::GUI::GUI(const std::string &address, unsigned short port)
-    : m_window{{WIDTH, HEIGHT}, GUI_TITLE.data()}, game_scene{m_window, 20, 20}, m_client{address,
-                                                                                          port}
+    : m_window{{WIDTH, HEIGHT}, GUI_TITLE.data()}, m_client{address, port}
 {
     m_window.setFramerateLimit(FRAMELIMIT);
-    m_music.openFromFile(MUSIC_FILENAME.data());
-    m_music.setLoop(true);
 }
 
 // Methods
@@ -40,7 +37,6 @@ sf::RenderWindow &zappy::GUI::getWindow()
 
 int zappy::GUI::start()
 {
-    m_music.play();
     while (!m_client.WelcomeSuppressor())
         ;
     m_client.sendGraphic();
@@ -49,9 +45,8 @@ int zappy::GUI::start()
         eventManager();
         this->game_scene.draw(this->m_window);
         this->m_window.display();
-        m_client.receiveCommand(game_scene);
+        m_client.receiveCommand(game_scene, m_window);
     }
-    this->m_music.stop();
     return 0;
 }
 

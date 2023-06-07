@@ -22,7 +22,6 @@
 
 constexpr std::string_view GUI_TITLE{"Zappy Gui"};
 constexpr unsigned int FRAMELIMIT{60};
-constexpr std::string_view MUSIC_FILENAME{"./gui/assets/music/darkworld.ogg"};
 
 constexpr unsigned int WIDTH{1920};
 constexpr unsigned int HEIGHT{1080};
@@ -49,7 +48,6 @@ namespace zappy
 
         private:
             sf::RenderWindow m_window;
-            sf::Music m_music;
 
             zappy::Game game_scene;
             zappy::Client m_client;

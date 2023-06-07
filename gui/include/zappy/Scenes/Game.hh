@@ -7,9 +7,13 @@
 
 #pragma once
 
-#include "zappy/GuiCommand/GuiCommand.hh"
-#include "zappy/Player/Player.hh"
-#include "zappy/Player/PlayerManager.hh"
+#include "zappy/Weather/WeatherManager.hh"
+#include <zappy/MusicManager/MusicManager.hh>
+#include <zappy/ParticleEngine/ParticleEngine.hh>
+#include <SFML/System/Clock.hpp>
+#include <zappy/GuiCommand/GuiCommand.hh>
+#include <zappy/Player/Player.hh>
+#include <zappy/Player/PlayerManager.hh>
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
@@ -26,18 +30,18 @@ namespace zappy
     class Game : public AScene
     {
         public:
-            Game(sf::RenderWindow &window, unsigned int width, unsigned int height);
-            Game(Game const &to_copy) = default;
-            Game(Game &&to_move) = default;
+            Game();
+            Game(Game const &to_copy) = delete;
+            Game(Game &&to_move) = delete;
             ~Game() override = default;
 
-            Game &operator=(Game const &to_copy) = default;
-            Game &operator=(Game &&to_move) = default;
+            Game &operator=(Game const &to_copy) = delete;
+            Game &operator=(Game &&to_move) = delete;
 
             void draw(sf::RenderWindow &window) final;
             void manageEvent(sf::RenderWindow &window, sf::Event &event) final;
 
-            void createMap(Msz &map);
+            void createMap(Msz &map, sf::RenderWindow &window);
             void changeTileInventory(Bct &tile);
 
             void addPlayer(Pnw &new_player);
@@ -69,10 +73,9 @@ namespace zappy
             zappy::Map m_map;
             zappy::Camera m_camera;
             zappy::PlayerManager m_player_manager;
-            zappy::Player m_test;
+            zappy::MusicManager m_music_manager;
+            zappy::WeatherManager m_weather;
 
-            sf::Clock m_test_clock;
             sf::Sound m_sound;
-            int m_test_flag = 0;
     };
 } // namespace zappy

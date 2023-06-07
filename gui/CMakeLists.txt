@@ -171,6 +171,10 @@ add_executable(
     src/Player/PlayerManager.cpp
     src/GuiClient/GuiClient.cpp
     src/RingBuffer.cpp
+    src/MusicManager/MusicManager.cpp
+    src/ParticleEngine/Particle.cpp
+    src/ParticleEngine/ParticleEngine.cpp
+    src/Weather/WeatherManager.cpp
     )
 
 # rules for zappy_gui project
