@@ -29,7 +29,7 @@ static int skip_quotes(const char *cmd, char c)
     return -1;
 }
 
-static int count_words(char *src, char *delim)
+static int count_words(const char *src, char *delim)
 {
     int nb = 0;
     int check = 0;
@@ -51,7 +51,7 @@ static int count_words(char *src, char *delim)
     return nb;
 }
 
-static int skip_arrline(char *src, int i, int j, char *delim)
+static int skip_arrline(const char *src, int i, int j, char *delim)
 {
     j = i;
     if (char_in_str(QUOTATION, src[i])) {
@@ -62,7 +62,7 @@ static int skip_arrline(char *src, int i, int j, char *delim)
     return j;
 }
 
-char **str_to_array(char *src, char *const delim)
+char **str_to_array(const char *src, char *const delim)
 {
     char **array = NULL;
     int nb_words = 0;
