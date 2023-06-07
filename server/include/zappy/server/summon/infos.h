@@ -60,6 +60,56 @@
 #define RESTRAINT_SET 7
 #define RESTRAINT_INCANTATION 300
 
+/* command to send to GUIs */
+// map size
+#define DISPATCH_MSZ "msz %d %d\n"
+// content of a tile
+#define DISPATCH_BCT "bct %d %d %d %d %d %d %d %d %d\n"
+// name of all a team
+#define DISPATCH_TNA "tna %d\n"
+// connection of a new player
+#define DISPATCH_PNW "pnw #%d %d %d %d %d %d\n"
+// player’s position
+#define DISPATCH_PPO "ppo %d %d %d %d\n"
+// player’s level
+#define DISPATCH_PLV "plv %d\n"
+// player’s inventory
+#define DISPATCH_PIN "pin %d %d %d %d %d %d %d %d %d %d\n"
+// expulsion
+#define DISPATCH_PEX "pex %d\n"
+// broadcast
+#define DISPATCH_PBC "pbc %d %s\n"
+// start of an incantation (by first player)
+#define DISPATCH_PIC "pic %d %d %d %d %d\n"
+// end of an incantation
+#define DISPATCH_PIE "pie %d %d %s\n"
+// egg laying by the player
+#define DISPATCH_PFK "pfk %d\n"
+// resource dropping
+#define DISPATCH_PDR "pdr %d %d\n"
+// resource collecting
+#define DISPATCH_PGT "pgt %d %d\n"
+// death of a player
+#define DISPATCH_PDI "pdi %d\n"
+// an egg was laid by a player
+#define DISPATCH_ENW "enw %d %d %d %d\n"
+// player connection for an egg
+#define DISPATCH_EBO "ebo %d\n"
+// death of an egg
+#define DISPATCH_EDI "edi %d\n"
+// time unit request
+#define DISPATCH_SGT "sgt %d\n"
+// time unit modification
+#define DISPATCH_SST "sst %d\n"
+// end of game
+#define DISPATCH_SEG "seg %d\n"
+// message from the server
+#define DISPATCH_SMG "smg %s\n"
+// unknown command
+#define DISPATCH_SUC "suc\n"
+// command parameter
+#define DISPATCH_SBP "sbp\n"
+
 typedef struct summon_queue_s {
     char *summon;
     int size;
