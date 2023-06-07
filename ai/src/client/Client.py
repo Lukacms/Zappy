@@ -16,7 +16,6 @@ EPITECH_ERROR = 84
 MAX_CONSECUTIVE_REQUESTS = 10
 
 
-
 class Client():
     def __init__(self, hostname: str, port: str, team_name: str):
         self.name = team_name
