@@ -16,6 +16,7 @@ SRC	=	src/launch.c	\
 		src/utils/array_len.c	\
 		src/utils/realloc_array.c	\
 		src/utils/str_to_word_array.c	\
+		src/utils/delete_from_array.c	\
 		src/load/options/f_handler.c	\
 		src/load/options/x_handler.c	\
 		src/load/options/h_handler.c	\
@@ -29,6 +30,7 @@ SRC	=	src/launch.c	\
 		src/map/utils_map.c	\
 		src/map/update_map.c	\
 		src/map/generate_map.c	\
+		src/map/change_player_pos.c	\
 		src/server/summons/command_ia/dprint_tile.c	\
 		src/server/summons/command_ia/inventory_func.c	\
 		src/server/summons/command_ia/look_func.c	\

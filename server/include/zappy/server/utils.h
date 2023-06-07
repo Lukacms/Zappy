@@ -22,3 +22,4 @@ bool strisnum(const char *str);
 char *strndup_quotes(const char *src, size_t n);
 char **str_to_array(const char *src, char *delim);
 char **realloc_array(char **ptr, u_int y, u_int x);
+char **delete_from_array(char **src, u_int ind);
