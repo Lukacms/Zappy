@@ -8,8 +8,9 @@
 #pragma once
 
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <zappy/ParticleEngine/Particle.hh>
+#include <memory>
 #include <vector>
+#include <zappy/ParticleEngine/AParticle.hh>
 
 namespace zappy
 {
@@ -26,6 +27,7 @@ namespace zappy
             ParticleEngine &operator=(ParticleEngine &&to_move) = default;
 
             void createRain();
+            void createFog();
             void drawParticles(sf::RenderWindow &window);
             void setDelete();
             void deleteParticles();
@@ -33,9 +35,9 @@ namespace zappy
 
         private:
             void moveParticles();
+            void fillParticles();
 
-            bool m_delete;
-            std::vector<Particle> m_particles;
+            std::vector<std::unique_ptr<AParticle>> m_particles;
             sf::Clock m_clock;
     };
 

@@ -19,7 +19,10 @@ zappy::WeatherManager::WeatherManager()
 {
     std::srand(time(nullptr)); // NOLINT
     m_weathers[0] = Weather::DAY;
-    m_weathers[1] = Weather::RAINY;
+    m_weathers[1] = Weather::DAY;
+    m_weathers[2] = Weather::RAINY;
+    m_weathers[3] = Weather::FOGGY;
+    m_weathers[4] = Weather::RAINY;
     m_filter.setSize({1920, 1080});
     m_filter.setFillColor({0, 0, 0, 0});
 }
@@ -31,15 +34,16 @@ void zappy::WeatherManager::checkWeather(zappy::MusicManager &music_manager)
     int random;
     Weather new_weather;
 
-    if (m_clock.getElapsedTime().asSeconds() < 15.F)
+    if (m_clock.getElapsedTime().asSeconds() < 30.F)
         return;
     m_cycles += 1;
     if (m_cycles == 10)
         m_cycles = 0;
     if (m_cycles % 5 == 0)
         changeDayNight();
+    // std::cout << static_cast<int>(m_cycles) << std::endl;
     m_clock.restart();
-    random = std::rand() % 2;
+    random = std::rand() % m_weathers.size();
     new_weather = m_weathers[static_cast<size_t>(random)];
     if (new_weather == m_state)
         return;
@@ -81,21 +85,27 @@ void zappy::WeatherManager::animateFilter()
 
 void zappy::WeatherManager::changeWeather(zappy::Weather new_weather, zappy::MusicManager &music_manager)
 {
-        if (new_weather == Weather::RAINY) {
+    m_engine.setDelete();
+    if (new_weather == Weather::RAINY) {
         m_engine.createRain();
-        setFilter(true);
-        music_manager.loadNewMusic(MUSIC_RAINY_1.data());
+        m_music_selector.emplace_back(MUSIC_RAINY_1);
     }
     if (new_weather == Weather::DAY) {
         setFilter(false);
-        m_engine.setDelete();
-        music_manager.loadNewMusic(MUSIC_DAY_2.data());
+        m_music_selector.emplace_back(MUSIC_DAY_1);
+        m_music_selector.emplace_back(MUSIC_DAY_2);
     }
     if (new_weather == Weather::NIGHT) {
         setFilter(true);
-        m_engine.setDelete();
-        music_manager.loadNewMusic(MUSIC_NIGHT_2.data());
+        m_music_selector.emplace_back(MUSIC_NIGHT_1);
+        m_music_selector.emplace_back(MUSIC_NIGHT_2);
     }
+    if (new_weather == Weather::FOGGY) {
+        m_engine.createFog();
+        m_music_selector.emplace_back(MUSIC_FOGGY_1);
+        m_music_selector.emplace_back(MUSIC_FOGGY_2);
+    }
+    randomMusicSelector(music_manager);
 }
 
 void zappy::WeatherManager::changeDayNight()
@@ -112,4 +122,12 @@ void zappy::WeatherManager::changeDayNight()
                 m_weathers[iterator] = Weather::DAY;
         }
     }
+}
+
+void zappy::WeatherManager::randomMusicSelector(zappy::MusicManager &music_manager)
+{
+    size_t rand = static_cast<size_t>(std::rand() % static_cast<int>(m_music_selector.size()));
+
+    music_manager.loadNewMusic(m_music_selector[rand]);
+    m_music_selector.clear();
 }

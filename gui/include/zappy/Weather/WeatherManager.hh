@@ -23,6 +23,7 @@ namespace zappy
         RAINY,
         SNOWY,
         SANDY,
+        FOGGY,
     };
 
     class WeatherManager
@@ -43,16 +44,18 @@ namespace zappy
             void setFilter(bool status);
             void animateFilter();
             void changeWeather(zappy::Weather new_weather, zappy::MusicManager &music_manager);
+            void randomMusicSelector(zappy::MusicManager &music_manager);
             void changeDayNight();
 
             bool m_filter_status = false;
-            short m_cycles;
+            short m_cycles = 0;
             sf::Clock m_clock;
             sf::Clock m_animation_clock;
             zappy::ParticleEngine m_engine;
             zappy::Weather m_state = Weather::DAY;
             sf::View m_view;
-            std::array<Weather, 2> m_weathers;
+            std::array<Weather, 5> m_weathers;
             sf::RectangleShape m_filter;
+            std::vector<std::string> m_music_selector;
     };
 } // namespace zappy

@@ -172,7 +172,9 @@ add_executable(
     src/GuiClient/GuiClient.cpp
     src/RingBuffer.cpp
     src/MusicManager/MusicManager.cpp
-    src/ParticleEngine/Particle.cpp
+    src/ParticleEngine/AParticle.cpp
+    src/ParticleEngine/RainParticle.cpp
+    src/ParticleEngine/FogParticle.cpp
     src/ParticleEngine/ParticleEngine.cpp
     src/Weather/WeatherManager.cpp
     )

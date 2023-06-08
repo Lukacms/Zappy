@@ -9,7 +9,11 @@
 #include <cstddef>
 #include <cstdlib>
 #include <iostream>
+#include <memory>
+#include <zappy/ParticleEngine/AParticle.hh>
+#include <zappy/ParticleEngine/FogParticle.hh>
 #include <zappy/ParticleEngine/ParticleEngine.hh>
+#include <zappy/ParticleEngine/RainParticle.hh>
 
 // Constructor && Destructor
 
@@ -18,10 +22,9 @@
 void zappy::ParticleEngine::drawParticles(sf::RenderWindow &window)
 {
     moveParticles();
-    if (m_delete)
-        deleteParticles();
     for (auto &particle : m_particles)
-        particle.draw(window);
+        particle->draw(window);
+    deleteParticles();
 }
 
 void zappy::ParticleEngine::moveParticles()
@@ -29,7 +32,7 @@ void zappy::ParticleEngine::moveParticles()
     if (m_clock.getElapsedTime().asSeconds() < 0.01F)
         return;
     for (auto &particle : m_particles)
-        particle.moveShape();
+        particle->moveShape();
     m_clock.restart();
 }
 
@@ -40,34 +43,31 @@ void zappy::ParticleEngine::clear()
 
 void zappy::ParticleEngine::createRain()
 {
-    for (size_t iterator = 0; iterator < 1000; iterator += 1) {
-        m_particles.emplace_back();
-        m_particles[iterator].setSize(sf::Vector2f{2, 30});
-        m_particles[iterator].setColor(sf::Color{196, 211, 223});
-        m_particles[iterator].setVelocity(
-            sf::Vector2f{0.F, static_cast<float>(std::rand() % 20 + 10)});
-        m_particles[iterator].setPosition(sf::Vector2f{static_cast<float>(std::rand() % 1920),
-                                                       static_cast<float>(-(std::rand() % 1080))});
-    }
+    for (size_t iterator = 0; iterator < 1000; iterator += 1)
+        m_particles.push_back(std::make_unique<RainParticle>());
+}
+
+void zappy::ParticleEngine::createFog()
+{
+    for (size_t iterator = 0; iterator < 100; iterator += 1)
+        m_particles.push_back(std::make_unique<FogParticle>());
 }
 
 void zappy::ParticleEngine::setDelete()
 {
-    m_delete = true;
+    for (auto &particle : m_particles) {
+        particle->setDelete();
+    }
 };
 
 void zappy::ParticleEngine::deleteParticles()
 {
     auto iterator = m_particles.begin();
 
-    if (m_particles.empty()) {
-        m_delete = false;
-        return;
-    }
     for (; iterator != m_particles.end();) {
-        if (iterator->getPosition().y >= 1100) {
+        if (iterator->get()->canDelete())
             iterator = m_particles.erase(iterator);
-        } else
+        else
             ++iterator;
     }
 }

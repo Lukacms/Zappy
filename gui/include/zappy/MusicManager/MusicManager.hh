@@ -17,6 +17,8 @@ constexpr std::string_view MUSIC_DAY_2 {"./gui/assets/music/hyrulefield.ogg"};
 constexpr std::string_view MUSIC_RAINY_1{"./gui/assets/music/songofstorms.ogg"};
 constexpr std::string_view MUSIC_NIGHT_1{"./gui/assets/music/insidehouse.ogg"};
 constexpr std::string_view MUSIC_NIGHT_2{"./gui/assets/music/stonetower.ogg"};
+constexpr std::string_view MUSIC_FOGGY_1{"./gui/assets/music/lostwoods.ogg"};
+constexpr std::string_view MUSIC_FOGGY_2{"./gui/assets/music/dragonroost.ogg"};
 
 namespace zappy
 {
