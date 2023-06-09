@@ -92,6 +92,7 @@
     "%li, thystame %li]"
 #define AI_EJECT "eject: %i\n"
 #define BASIC_VALID "ok\n"
+#define AI_DEATH "dead\n"
 
 typedef struct summon_queue_s {
     char *summon;

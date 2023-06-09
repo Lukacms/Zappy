@@ -5,10 +5,11 @@
 ** kill_player
 */
 
+#include <stdio.h>
 #include <stdlib.h>
-#include <sys/select.h>
 #include <unistd.h>
 #include <zappy/server.h>
+#include <zappy/server/summon/utils.h>
 
 int kill_player(server_t *server, client_node_t *client)
 {
@@ -23,6 +24,8 @@ int kill_player(server_t *server, client_node_t *client)
     }
     if (server->clients.length == 0)
         server->clients.head = NULL;
+    send_toall_guicli(server, DISPATCH_PDI, client->cfd);
+    dprintf(client->cfd, AI_DEATH);
     free(client->uuid);
     FD_CLR(client->cfd, &server->clients_fd);
     close(client->cfd);
