@@ -69,7 +69,7 @@ SRC	=	src/launch.c	\
 		src/server/summons/get_summon.c	\
 		src/server/clock/gettickselapsed.c	\
 		src/server/clock/add_ticks_occupied.c	\
-		src/server/clock/update_ticks_clients.c	\
+		src/server/clock/update_ticks.c	\
 		src/server/server_loop.c	\
 		src/server/handle_signal.c	\
 		src/server/client/delete_client_node.c	\
