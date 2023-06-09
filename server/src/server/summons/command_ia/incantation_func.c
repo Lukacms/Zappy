@@ -23,11 +23,10 @@ int incantation(server_t *server, char *args[], client_node_t *client)
         if (client->stats.inventory[i].units != 0 &&
             strcmp(RESOURCES_INVENTORY[i], args[1]) == 0) {
             server->map.tiles[client->stats.pos.x][client->stats.pos.y]
-                .slots[i]
-                .units += 1;
+                .slots[i].units += 1;
             client->stats.inventory[i].units -= 1;
             send_toall_guicli(server, DISPATCH_PDR, client->cfd,
-                              client->stats.inventory[i].resource);
+                            client->stats.inventory[i].resource);
             dprintf(client->cfd, BASIC_VALID);
             return SUCCESS;
         }

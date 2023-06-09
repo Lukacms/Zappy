@@ -19,6 +19,16 @@ static bool same_tile(vector2i_t a, vector2i_t b)
     return (a.x == b.x && a.y == b.y);
 }
 
+static void check_orientation(server_t *server, client_node_t *tmp)
+{
+    switch (tmp->stats.orientation) {
+        case NORTH: forward_north(server, tmp); break;
+        case SOUTH: forward_south(server, tmp); break;
+        case EAST: forward_east(server, tmp); break;
+        case WEST: forward_west(server, tmp); break;
+    }
+}
+
 int eject_func(server_t *server, char *args[], client_node_t *client)
 {
     client_node_t *tmp = NULL;
@@ -30,12 +40,7 @@ int eject_func(server_t *server, char *args[], client_node_t *client)
         if (same_tile(tmp->stats.pos, client->stats.pos) &&
             strcmp(tmp->uuid, client->uuid) != SUCCESS) {
             dprintf(tmp->cfd, AI_EJECT, client->stats.orientation + 1);
-            switch (client->stats.orientation) {
-                case NORTH: forward_north(server, tmp); break;
-                case SOUTH: forward_south(server, tmp); break;
-                case EAST: forward_east(server, tmp); break;
-                case WEST: forward_west(server, tmp); break;
-            }
+            check_orientation(server, tmp);
         }
         tmp = tmp->next;
     }

@@ -27,10 +27,10 @@ int add_egg_to_team(client_node_t *client, server_t *server)
         return FAILURE;
     team->nb_clients++;
     team->spots_free++;
-    if (!(team->eggs =
-              realloc(team->eggs, sizeof(egg_t *) * (team->nb_clients + 1))) ||
-        !(team->uuid_clients = realloc(
-              team->uuid_clients, sizeof(char *) * (team->nb_clients + 1))))
+    team->eggs = realloc(team->eggs, sizeof(egg_t *) * (team->nb_clients + 1));
+    team->uuid_clients =
+        realloc(team->uuid_clients, sizeof(char *) * (team->nb_clients + 1));
+    if (!team->eggs || !team->uuid_clients)
         return FAILURE;
     team->eggs[team->nb_clients] = NULL;
     team->uuid_clients[team->nb_clients] = NULL;

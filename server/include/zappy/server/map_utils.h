@@ -29,5 +29,5 @@ int update_map(server_t *server);
 bool has_stock_left(const int *stock);
 int stock(vector2i_t size, double density, int *stock_left);
 int change_player_pos(server_t *server, const char *client, vector2i_t old_pos,
-                      vector2i_t new_pos);
+                    vector2i_t new_pos);
 int delete_eggs_from_tile(server_t *server, vector2i_t pos);
