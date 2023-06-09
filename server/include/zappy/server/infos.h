@@ -42,6 +42,7 @@ typedef enum resource_s {
 typedef enum action_s {
     NOTHING,
     ACTION,
+    INCANTATION,
 } action_t;
 
 typedef enum orientation_s {
@@ -111,7 +112,7 @@ typedef struct team_s {
 typedef struct tile_s {
     inventory_t slots[INVENTORY_SLOTS];
     char **players_uuid;
-    int **eggs;
+    int *eggs;
     bool end;
 } tile_t;
 

@@ -21,7 +21,7 @@ int connect_new_client(server_t *server);
 
 // team related
 int add_client_to_team(client_node_t *client, server_t *server,
-                        const char *team);
+                       const char *team);
 team_t *find_team_by_name(const char *name, server_t *server);
 team_t *find_team_by_uuid(const char *uuid, server_t *server);
 void delete_client_from_team(client_node_t *client, server_t *server);
@@ -30,3 +30,5 @@ void delete_client_from_team(client_node_t *client, server_t *server);
 int create_eggs(server_t *server);
 int from_egg_to_player(client_node_t *client, team_t **team);
 int add_egg_to_team(client_node_t *client, server_t *server);
+int delete_egg_from_team(server_t *server, int id);
+egg_t **find_egg_by_nb(server_t *server, int nb);
