@@ -5,8 +5,6 @@
 ** generate_map
 */
 
-#include <math.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <zappy/server.h>
 #include <zappy/server/client.h>
@@ -24,13 +22,23 @@ static void randomize_map(server_t *server)
         init_stock[i] = server->map.init_stock[i];
     }
     while (has_stock_left(init_stock)) {
-        tmp = rand() % (INVENTORY_SLOTS + 1);
+        tmp = rand() % INVENTORY_SLOTS;
         server->map
             .tiles[rand() % server->map.size.y][rand() % server->map.size.x]
             .slots[tmp]
             .units +=
             stock(server->map.size, DENSITY_INVENTORY[tmp], &(init_stock[tmp]));
     }
+}
+
+static tile_t *set_default_tile(tile_t *tile, u_int size)
+{
+    for (u_int i = 0; i < size; i++) {
+        tile[i] = (tile_t){0};
+    }
+    tile[size] = (tile_t){0};
+    tile[size].end = true;
+    return tile;
 }
 
 int generate_map(server_t *server)
@@ -41,11 +49,14 @@ int generate_map(server_t *server)
     server->map.tiles = malloc(sizeof(tile_t *) * (server->map.size.y + 1));
     if (!server->map.tiles)
         return FAILURE;
-    server->map.tiles[server->map.size.x] = NULL;
+    server->map.tiles[server->map.size.y] = NULL;
     for (unsigned int i = 0; i < server->map.size.y; i++) {
-        server->map.tiles[i] = malloc(sizeof(tile_t) * server->map.size.y);
+        server->map.tiles[i] =
+            malloc(sizeof(tile_t) * (server->map.size.x + 1));
         if (!server->map.tiles[i])
             return FAILURE;
+        server->map.tiles[i] =
+            set_default_tile(server->map.tiles[i], server->map.size.x);
     }
     randomize_map(server);
     return create_eggs(server);

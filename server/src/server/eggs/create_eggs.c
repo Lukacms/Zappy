@@ -27,10 +27,11 @@ static int create_eggs_by_team(team_t **team, server_t *server)
 
 int create_eggs(server_t *server)
 {
-    if (!server)
+    if (!server || !server->teams)
         return SUCCESS;
-    for (u_int i = 0; server->teams[i]; i++)
+    for (u_int i = 0; server->teams[i]; i++) {
         if (create_eggs_by_team(&server->teams[i], server) != SUCCESS)
             return FAILURE;
-    return FAILURE;
+    }
+    return SUCCESS;
 }
