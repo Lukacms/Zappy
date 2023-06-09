@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "zappy/Player/Player.hh"
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -62,8 +63,9 @@ namespace zappy
             void draw(sf::RenderWindow &window, sf::Sprite &sprite);
             void displayFocusedTile(zappy::Tile &focused_tile);
             void setFocusedTile(zappy::Tile &tile);
+            void setFocusedPlayer(zappy::Player &player);
             void eventManager(sf::Event &event, sf::RenderWindow &window);
-            void turnHUD(bool status);
+            void turnHUD(bool status1, bool status2);
 
         private:
             void initializeParchment();

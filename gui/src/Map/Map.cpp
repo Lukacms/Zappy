@@ -70,6 +70,7 @@ bool zappy::Map::selectTile(sf::Event &event, sf::RenderWindow &window)
 {
     sf::Vector2i tmp{event.mouseButton.x, event.mouseButton.y};
     const sf::Vector2f point = window.mapPixelToCoords(tmp);
+    bool is_touched = false;
 
     if (event.mouseButton.button == sf::Mouse::Left) {
         for (auto height : m_map) {
@@ -78,9 +79,13 @@ bool zappy::Map::selectTile(sf::Event &event, sf::RenderWindow &window)
                     m_is_cursor_active = true;
                     m_cursor.m_position = width.m_position;
                     m_selected_tile = width;
+                    is_touched = true;
+                    break;
                 }
             }
         }
+        if (!is_touched)
+            m_is_cursor_active = false;
     }
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
         m_is_cursor_active = false;
@@ -123,4 +128,9 @@ void zappy::Map::modifyTile(Bct &arg)
         .m_inventory.phiras = static_cast<unsigned int>(arg.ressources[5]);
     m_map[static_cast<size_t>(arg.x_tile_coord)][static_cast<size_t>(arg.y_tile_coord)]
         .m_inventory.thystame = static_cast<unsigned int>(arg.ressources[6]);
+}
+
+void zappy::Map::setCursor(bool status)
+{
+    m_is_cursor_active = status;
 }

@@ -42,6 +42,7 @@ namespace zappy
             [[nodiscard]] bool selectTile(sf::Event &event, sf::RenderWindow &window);
             void modifyTile(Bct &arg);
             void animateCursor();
+            void setCursor(bool status);
             Tile &getSelectedTile();
 
         private:

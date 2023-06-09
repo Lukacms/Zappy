@@ -130,3 +130,46 @@ void zappy::PlayerManager::deletePlayers()
         }
     }
 }
+
+bool zappy::PlayerManager::selectPlayer(sf::Event &event, sf::RenderWindow &window)
+{
+    sf::Vector2i tmp{event.mouseButton.x, event.mouseButton.y};
+    const sf::Vector2f point = window.mapPixelToCoords(tmp);
+    bool is_touched = false;
+
+    if (event.mouseButton.button == sf::Mouse::Left) {
+        for (auto &player : m_players) {
+            if (player.getColliderBox().contains(point)) {
+                deselecPlayer(m_selected_player_id);
+                m_player_is_selected = true;
+                m_selected_player_id = player.getId();
+                m_selected_player = player;
+                player.triggerSelection(true);
+                is_touched = true;
+                break;
+            }
+        }
+        if (!is_touched) {
+            m_player_is_selected = false;
+            deselecPlayer(m_selected_player_id);
+        }
+    }
+    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+        m_player_is_selected = false;
+        deselecPlayer(m_selected_player_id);
+    }
+    return m_player_is_selected;
+}
+
+void zappy::PlayerManager::deselecPlayer(int player_id)
+{
+    for (auto &player : m_players) {
+        if (player.getId() == player_id)
+            player.triggerSelection(false);
+    }
+}
+
+zappy::Player &zappy::PlayerManager::getSelectedPlayer()
+{
+    return m_selected_player;
+}

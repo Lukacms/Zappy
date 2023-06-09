@@ -11,6 +11,7 @@
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <memory>
 #include <string_view>
 #include <vector>
 #include <zappy/GuiCommand/GuiCommand.hh>
@@ -41,11 +42,17 @@ namespace zappy
             void setMapSize(sf::Vector2i &size);
             void explusePlayer(Pex &expulsed_player);
             void playerDeath(Pdi &dead_player);
+            bool selectPlayer(sf::Event &event, sf::RenderWindow &window);
             void deletePlayers();
+            [[nodiscard]] Player &getSelectedPlayer();
 
         private:
             void depthManager();
+            void deselecPlayer(int player_id);
 
+            bool m_player_is_selected = false;
+            Player m_selected_player;
+            int m_selected_player_id;
             std::vector<Player> m_players;
             sf::Vector2i m_size;
             sf::SoundBuffer m_death;

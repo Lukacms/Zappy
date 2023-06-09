@@ -52,11 +52,14 @@ namespace zappy
             void setPlayerLevel(int level);
             void setPlayerInventory(Inventory &inventory);
             void triggerDeath();
+            void triggerSelection(bool status);
 
             [[nodiscard]] int getId() const;
             [[nodiscard]] sf::Vector2f getPosition() const;
             [[nodiscard]] Inventory getInventory() const;
             [[nodiscard]] bool canDeletePlayer() const;
+            [[nodiscard]] sf::FloatRect getColliderBox() const;
+            [[nodiscard]] const std::string &getTeam() const;
 
         private:
             void animateNorth(sf::Vector2i &size);
@@ -64,11 +67,14 @@ namespace zappy
             void animateSouth(sf::Vector2i &size);
             void animateWest(sf::Vector2i &size);
             void animateDeath();
+            void animateSelected();
 
             int m_id;
             int m_level;
             bool m_is_dead;
             bool m_delete;
+            bool m_selected = false;
+            bool m_spark = true;
             Inventory m_inventory;
             Orientation m_orientation;
             std::string m_team;
@@ -79,6 +85,7 @@ namespace zappy
             sf::IntRect m_rect;
             sf::FloatRect m_box;
             sf::Clock m_clock;
+            sf::Clock m_clock_selected;
             sf::Color m_color = {255, 255, 255};
     };
 } // namespace zappy

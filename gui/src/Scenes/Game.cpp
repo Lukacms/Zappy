@@ -5,13 +5,13 @@
 ** Game
 */
 
-#include <zappy/MusicManager/MusicManager.hh>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
 #include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/Map/Map.hh>
+#include <zappy/MusicManager/MusicManager.hh>
 #include <zappy/Player/Player.hh>
 #include <zappy/Scenes/Game.hh>
 
@@ -29,7 +29,6 @@ void zappy::Game::draw(sf::RenderWindow &window)
     m_music_manager.fade();
     m_weather.checkWeather(m_music_manager);
     m_sprite.setTexture(m_texture);
-    m_hud.setFocusedTile(m_map.getSelectedTile());
     m_map.draw(window, m_sprite);
     m_player_manager.animatePlayers();
     m_player_manager.drawPlayers(window, m_sprite);
@@ -39,11 +38,20 @@ void zappy::Game::draw(sf::RenderWindow &window)
 
 void zappy::Game::manageEvent(sf::RenderWindow &window, sf::Event &event)
 {
+    bool is_player_selected = m_player_manager.selectPlayer(event, window);
+    bool is_tile_selected = m_map.selectTile(event, window);
+
     m_camera.cameraOnKeyPressed(event);
     m_camera.cameraOnKeyReleased(event);
     m_camera.moveView(window);
     m_hud.eventManager(event, window);
-    m_hud.turnHUD(m_map.selectTile(event, window));
+    m_hud.turnHUD(is_player_selected, is_tile_selected);
+    if (is_tile_selected)
+        m_hud.setFocusedTile(m_map.getSelectedTile());
+    if (is_player_selected) {
+        m_hud.setFocusedPlayer(m_player_manager.getSelectedPlayer());
+        m_map.setCursor(false);
+    }
 }
 
 void zappy::Game::createMap(zappy::Msz &map, sf::RenderWindow &window)

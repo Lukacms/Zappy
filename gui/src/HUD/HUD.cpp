@@ -5,6 +5,7 @@
 ** HUD
 */
 
+#include "Inventory.hh"
 #include "zappy/Player/Player.hh"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Font.hpp>
@@ -59,6 +60,7 @@ void zappy::HUD::animateHUD()
         m_food.m_position.y -= HUD_SPEED;
         m_food_count.m_position.y -= HUD_SPEED;
         m_food_text.m_position.y -= HUD_SPEED;
+        m_title.m_position.y -= HUD_SPEED;
         for (size_t i = 0; i < RUPEE_TYPES; i += 1) {
             m_rupees[i].m_position.y -= HUD_SPEED;
             m_texts[i].m_position.y -= HUD_SPEED;
@@ -70,6 +72,7 @@ void zappy::HUD::animateHUD()
         m_food.m_position.y += HUD_SPEED;
         m_food_count.m_position.y += HUD_SPEED;
         m_food_text.m_position.y += HUD_SPEED;
+        m_title.m_position.y += HUD_SPEED;
         for (size_t i = 0; i < RUPEE_TYPES; i += 1) {
             m_rupees[i].m_position.y += HUD_SPEED;
             m_texts[i].m_position.y += HUD_SPEED;
@@ -114,9 +117,9 @@ void zappy::HUD::animateRupees()
     }
 }
 
-void zappy::HUD::turnHUD(bool status)
+void zappy::HUD::turnHUD(bool status1, bool status2)
 {
-    m_is_active = status;
+    m_is_active = status1 || status2;
 }
 
 void zappy::HUD::eventManager(sf::Event &event, sf::RenderWindow &window)
@@ -170,6 +173,9 @@ void zappy::HUD::initializeTexts()
             m_rupees[i].m_position.x + m_rupees[i].m_rect.width * SCALING / 2,
             m_rupees[i].m_position.y + m_rupees[i].m_rect.height * SCALING};
     }
+    m_title.m_str = "";
+    m_title.m_position = {static_cast<float>((m_hud_view.getSize().x / 15)),
+                          m_parchment.m_position.y + m_parchment.m_rect.height * SCALING / 5 * 2};
 }
 
 void zappy::HUD::initializeFood()
@@ -197,6 +203,23 @@ void zappy::HUD::setFocusedTile(zappy::Tile &tile)
     m_ressources[4].m_str = "x" + std::to_string(tile.m_inventory.phiras);
     m_ressources[5].m_str = "x" + std::to_string(tile.m_inventory.thystame);
     m_food_count.m_str = "x" + std::to_string(tile.m_inventory.food);
+    m_title.m_str = {
+        "Tile " + std::to_string(static_cast<int>(tile.m_position.x / SCALING / TILE_SIZE)) + " " +
+        std::to_string(static_cast<int>(tile.m_position.y / SCALING / TILE_SIZE))};
+}
+
+void zappy::HUD::setFocusedPlayer(zappy::Player &player)
+{
+    Inventory player_inventory = player.getInventory();
+
+    m_ressources[0].m_str = "x" + std::to_string(player_inventory.linemate);
+    m_ressources[1].m_str = "x" + std::to_string(player_inventory.deraumede);
+    m_ressources[2].m_str = "x" + std::to_string(player_inventory.sibur);
+    m_ressources[3].m_str = "x" + std::to_string(player_inventory.mendiane);
+    m_ressources[4].m_str = "x" + std::to_string(player_inventory.phiras);
+    m_ressources[5].m_str = "x" + std::to_string(player_inventory.thystame);
+    m_food_count.m_str = "x" + std::to_string(player_inventory.food);
+    m_title.m_str = {"Player " + std::to_string(player.getId()) + "\n" + player.getTeam()};
 }
 
 // void zappy::HUD::setFocusedPlayer(zappy::Player &player)
@@ -260,5 +283,9 @@ void zappy::HUD::drawTexts(sf::RenderWindow &window)
     m_text.setCharacterSize(24);
     m_text.setPosition(m_food_count.m_position);
     m_text.setString(m_food_count.m_str);
+    window.draw(m_text);
+    m_text.setCharacterSize(32);
+    m_text.setPosition(m_title.m_position);
+    m_text.setString(m_title.m_str);
     window.draw(m_text);
 }

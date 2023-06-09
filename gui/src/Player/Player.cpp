@@ -6,12 +6,13 @@
 */
 
 #include <Inventory.hh>
-#include <zappy/Map/Tile.hh>
+#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
 #include <utility>
+#include <zappy/Map/Tile.hh>
 #include <zappy/Player/Player.hh>
 
 // Constructor && Destructor
@@ -45,6 +46,11 @@ void zappy::Player::drawPlayer(sf::RenderWindow &window, sf::Sprite &sprite, sf:
     sprite.setPosition(m_position_map);
     sprite.setTextureRect(m_rect);
     sprite.setColor(m_color);
+    m_box = sprite.getGlobalBounds();
+    m_box.left += 11 * SCALING;
+    m_box.width -= 22 * SCALING;
+    m_box.top += 5 * SCALING;
+    m_box.height -= 8 * SCALING;
     window.draw(sprite);
     sprite.setOrigin({0, 0});
     sprite.setColor(sf::Color{255, 255, 255});
@@ -83,6 +89,8 @@ void zappy::Player::animatePlayer(sf::Vector2i &size)
         animateDeath();
         return;
     }
+    if (m_selected)
+        animateSelected();
     if (m_orientation == Orientation::North)
         animateNorth(size);
     if (m_orientation == Orientation::East)
@@ -210,4 +218,40 @@ void zappy::Player::triggerDeath()
 bool zappy::Player::canDeletePlayer() const
 {
     return m_delete;
+}
+
+sf::FloatRect zappy::Player::getColliderBox() const
+{
+    return m_box;
+}
+
+void zappy::Player::animateSelected()
+{
+    if (m_clock_selected.getElapsedTime().asMilliseconds() > 1.F && m_spark) {
+        m_clock_selected.restart();
+        m_color.a -= 1;
+        if (m_color.a == 123)
+            m_spark = !m_spark;
+    }
+    if (m_clock_selected.getElapsedTime().asMilliseconds() > 1.F && !m_spark) {
+        m_clock_selected.restart();
+        m_color.a += 1;
+        if (m_color.a == 255)
+            m_spark = !m_spark;
+    }
+}
+
+void zappy::Player::triggerSelection(bool status)
+{
+    m_selected = status;
+    if (!m_selected) {
+        if (!m_is_dead)
+            m_color.a = 255;
+        m_spark = true;
+    }
+}
+
+const std::string &zappy::Player::getTeam() const
+{
+    return m_team;
 }
