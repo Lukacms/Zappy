@@ -6,6 +6,7 @@
 */
 
 #include <zappy/server.h>
+#include <zappy/server/client.h>
 #include <zappy/server/clock/utils.h>
 #include <zappy/server/map_utils.h>
 
@@ -30,7 +31,7 @@ static void update_ticks_clients(server_t *server, int ticks_elapsed)
 static void update_map_ticks(server_t *server, int ticks_elapsed)
 {
     if (ticks_elapsed >= server->map.last_updated) {
-        server->map.last_updated += 20;
+        server->map.last_updated += UPDATE_TICKS;
         update_map(server);
     }
 }
@@ -43,4 +44,8 @@ void update_ticks(server_t *server)
         return;
     update_ticks_clients(server, ticks_elapsed);
     update_map_ticks(server, ticks_elapsed);
+    if (ticks_elapsed >= server->clients.last_meal) {
+        server->clients.last_meal += MEAL_TIME;
+        starve_players(server);
+    }
 }

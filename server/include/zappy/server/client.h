@@ -18,6 +18,8 @@ client_node_t *find_client_by_fd(int fd, server_t *server);
 void delete_client_by_fd(int fd, server_t *server);
 void delete_client_by_uuid(const char *uuid, server_t *server);
 int connect_new_client(server_t *server);
+int kill_player(server_t *server, client_node_t *client);
+int starve_players(server_t *server);
 
 // team related
 int add_client_to_team(client_node_t *client, server_t *server,

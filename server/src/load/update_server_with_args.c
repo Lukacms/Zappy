@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <zappy/server.h>
+#include <zappy/server/clock/utils.h>
 #include <zappy/server/map_utils.h>
 #include <zappy/server/utils.h>
 
@@ -39,5 +40,6 @@ int update_server_with_args(server_t *server, args_config_t *args)
         if (fill_team_infos(server->teams[i], args, i) != SUCCESS)
             return FAILURE;
     }
+    server->clients.last_meal = gettickselapsed(&server->clock);
     return generate_map(server);
 }

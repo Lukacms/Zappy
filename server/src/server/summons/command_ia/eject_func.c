@@ -10,6 +10,7 @@
 #include <string.h>
 #include <zappy/server.h>
 #include <zappy/server/clock/utils.h>
+#include <zappy/server/map_utils.h>
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
@@ -17,8 +18,6 @@ static bool same_tile(vector2i_t a, vector2i_t b)
 {
     return (a.x == b.x && a.y == b.y);
 }
-
-static void check_eggs_to_destroy(server_t *server, client_node_t *client) {}
 
 int eject_func(server_t *server, char *args[], client_node_t *client)
 {
@@ -40,7 +39,7 @@ int eject_func(server_t *server, char *args[], client_node_t *client)
         }
         tmp = tmp->next;
     }
-    check_eggs_to_destroy(server, client);
+    delete_eggs_from_tile(server, client->stats.pos);
     add_ticks_occupied(client, RESTRAINT_EJECT, server);
     return SUCCESS;
 }

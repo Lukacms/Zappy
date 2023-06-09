@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <zappy/server.h>
 #include <zappy/server/client.h>
+#include <zappy/server/clock/utils.h>
 #include <zappy/server/map_utils.h>
 
 static void randomize_map(server_t *server)
@@ -36,6 +37,7 @@ int generate_map(server_t *server)
 {
     if (!server)
         return FAILURE;
+    server->map.last_updated = gettickselapsed(&server->clock);
     server->map.tiles = malloc(sizeof(tile_t *) * (server->map.size.y + 1));
     if (!server->map.tiles)
         return FAILURE;

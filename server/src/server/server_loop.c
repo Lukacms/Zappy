@@ -12,7 +12,6 @@
 #include <zappy/server/client.h>
 #include <zappy/server/clock/utils.h>
 #include <zappy/server/destroy.h>
-#include <zappy/server/infos.h>
 #include <zappy/server/summon/utils.h>
 
 static void check_if_client_ready(server_t *server, size_t ind, fd_set *clients)
