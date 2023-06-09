@@ -74,6 +74,9 @@ namespace zappy
             void animateRupees();
             void animateFood();
 
+            void drawTexts(sf::RenderWindow &window);
+            void drawSprites(sf::RenderWindow &window, sf::Sprite &sprite);
+
             sf::View m_hud_view{};
             sf::Vector2f m_hud_scale{};
             bool m_is_active{false};
@@ -90,6 +93,7 @@ namespace zappy
 
             zappy::Tile m_parchment{};
             zappy::Tile m_food{};
+            zappy::Text m_title{};
             zappy::Text m_food_text{};
             zappy::Text m_food_count{};
             std::array<Tile, 6> m_rupees{};

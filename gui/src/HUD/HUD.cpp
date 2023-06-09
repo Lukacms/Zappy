@@ -5,6 +5,7 @@
 ** HUD
 */
 
+#include "zappy/Player/Player.hh"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -45,38 +46,8 @@ void zappy::HUD::draw(sf::RenderWindow &window, sf::Sprite &sprite)
     m_text.setFillColor(m_color_text);
     window.setView(m_hud_view);
     animateHUD();
-    sprite.setColor(m_color);
-    sprite.setTextureRect(m_parchment.m_rect);
-    sprite.setPosition(m_parchment.m_position);
-    sprite.setScale(m_hud_scale);
-    m_parchment.m_box = sprite.getGlobalBounds();
-    window.draw(sprite);
-    for (size_t i = 0; i < RUPEE_TYPES; i += 1) {
-        sprite.setTextureRect(m_rupees[i].m_rect);
-        sprite.setPosition(m_rupees[i].m_position);
-        m_text.setString(m_texts[i].m_str);
-        m_text.setCharacterSize(32);
-        m_text.setPosition(m_texts[i].m_position);
-        m_text.setPosition(m_text.getPosition().x - m_hud_view.getSize().x / 10 * 1.25F,
-                           m_text.getPosition().y);
-        window.draw(m_text);
-        m_text.setString(m_ressources[i].m_str);
-        m_text.setPosition(m_ressources[i].m_position);
-        m_text.setCharacterSize(24);
-        window.draw(m_text);
-        window.draw(sprite);
-    }
-    sprite.setTextureRect(m_food.m_rect);
-    sprite.setPosition(m_food.m_position);
-    window.draw(sprite);
-    m_text.setCharacterSize(32);
-    m_text.setPosition(m_food_text.m_position);
-    m_text.setString(m_food_text.m_str);
-    window.draw(m_text);
-    m_text.setCharacterSize(24);
-    m_text.setPosition(m_food_count.m_position);
-    m_text.setString(m_food_count.m_str);
-    window.draw(m_text);
+    drawSprites(window, sprite);
+    drawTexts(window);
     sprite.setColor({255, 255, 255, 255});
     window.setView(world_view);
 }
@@ -228,10 +199,14 @@ void zappy::HUD::setFocusedTile(zappy::Tile &tile)
     m_food_count.m_str = "x" + std::to_string(tile.m_inventory.food);
 }
 
+// void zappy::HUD::setFocusedPlayer(zappy::Player &player)
+// {
+//     player.getInventory();
+// }
+
 void zappy::HUD::animateFood()
 {
-    if (m_food_clock.getElapsedTime().asMilliseconds() > 75.0F &&
-        m_food_phases != 0) {
+    if (m_food_clock.getElapsedTime().asMilliseconds() > 75.0F && m_food_phases != 0) {
         m_food_phases += 1;
         if (m_food_phases >= 7) {
             m_food_phases = 0;
@@ -239,10 +214,51 @@ void zappy::HUD::animateFood()
         } else
             m_food.m_rect.left += m_food.m_rect.width;
         m_food_clock.restart();
-    } else if (m_food_clock.getElapsedTime().asSeconds() > 2.0F &&
-        m_food_phases == 0) {
+    } else if (m_food_clock.getElapsedTime().asSeconds() > 2.0F && m_food_phases == 0) {
         m_food_phases += 1;
         m_food.m_rect.left += m_food.m_rect.width;
         m_food_clock.restart();
     }
+}
+
+void zappy::HUD::drawSprites(sf::RenderWindow &window, sf::Sprite &sprite)
+{
+    sprite.setColor(m_color);
+    sprite.setTextureRect(m_parchment.m_rect);
+    sprite.setPosition(m_parchment.m_position);
+    sprite.setScale(m_hud_scale);
+    m_parchment.m_box = sprite.getGlobalBounds();
+    window.draw(sprite);
+    for (auto &rupee : m_rupees) {
+        sprite.setTextureRect(rupee.m_rect);
+        sprite.setPosition(rupee.m_position);
+        window.draw(sprite);
+    }
+    sprite.setTextureRect(m_food.m_rect);
+    sprite.setPosition(m_food.m_position);
+    window.draw(sprite);
+}
+
+void zappy::HUD::drawTexts(sf::RenderWindow &window)
+{
+    for (size_t iterator = 0; iterator < m_texts.size(); iterator += 1) {
+        m_text.setString(m_texts[iterator].m_str);
+        m_text.setCharacterSize(32);
+        m_text.setPosition(m_texts[iterator].m_position);
+        m_text.setPosition(m_text.getPosition().x - m_hud_view.getSize().x / 10 * 1.25F,
+                           m_text.getPosition().y);
+        window.draw(m_text);
+        m_text.setString(m_ressources[iterator].m_str);
+        m_text.setPosition(m_ressources[iterator].m_position);
+        m_text.setCharacterSize(24);
+        window.draw(m_text);
+    }
+    m_text.setCharacterSize(32);
+    m_text.setPosition(m_food_text.m_position);
+    m_text.setString(m_food_text.m_str);
+    window.draw(m_text);
+    m_text.setCharacterSize(24);
+    m_text.setPosition(m_food_count.m_position);
+    m_text.setString(m_food_count.m_str);
+    window.draw(m_text);
 }
