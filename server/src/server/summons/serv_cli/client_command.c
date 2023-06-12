@@ -28,6 +28,7 @@ static const summons_funptr_t SUMMON[] = {
     {.summon = ZAPPY_RIGHT, .handler = &right_func, .type = AI},
     {.summon = ZAPPY_LEFT, .handler = &left_func, .type = AI},
     {.summon = ZAPPY_LOOK, .handler = &look_func, .type = AI},
+    {.summon = ZAPPY_FORK, .handler = &fork_func, .type = AI},
     {.summon = ZAPPY_INVENTORY, .handler = &inventory_func, .type = AI},
     {.summon = ZAPPY_BROADCAST, .handler = &broadcast_func, .type = AI},
     {.summon = ZAPPY_CONNECT_NBR, .handler = &connect_nbr_func, .type = AI},

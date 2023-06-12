@@ -20,6 +20,9 @@ void destroy_clients(clients_t *clients)
     for (u_int i = 0; i < clients->length; i++) {
         anchor = anchor->next;
         free(client->uuid);
+        for (u_int i = 0; i < MAX_WAITING_SUMMONS && client->queue[i].summon;
+             i++)
+            free(client->queue[i].summon);
         free(client);
         client = anchor;
     }

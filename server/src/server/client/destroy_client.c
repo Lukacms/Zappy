@@ -28,6 +28,8 @@ void destroy_client(server_t *server, client_node_t *client)
         return;
     rebase_nodes(server, client);
     free(client->uuid);
+    for (u_int i = 0; i < MAX_WAITING_SUMMONS && client->queue[i].summon; i++)
+        free(client->queue[i].summon);
     FD_CLR(client->cfd, &server->clients_fd);
     close(client->cfd);
     free(client);

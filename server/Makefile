@@ -119,8 +119,8 @@ all:	../$(NAME)
 .PHONY:	all
 
 ../$(NAME):	$(OBJ)
-	$(CC) -o $(NAME) $(OBJ) $(LDLIBS)
-	mv $(NAME) ..
+	@$(CC) -o $(NAME) $(OBJ) $(LDLIBS)
+	@mv $(NAME) ..
 
 debug: fclean
 debug: CFLAGS += -g

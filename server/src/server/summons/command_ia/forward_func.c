@@ -68,7 +68,7 @@ int forward_func(server_t *server, char *args[], client_node_t *client)
 {
     if (!server || !client)
         return FAILURE;
-    if (!args || array_len(args) != 2)
+    if (!args || array_len(args) != 1)
         return set_error(client->cfd, INVALID_ACTION, false);
     switch (client->stats.orientation) {
         case NORTH: forward_north(server, client); break;
@@ -79,6 +79,6 @@ int forward_func(server_t *server, char *args[], client_node_t *client)
     dprintf(client->cfd, "ok\n");
     add_ticks_occupied(client, RESTRAINT_FORWARD, server);
     send_toall_guicli(server, DISPATCH_PPO, client->cfd, client->stats.pos.x,
-                    client->stats.pos.y, client->stats.orientation);
+                      client->stats.pos.y, client->stats.orientation);
     return SUCCESS;
 }
