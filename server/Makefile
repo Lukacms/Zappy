@@ -41,6 +41,7 @@ SRC	=	src/launch.c	\
 		src/server/eggs/add_egg_to_team.c	\
 		src/server/eggs/delete_egg_from_team.c	\
 		src/server/summons/command_ia/dprint_tile.c	\
+		src/server/summons/command_ia/broadcast_func.c	\
 		src/server/summons/command_ia/inventory_func.c	\
 		src/server/summons/command_ia/look_func.c	\
 		src/server/summons/command_ia/set_func.c	\

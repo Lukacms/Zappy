@@ -45,7 +45,13 @@
 #define ZAPPY_LEFT "Left"
 #define ZAPPY_LOOK "Look"
 #define ZAPPY_INVENTORY "Inventory"
+#define ZAPPY_BROADCAST "Broadcast"
 #define ZAPPY_CONNECT_NBR "Connect_nbr"
+#define ZAPPY_FORK "Fork"
+#define ZAPPY_EJECT "Eject"
+#define ZAPPY_TAKE "Take"
+#define ZAPPY_SET "Set"
+#define ZAPPY_INCANTATION "Incantation"
 
 /* delay for summons of AIs */
 #define RESTRAINT_FORWARD 7

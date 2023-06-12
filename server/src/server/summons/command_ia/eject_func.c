@@ -14,7 +14,7 @@
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
-static bool same_tile(vector2i_t a, vector2i_t b)
+bool same_tile(vector2i_t a, vector2i_t b)
 {
     return (a.x == b.x && a.y == b.y);
 }
