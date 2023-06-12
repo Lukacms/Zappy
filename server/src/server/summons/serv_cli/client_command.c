@@ -41,18 +41,18 @@ static const summons_funptr_t SUMMON[] = {
 static int parse_command(char **summon, server_t *server, client_node_t *client)
 {
     if (!server || !summon || !(*summon))
-        return FAILURE;
+        return NOT_FOUND;
     for (int i = 0; SUMMON[i].handler; i += 1) {
         if (strcmp(SUMMON[i].summon, summon[0]) == 0 &&
             SUMMON[i].type == client->state)
             return SUMMON[i].handler(server, summon, client);
     }
-    return FAILURE;
+    return NOT_FOUND;
 }
 
 static void error_command(char **tab, server_t *server, client_node_t *client)
 {
-    if (tab == NULL || parse_command(tab, server, client) != 0) {
+    if (tab == NULL || parse_command(tab, server, client) == NOT_FOUND) {
         if (client->state == GUI) {
             dprintf(client->cfd, GUI_UNKNOWN);
             return;
@@ -62,10 +62,11 @@ static void error_command(char **tab, server_t *server, client_node_t *client)
 }
 
 int parse_event_client(server_t *server, const char *line,
-                    client_node_t *client)
+                       client_node_t *client)
 {
     char **tab = NULL;
 
+    printf("gnééééééééé %s\n", line);
     if (!server || !line || !client)
         return FAILURE;
     if (!(tab = str_to_array(line, SEPARATOR_CMD))) {

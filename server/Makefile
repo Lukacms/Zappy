@@ -35,6 +35,7 @@ SRC	=	src/launch.c	\
 		src/destroy/destroy_server.c	\
 		src/destroy/destroy_teams.c	\
 		src/destroy/destroy_clients.c	\
+		src/destroy/destroy_arguments.c	\
 		src/server/eggs/create_eggs.c	\
 		src/server/eggs/from_egg_to_player.c	\
 		src/server/eggs/find_egg_by_nb.c	\
@@ -82,6 +83,7 @@ SRC	=	src/launch.c	\
 		src/server/client/add_client_to_team.c	\
 		src/server/client/kill_player.c	\
 		src/server/client/starve_players.c	\
+		src/server/client/destroy_client.c	\
 
 SRC_MAIN	=	src/main.c
 

@@ -72,7 +72,7 @@ int look_func(server_t *server, char *args[], client_node_t *client)
 {
     if (!server || !client)
         return FAILURE;
-    if (!args || array_len(args) != 2)
+    if (!args || array_len(args) != 1)
         return set_error(client->cfd, INVALID_ACTION, false);
     switch (client->stats.orientation) {
         case NORTH: look_north(server, client); break;

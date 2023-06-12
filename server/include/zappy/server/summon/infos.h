@@ -7,6 +7,7 @@
 
 #pragma once
 
+#define NOT_FOUND -1
 #define MAX_WAITING_SUMMONS 10
 #define BUFFER_SIZE 4096
 #define SEPARATOR_CMD " \t\r\n"

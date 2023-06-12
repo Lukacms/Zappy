@@ -19,7 +19,8 @@ static int fill_team_infos(team_t *team, args_config_t *args, u_int ind)
     team->nb_clients = args->nb_clients_og;
     if (!(team->uuid_clients = malloc(sizeof(char *) * (team->nb_clients + 1))))
         return FAILURE;
-    memset(team->uuid_clients, 0, team->nb_clients + 1);
+    for (u_int i = 0; i < team->nb_clients; i++)
+        team->uuid_clients[i] = NULL;
     team->spots_free = team->nb_clients;
     team->team_name = args->team_names[ind];
     return SUCCESS;
@@ -38,6 +39,7 @@ int update_server_with_args(server_t *server, args_config_t *args)
     for (unsigned int i = 0; args->team_names[i]; i++) {
         if (!(server->teams[i] = malloc(sizeof(team_t))))
             return FAILURE;
+        *server->teams[i] = (team_t){0};
         if (fill_team_infos(server->teams[i], args, i) != SUCCESS)
             return FAILURE;
     }

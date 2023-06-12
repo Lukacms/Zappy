@@ -2,20 +2,18 @@
 ** EPITECH PROJECT, 2023
 ** client
 ** File description:
-** kill_player
+** destroy_client
 */
 
 #include <fcntl.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <zappy/server.h>
-#include <zappy/server/summon/utils.h>
 
-int kill_player(server_t *server, client_node_t *client)
+void destroy_client(server_t *server, client_node_t *client)
 {
     if (!server || !client)
-        return FAILURE;
+        return;
     server->clients.length -= 1;
     if (server->clients.head == client)
         server->clients.head = server->clients.head->next;
@@ -25,12 +23,9 @@ int kill_player(server_t *server, client_node_t *client)
     }
     if (server->clients.length == 0)
         server->clients.head = NULL;
-    send_toall_guicli(server, DISPATCH_PDI, client->cfd);
-    if (fcntl(client->cfd, F_GETFD) > 0)
-        dprintf(client->cfd, AI_DEATH);
     free(client->uuid);
     FD_CLR(client->cfd, &server->clients_fd);
-    close(client->cfd);
+    if (fcntl(client->cfd, F_GETFD) > 0)
+        close(client->cfd);
     free(client);
-    return SUCCESS;
 }
