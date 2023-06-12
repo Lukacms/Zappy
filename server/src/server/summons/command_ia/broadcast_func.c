@@ -6,11 +6,12 @@
 */
 
 #include <math.h>
-#include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include <zappy/server/summon/utils.h>
 
-static const double DIRECTIONNAL_VECTOR[4] = {{0}, {180}, {90}, {270}};
+static const double DIRECTIONNAL_VECTOR[4] = {0, 180, 90, 270};
 
 static const double ANGLES[7][3] = {
     {67.5, 112.5, 7},  {112.5, 157.5, 6}, {157.5, 202.5, 5}, {202.5, 247.5, 4},
