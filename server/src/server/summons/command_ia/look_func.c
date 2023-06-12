@@ -14,23 +14,10 @@
 
 static int look_west(server_t *server, client_node_t *client)
 {
+    dprintf(client->cfd, "[\n");
     dprint_tile(server->map, client->stats.pos.x, client->stats.pos.y, client);
     for (size_t i = 1; i <= client->stats.level; i += 1) {
-        for (size_t j = -i; j < (i + 1); j += 1) {
-            dprintf(client->cfd, ",");
-            dprint_tile(server->map, client->stats.pos.x + j,
-                        client->stats.pos.y + i, client);
-        }
-    }
-    dprintf(client->cfd, "]\n");
-    return SUCCESS;
-}
-
-static int look_east(server_t *server, client_node_t *client)
-{
-    dprint_tile(server->map, client->stats.pos.x, client->stats.pos.y, client);
-    for (size_t i = 1; i <= client->stats.level; i += 1) {
-        for (size_t j = -i; j < (i + 1); j += 1) {
+        for (size_t j = -i; j <= (i + 1); j += 1) {
             dprintf(client->cfd, ",");
             dprint_tile(server->map, client->stats.pos.x - j,
                         client->stats.pos.y - i, client);
@@ -40,14 +27,30 @@ static int look_east(server_t *server, client_node_t *client)
     return SUCCESS;
 }
 
-static int look_south(server_t *server, client_node_t *client)
+static int look_east(server_t *server, client_node_t *client)
 {
+    dprintf(client->cfd, "[\n");
     dprint_tile(server->map, client->stats.pos.x, client->stats.pos.y, client);
     for (size_t i = 1; i <= client->stats.level; i += 1) {
-        for (size_t j = -i; j < (i + 1); j += 1) {
+        for (size_t j = -i; j <= (i + 1); j += 1) {
+            dprintf(client->cfd, ",");
+            dprint_tile(server->map, client->stats.pos.x + j,
+                        client->stats.pos.y + i, client);
+        }
+    }
+    dprintf(client->cfd, "]\n");
+    return SUCCESS;
+}
+
+static int look_south(server_t *server, client_node_t *client)
+{
+    dprintf(client->cfd, "[\n");
+    dprint_tile(server->map, client->stats.pos.x, client->stats.pos.y, client);
+    for (size_t i = 1; i <= client->stats.level; i += 1) {
+        for (size_t j = -i; j <= (i + 1); j += 1) {
             dprintf(client->cfd, ",");
             dprint_tile(server->map, client->stats.pos.x - i,
-                        client->stats.pos.y - j, client);
+                        client->stats.pos.y + j, client);
         }
     }
     dprintf(client->cfd, " ]\n");
@@ -56,12 +59,13 @@ static int look_south(server_t *server, client_node_t *client)
 
 static int look_north(server_t *server, client_node_t *client)
 {
+    dprintf(client->cfd, "[\n");
     dprint_tile(server->map, client->stats.pos.x, client->stats.pos.y, client);
     for (size_t i = 1; i <= client->stats.level; i += 1) {
-        for (size_t j = -i; j < (i + 1); j += 1) {
+        for (size_t j = -i; j <= (i + 1); j += 1) {
             dprintf(client->cfd, ",");
             dprint_tile(server->map, client->stats.pos.x + i,
-                        client->stats.pos.y + j, client);
+                        client->stats.pos.y - j, client);
         }
     }
     dprintf(client->cfd, "]\n");
