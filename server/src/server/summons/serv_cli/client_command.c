@@ -66,7 +66,6 @@ int parse_event_client(server_t *server, const char *line,
 {
     char **tab = NULL;
 
-    printf("gnééééééééé %s\n", line);
     if (!server || !line || !client)
         return FAILURE;
     if (!(tab = str_to_array(line, SEPARATOR_CMD))) {

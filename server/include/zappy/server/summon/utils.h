@@ -48,4 +48,4 @@ int eject_func(server_t *server, char *args[], client_node_t *client);
 int take_func(server_t *server, char *args[], client_node_t *client);
 int set_func(server_t *server, char *args[], client_node_t *client);
 int incantation_func(server_t *server, char *args[], client_node_t *client);
-int broadcast_func(server_t *server, char *args[], client_node_t *client);
+int fork_func(server_t *server, char *args[], client_node_t *client);

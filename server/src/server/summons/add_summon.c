@@ -5,6 +5,7 @@
 ** add_summon
 */
 
+#include <stdio.h>
 #include <string.h>
 #include <zappy/server.h>
 #include <zappy/server/infos.h>
@@ -17,6 +18,7 @@ int add_summon(char *summon, client_node_t *client)
         return FAILURE;
     while (ind < MAX_WAITING_SUMMONS && client->queue[ind].size < 0)
         ind++;
+    printf("ind -> %d\n", ind);
     if (ind >= MAX_WAITING_SUMMONS)
         return FAILURE;
     client->queue[ind].size = strlen(summon);

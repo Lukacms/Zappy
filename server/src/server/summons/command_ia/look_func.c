@@ -22,7 +22,6 @@ static int look_west(server_t *server, client_node_t *client)
                         client->stats.pos.y + i, client);
         }
     }
-    dprintf(client->cfd, "]\n");
     return SUCCESS;
 }
 
@@ -36,7 +35,6 @@ static int look_east(server_t *server, client_node_t *client)
                         client->stats.pos.y - i, client);
         }
     }
-    dprintf(client->cfd, "]\n");
     return SUCCESS;
 }
 
@@ -50,7 +48,6 @@ static int look_south(server_t *server, client_node_t *client)
                         client->stats.pos.y - j, client);
         }
     }
-    dprintf(client->cfd, " ]\n");
     return SUCCESS;
 }
 
@@ -64,7 +61,6 @@ static int look_north(server_t *server, client_node_t *client)
                         client->stats.pos.y + j, client);
         }
     }
-    dprintf(client->cfd, "]\n");
     return SUCCESS;
 }
 
@@ -74,12 +70,14 @@ int look_func(server_t *server, char *args[], client_node_t *client)
         return FAILURE;
     if (!args || array_len(args) != 1)
         return set_error(client->cfd, INVALID_ACTION, false);
+    dprintf(client->cfd, "[");
     switch (client->stats.orientation) {
         case NORTH: look_north(server, client); break;
         case SOUTH: look_south(server, client); break;
         case EAST: look_east(server, client); break;
         case WEST: look_west(server, client); break;
     }
+    dprintf(client->cfd, "]\n");
     add_ticks_occupied(client, RESTRAINT_LOOK, server);
     return FAILURE;
 }
