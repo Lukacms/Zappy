@@ -27,6 +27,7 @@
 #define GO_LEVEL_7 "6123010"
 #define GO_LEVEL_8 "6222221"
 
+/* summons of GUIs */
 #define ZAPPY_GUI_CONNECT "GRAPHIC"
 #define ZAPPY_MSG "msz"
 #define ZAPPY_BCT "bct"
@@ -38,6 +39,7 @@
 #define ZAPPY_SGT "sgt"
 #define ZAPPY_SST "sst"
 
+/* summons of AIs */
 #define ZAPPY_FORWARD "Forward"
 #define ZAPPY_RIGHT "Right"
 #define ZAPPY_LEFT "Left"
@@ -50,6 +52,53 @@
 #define ZAPPY_TAKE "Take"
 #define ZAPPY_SET "Set"
 #define ZAPPY_INCANTATION "Incantation"
+
+/* delay for summons of AIs */
+#define RESTRAINT_FORWARD 7
+#define RESTRAINT_RIGHT 7
+#define RESTRAINT_LEFT 7
+#define RESTRAINT_LOOK 7
+#define RESTRAINT_INVENTORY 1
+#define RESTRAINT_BROADCAST 7
+#define RESTRAINT_FORK 42
+#define RESTRAINT_EJECT 7
+#define RESTRAINT_TAKE 7
+#define RESTRAINT_SET 7
+#define RESTRAINT_INCANTATION 300
+
+/* command to send to GUIs */
+#define DISPATCH_MSZ "msz %d %d\n"                      // map size
+#define DISPATCH_BCT "bct %d %d %d %d %d %d %d %d %d\n" // content of a tile
+#define DISPATCH_TNA "tna %d\n"                         // name of all a team
+#define DISPATCH_PNW "pnw #%d %d %d %d %d %d\n" // connection of a new player
+#define DISPATCH_PPO "ppo %d %d %d %d\n"        // player’s position
+#define DISPATCH_PLV "plv %d\n"                 // player’s level
+#define DISPATCH_PIN "pin %d %d %d %d %d %d %d %d %d %d\n" // player's inventory
+#define DISPATCH_PEX "pex %d\n"                            // expulsion
+#define DISPATCH_PBC "pbc %d %s\n"                         // broadcast
+#define DISPATCH_PIC "pic %d %d %d %d %d\n" // start of an incantation
+#define DISPATCH_PIE "pie %d %d %s\n"       // end of an incantation
+#define DISPATCH_PFK "pfk %d\n"             // egg laying by the player
+#define DISPATCH_PDR "pdr %d %d\n"          // resource dropping
+#define DISPATCH_PGT "pgt %d %d\n"          // resource collecting
+#define DISPATCH_PDI "pdi %d\n"             // death of a player
+#define DISPATCH_ENW "enw %d %d %d %d\n"    // an egg was laid by a player
+#define DISPATCH_EBO "ebo %d\n"             // player connection for an egg
+#define DISPATCH_EDI "edi %d\n"             // death of an egg
+#define DISPATCH_SGT "sgt %d\n"             // time unit request
+#define DISPATCH_SST "sst %d\n"             // time unit modification
+#define DISPATCH_SEG "seg %d\n"             // end of game
+#define DISPATCH_SMG "smg %s\n"             // message from the server
+#define DISPATCH_SUC "suc\n"                // unknown command
+#define DISPATCH_SBP "sbp\n"                // command parameter
+
+/* send commands to AI */
+#define AI_INVENTORY \
+    "[food %li, linemate %li, deraumere %li, sibur %li, mendiane %li, phiras " \
+    "%li, thystame %li]"
+#define AI_EJECT "eject: %i\n"
+#define BASIC_VALID "ok\n"
+#define AI_DEATH "dead\n"
 
 typedef struct summon_queue_s {
     char *summon;

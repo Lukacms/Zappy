@@ -15,7 +15,6 @@
 #include <zappy/server/utils.h>
 
 static const summons_funptr_t SUMMON[] = {
-    {.summon = ZAPPY_GUI_CONNECT, .handler = &gui_connect_func, .type = NONE},
     {.summon = ZAPPY_MSG, .handler = &msz_func, .type = GUI},
     {.summon = ZAPPY_BCT, .handler = &bct_func, .type = GUI},
     {.summon = ZAPPY_PNW, .handler = &mct_func, .type = GUI},
@@ -63,7 +62,7 @@ static void error_command(char **tab, server_t *server, client_node_t *client)
 }
 
 int parse_event_client(server_t *server, const char *line,
-                       client_node_t *client)
+                    client_node_t *client)
 {
     char **tab = NULL;
 

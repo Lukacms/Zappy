@@ -7,22 +7,25 @@
 
 #include <stdio.h>
 #include <zappy/server.h>
-#include <zappy/server/infos.h>
+#include <zappy/server/clock/utils.h>
+#include <zappy/server/summon/utils.h>
+#include <zappy/server/utils.h>
 
-int inventory_func(server_t *server, char *args[], client_node_t *client)
+int inventory_func(server_t *server, char *args[], client_node_t *c)
 {
-    if (!args || !args[0] || args[1] || !server) {
-        dprintf(client->cfd, "ko");
-        return FAILURE;
-    }
-    dprintf(client->cfd, "[food %li, linemate %li, deraumere %li, sibur %li, \
-            mendiane %li, phiras %li, thystame %li]",
-            client->stats.inventory[FOOD].units,
-            client->stats.inventory[LINEMATE].units,
-            client->stats.inventory[DERAUMERE].units,
-            client->stats.inventory[SIBUR].units,
-            client->stats.inventory[MENDIANE].units,
-            client->stats.inventory[PHIRAS].units,
-            client->stats.inventory[THYSTAME].units);
+    if (!args || array_len(args) != 2 || !server || !c)
+        return set_error(c->cfd, INVALID_ACTION, false);
+    add_ticks_occupied(c, RESTRAINT_INVENTORY, server);
+    dprintf(
+        c->cfd, AI_INVENTORY, c->stats.inventory[FOOD].units,
+        c->stats.inventory[LINEMATE].units, c->stats.inventory[DERAUMERE].units,
+        c->stats.inventory[SIBUR].units, c->stats.inventory[MENDIANE].units,
+        c->stats.inventory[PHIRAS].units, c->stats.inventory[THYSTAME].units);
+    send_toall_guicli(
+        server, DISPATCH_PIN, c->cfd, c->stats.pos.x, c->stats.pos.y,
+        c->stats.inventory[FOOD].units, c->stats.inventory[LINEMATE].units,
+        c->stats.inventory[DERAUMERE].units, c->stats.inventory[SIBUR].units,
+        c->stats.inventory[MENDIANE].units, c->stats.inventory[PHIRAS].units,
+        c->stats.inventory[THYSTAME].units);
     return SUCCESS;
 }

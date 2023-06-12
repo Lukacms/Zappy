@@ -18,9 +18,10 @@ int send_toall_guicli(server_t *server, char *str, ...)
     if (!server || !(tmp = server->clients.head))
         return FAILURE;
     va_start(ap, str);
-    for (unsigned int ind = 0; ind < server->clients.length; tmp = tmp->next) {
+    for (unsigned int ind = 0; ind < server->clients.length; ind++) {
         if (tmp->state == GUI)
             dprintf(tmp->cfd, str, ap);
+        tmp = tmp->next;
     }
 
     va_end(ap);

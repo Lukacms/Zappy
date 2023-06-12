@@ -11,7 +11,7 @@
 #include <zappy/server.h>
 #include <zappy/server/client.h>
 #include <zappy/server/clock/utils.h>
-#include <zappy/server/infos.h>
+#include <zappy/server/destroy.h>
 #include <zappy/server/summon/utils.h>
 
 static void check_if_client_ready(server_t *server, size_t ind, fd_set *clients)
@@ -34,7 +34,7 @@ int server_loop(server_t *server)
     signal(SIGINT, &handle_sigint);
     while (server->running) {
         server = get_server();
-        update_ticks_clients(server);
+        update_ticks(server);
         clients_ready = server->clients_fd;
         if (select(FD_SETSIZE + 1, &clients_ready, NULL, NULL, &val) < 0) {
             perror("Couldn't select a client ready");
@@ -44,5 +44,6 @@ int server_loop(server_t *server)
             check_if_client_ready(server, i, &clients_ready);
         set_server(server);
     }
+    destroy_server(server);
     return SUCCESS;
 }

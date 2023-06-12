@@ -9,6 +9,7 @@ SRC	=	src/launch.c	\
 		src/utils/strisnum.c	\
 		src/utils/set_error.c	\
 		src/utils/print_help.c	\
+		src/utils/delete_from_array.c	\
 		src/utils/char_in_str.c	\
 		src/utils/generate_uuid.c	\
 		src/utils/strndup_quotes.c	\
@@ -16,6 +17,11 @@ SRC	=	src/launch.c	\
 		src/utils/array_len.c	\
 		src/utils/realloc_array.c	\
 		src/utils/str_to_word_array.c	\
+		src/map/generate_map.c	\
+		src/map/change_player_pos.c	\
+		src/map/utils_map.c	\
+		src/map/update_map.c	\
+		src/map/delete_eggs_from_tile.c	\
 		src/load/options/f_handler.c	\
 		src/load/options/x_handler.c	\
 		src/load/options/h_handler.c	\
@@ -26,9 +32,14 @@ SRC	=	src/launch.c	\
 		src/load/parse_args.c	\
 		src/load/update_server_with_args.c	\
 		src/load/create_server.c	\
-		src/map/utils_map.c	\
-		src/map/update_map.c	\
-		src/map/generate_map.c	\
+		src/destroy/destroy_server.c	\
+		src/destroy/destroy_teams.c	\
+		src/destroy/destroy_clients.c	\
+		src/server/eggs/create_eggs.c	\
+		src/server/eggs/from_egg_to_player.c	\
+		src/server/eggs/find_egg_by_nb.c	\
+		src/server/eggs/add_egg_to_team.c	\
+		src/server/eggs/delete_egg_from_team.c	\
 		src/server/summons/command_ia/dprint_tile.c	\
 		src/server/summons/command_ia/inventory_func.c	\
 		src/server/summons/command_ia/look_func.c	\
@@ -57,7 +68,8 @@ SRC	=	src/launch.c	\
 		src/server/summons/command_gui/msz_func.c	\
 		src/server/summons/get_summon.c	\
 		src/server/clock/gettickselapsed.c	\
-		src/server/clock/update_ticks_clients.c	\
+		src/server/clock/add_ticks_occupied.c	\
+		src/server/clock/update_ticks.c	\
 		src/server/server_loop.c	\
 		src/server/handle_signal.c	\
 		src/server/client/delete_client_node.c	\
@@ -67,6 +79,8 @@ SRC	=	src/launch.c	\
 		src/server/client/find_team.c	\
 		src/server/client/find_client.c	\
 		src/server/client/add_client_to_team.c	\
+		src/server/client/kill_player.c	\
+		src/server/client/starve_players.c	\
 
 SRC_MAIN	=	src/main.c
 

@@ -7,20 +7,19 @@
 
 #include <stdio.h>
 #include <zappy/server.h>
+#include <zappy/server/client.h>
 #include <zappy/server/infos.h>
-#include <zappy/server/summon/infos.h>
+#include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
 int connect_nbr_func(server_t *server, char *args[], client_node_t *client)
 {
-    int result = 0;
+    team_t *team = NULL;
 
     if (!args || array_len(args) != 2 || !server)
         return set_error(client->cfd, INVALID_ACTION, false);
-    for (int i = 0; server->teams[i] != NULL; i += 1) {
-        if (server->teams[i]->nb_clients != 0)
-            result += 1;
-    }
-    dprintf(client->cfd, "%i", result);
+    if (!(team = find_team_by_uuid(client->uuid_team, server)))
+        return set_error(client->cfd, INVALID_ACTION, false);
+    dprintf(client->cfd, "%zu\n", team->spots_free);
     return SUCCESS;
 }

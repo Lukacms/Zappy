@@ -7,44 +7,61 @@
 
 #include <stdio.h>
 #include <zappy/server.h>
-#include <zappy/server/infos.h>
+#include <zappy/server/clock/utils.h>
+#include <zappy/server/map_utils.h>
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
 int forward_north(server_t *server, client_node_t *client)
 {
+    vector2i_t new_pos = client->stats.pos;
+
     if (client->stats.pos.x > 0)
-        client->stats.pos.x -= 1;
+        new_pos.y += 1;
     else
-        client->stats.pos.x = (server->map.size.x - 1);
-    return 0;
+        new_pos.y = 0;
+    change_player_pos(server, client->uuid, client->stats.pos, new_pos);
+    client->stats.pos = new_pos;
+    return SUCCESS;
 }
 
 int forward_south(server_t *server, client_node_t *client)
 {
+    vector2i_t new_pos = client->stats.pos;
+
     if (client->stats.pos.x < (server->map.size.x - 1))
-        client->stats.pos.x += 1;
+        new_pos.y += 1;
     else
-        client->stats.pos.x = 0;
-    return 0;
+        new_pos.y = 0;
+    change_player_pos(server, client->uuid, client->stats.pos, new_pos);
+    client->stats.pos = new_pos;
+    return SUCCESS;
 }
 
 int forward_east(server_t *server, client_node_t *client)
 {
+    vector2i_t new_pos = client->stats.pos;
+
     if (client->stats.pos.y < (server->map.size.y - 1))
-        client->stats.pos.y += 1;
+        new_pos.y += 1;
     else
-        client->stats.pos.y = 0;
-    return 0;
+        new_pos.y = 0;
+    change_player_pos(server, client->uuid, client->stats.pos, new_pos);
+    client->stats.pos = new_pos;
+    return SUCCESS;
 }
 
 int forward_west(server_t *server, client_node_t *client)
 {
+    vector2i_t new_pos = client->stats.pos;
+
     if (client->stats.pos.y > 0)
-        client->stats.pos.y -= 1;
+        new_pos.y += 1;
     else
-        client->stats.pos.y = (server->map.size.y - 1);
-    return 0;
+        new_pos.y = 0;
+    change_player_pos(server, client->uuid, client->stats.pos, new_pos);
+    client->stats.pos = new_pos;
+    return SUCCESS;
 }
 
 int forward_func(server_t *server, char *args[], client_node_t *client)
@@ -54,11 +71,14 @@ int forward_func(server_t *server, char *args[], client_node_t *client)
     if (!args || array_len(args) != 2)
         return set_error(client->cfd, INVALID_ACTION, false);
     switch (client->stats.orientation) {
-    case NORTH: forward_north(server, client); break;
-    case SOUTH: forward_south(server, client); break;
-    case EAST: forward_east(server, client); break;
-    case WEST: forward_west(server, client); break;
+        case NORTH: forward_north(server, client); break;
+        case SOUTH: forward_south(server, client); break;
+        case EAST: forward_east(server, client); break;
+        case WEST: forward_west(server, client); break;
     }
     dprintf(client->cfd, "ok\n");
+    add_ticks_occupied(client, RESTRAINT_FORWARD, server);
+    send_toall_guicli(server, DISPATCH_PPO, client->cfd, client->stats.pos.x,
+                    client->stats.pos.y, client->stats.orientation);
     return SUCCESS;
 }
