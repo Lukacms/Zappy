@@ -24,10 +24,12 @@ static const double DENSITY_INVENTORY[INVENTORY_SLOTS] = {
     DENSITY_MENDIANE, DENSITY_PHIRAS,   DENSITY_THYSTAME,
 };
 
-int generate_map(server_t *server);
-int update_map(server_t *server);
-bool has_stock_left(const int *stock);
-int stock(vector2i_t size, double density, int *stock_left);
-int change_player_pos(server_t *server, const char *client, vector2i_t old_pos,
-                    vector2i_t new_pos);
-int delete_eggs_from_tile(server_t *server, vector2i_t pos);
+int generate_map(server_t *);
+int update_map(server_t *);
+bool has_stock_left(const int *);
+int stock(vector2i_t, double, int *);
+int change_player_pos(server_t *, const char *, vector2i_t, vector2i_t);
+int delete_eggs_from_tile(server_t *, vector2i_t);
+int from_egg_to_player_tile(server_t *, client_node_t *, egg_t *);
+int add_egg_to_tile(server_t *, vector2i_t, int);
+int len_eggs(const int *);

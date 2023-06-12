@@ -24,13 +24,13 @@
 
 #define INVENTORY_SLOTS 7
 #define MEAL_TIME 126
+#define CHAR_INT 48
+#define DIRECTIONNAL 5
 
 static const char __attribute__((unused)) *
     RESOURCES_INVENTORY[INVENTORY_SLOTS] = {
     "food", "linemate", "deraumere", "sibur", "mendiane", "phiras", "thystame",
 };
-#define CHAR_INT 48
-#define DIRECTIONNAL 5
 
 typedef enum resource_s {
     FOOD,

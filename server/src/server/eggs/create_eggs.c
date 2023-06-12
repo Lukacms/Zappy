@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <zappy/server.h>
+#include <zappy/server/map_utils.h>
 
 static int create_eggs_by_team(team_t **team, server_t *server)
 {
@@ -21,6 +22,7 @@ static int create_eggs_by_team(team_t **team, server_t *server)
         (*team)->eggs[i]->nb = server->map.last_egg_id;
         (*team)->eggs[i]->pos.x = rand() % server->map.size.x;
         (*team)->eggs[i]->pos.y = rand() % server->map.size.y;
+        add_egg_to_tile(server, (*team)->eggs[i]->pos, (*team)->eggs[i]->nb);
     }
     return SUCCESS;
 }

@@ -64,6 +64,8 @@ SRC	=	src/launch.c	\
 		src/map/utils_map.c	\
 		src/map/update_map.c	\
 		src/map/delete_eggs_from_tile.c	\
+		src/map/add_egg_to_tile.c	\
+		src/map/from_egg_to_player_tile.c	\
 		src/destroy/destroy_server.c	\
 		src/destroy/destroy_teams.c	\
 		src/destroy/destroy_clients.c	\

@@ -9,5 +9,5 @@
 
 #include <zappy/server/infos.h>
 
-int create_server(server_t *server, args_config_t *args);
-int update_server_with_args(server_t *server, args_config_t *args);
+int create_server(server_t *, args_config_t *);
+int update_server_with_args(server_t *, args_config_t *);
