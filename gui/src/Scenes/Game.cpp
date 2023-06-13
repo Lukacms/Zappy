@@ -93,9 +93,9 @@ void zappy::Game::changePlayerLevel(Plv &player)
     m_player_manager.changePlayerStats(player);
 }
 
-void zappy::Game::explusePlayer(Pex &player)
+void zappy::Game::expulsePlayer(Pex &player)
 {
-    m_player_manager.explusePlayer(player);
+    m_player_manager.expulsePlayer(player);
 }
 
 void zappy::Game::playerDeath(Pdi &player)

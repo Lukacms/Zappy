@@ -219,13 +219,11 @@ void zappy::HUD::setFocusedPlayer(zappy::Player &player)
     m_ressources[4].m_str = "x" + std::to_string(player_inventory.phiras);
     m_ressources[5].m_str = "x" + std::to_string(player_inventory.thystame);
     m_food_count.m_str = "x" + std::to_string(player_inventory.food);
-    m_title.m_str = {"Player " + std::to_string(player.getId()) + "\n" + player.getTeam()};
+    m_title.m_str = {"Player " + std::to_string(player.getId()) +
+                     "\n"
+                     "Level " +
+                     std::to_string(player.getLevel()) + "\n" + player.getTeam()};
 }
-
-// void zappy::HUD::setFocusedPlayer(zappy::Player &player)
-// {
-//     player.getInventory();
-// }
 
 void zappy::HUD::animateFood()
 {

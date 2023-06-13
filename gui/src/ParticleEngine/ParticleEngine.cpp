@@ -49,7 +49,7 @@ void zappy::ParticleEngine::createRain()
 
 void zappy::ParticleEngine::createFog()
 {
-    for (size_t iterator = 0; iterator < 100; iterator += 1)
+    for (size_t iterator = 0; iterator < 200; iterator += 1)
         m_particles.push_back(std::make_unique<FogParticle>());
 }
 

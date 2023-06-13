@@ -53,28 +53,38 @@ namespace zappy
             void setPlayerInventory(Inventory &inventory);
             void triggerDeath();
             void triggerSelection(bool status);
+            void triggerExpulse();
 
             [[nodiscard]] int getId() const;
-            [[nodiscard]] sf::Vector2f getPosition() const;
+            [[nodiscard]] sf::Vector2f getWorldPosition() const;
+            [[nodiscard]] sf::Vector2i getLocalPosition() const;
             [[nodiscard]] Inventory getInventory() const;
             [[nodiscard]] bool canDeletePlayer() const;
             [[nodiscard]] sf::FloatRect getColliderBox() const;
             [[nodiscard]] const std::string &getTeam() const;
+            [[nodiscard]] int getLevel() const;
 
         private:
             void animateNorth(sf::Vector2i &size);
             void animateEast(sf::Vector2i &size);
             void animateSouth(sf::Vector2i &size);
             void animateWest(sf::Vector2i &size);
+            void checkBoundaries(sf::Vector2i &size);
             void animateDeath();
+            void expulsedNorth();
+            void expulsedEast();
+            void expulsedSouth();
+            void expulsedWest();
             void animateSelected();
+            void playerMovement();
 
-            int m_id;
+                int m_id;
             int m_level;
-            bool m_is_dead;
-            bool m_delete;
+            bool m_is_dead = false;
+            bool m_delete = false;
             bool m_selected = false;
             bool m_spark = true;
+            bool m_expulse = false;
             Inventory m_inventory;
             Orientation m_orientation;
             std::string m_team;

@@ -48,7 +48,7 @@ namespace zappy
             void movePlayer(Ppo &player);
             void changePlayerInventory(Pin &player);
             void changePlayerLevel(Plv &player);
-            void explusePlayer(Pex &player);
+            void expulsePlayer(Pex &player);
             void broadcast(Pbc &broadcast);
             void startIncantation(Pic &player_incantation);
             void endIncantation(Pie &player_incantation);

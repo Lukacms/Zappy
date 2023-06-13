@@ -40,7 +40,7 @@ namespace zappy
             void drawPlayers(sf::RenderWindow &window, sf::Sprite &sprite);
             void eventManager(sf::RenderWindow &window, sf::Event &event);
             void setMapSize(sf::Vector2i &size);
-            void explusePlayer(Pex &expulsed_player);
+            void expulsePlayer(Pex &expulsed_player);
             void playerDeath(Pdi &dead_player);
             bool selectPlayer(sf::Event &event, sf::RenderWindow &window);
             void deletePlayers();

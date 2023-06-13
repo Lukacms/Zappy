@@ -7,6 +7,7 @@
 
 #pragma once
 #include "zappy/HUD/HUD.hh"
+#include "zappy/Player/Player.hh"
 #include <array>
 
 #include <string_view>
@@ -60,7 +61,7 @@ namespace zappy
             int player_nb{0};
             int x_tile_coord{0};
             int y_tile_coord{0};
-            short orientation{0};
+            zappy::Orientation orientation{0};
     };
 
     struct Plv {

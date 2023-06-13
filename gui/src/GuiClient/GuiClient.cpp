@@ -4,6 +4,7 @@
 ** GuiClient
 */
 
+#include "zappy/Player/Player.hh"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Network/IpAddress.hpp>
 #include <SFML/Network/Socket.hpp>
@@ -151,7 +152,7 @@ void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window ,c
             arg.player_nb = std::atoi(parsed[1].c_str());
             arg.x_tile_coord = std::atoi(parsed[2].c_str());
             arg.y_tile_coord = std::atoi(parsed[3].c_str());
-            arg.orientation = static_cast<short>(std::atoi(parsed[4].c_str()));
+            arg.orientation = static_cast<Orientation>(std::atoi(parsed[4].c_str()));
             game.movePlayer(arg);
         },
         [&](Plv &arg) {
@@ -174,7 +175,7 @@ void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window ,c
         },
         [&](Pex &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());
-            // game.expulsePlayer(arg);
+            game.expulsePlayer(arg);
         },
         [&](Pbc &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());

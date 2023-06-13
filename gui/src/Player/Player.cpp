@@ -10,7 +10,9 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <ios>
 #include <iostream>
+#include <ostream>
 #include <utility>
 #include <zappy/Map/Tile.hh>
 #include <zappy/Player/Player.hh>
@@ -25,6 +27,7 @@ zappy::Player::Player(const zappy::PlayerInfo &infos)
     m_position_map.y = m_position.y * TILE_SIZE * SCALING + (TILE_SIZE * SCALING / 2);
     m_is_dead = false;
     m_delete = false;
+    std::cout << static_cast<int>(m_orientation) << std::endl;
 }
 
 // Methods
@@ -58,29 +61,21 @@ void zappy::Player::drawPlayer(sf::RenderWindow &window, sf::Sprite &sprite, sf:
 
 void zappy::Player::movePlayer(int pos_x, int pos_y, Orientation orientation)
 {
+    int tmp_x = m_position.x - pos_x;
+    int tmp_y = m_position.y - pos_y;
     m_orientation = orientation;
-    if (m_orientation == Orientation::North) {
-        m_remain.y = -TILE_SIZE * SCALING;
-        if (pos_y == m_position.y)
-            m_remain.y = 0;
-    }
-    if (m_orientation == Orientation::East) {
-        m_remain.x = TILE_SIZE * SCALING;
-        if (pos_x == m_position.x)
-            m_remain.x = 0;
-    }
-    if (m_orientation == Orientation::South) {
-        m_remain.y = TILE_SIZE * SCALING;
-        if (pos_y == m_position.y)
-            m_remain.y = 0;
-    }
-    if (m_orientation == Orientation::West) {
-        m_remain.x = -TILE_SIZE * SCALING;
-        if (pos_x == m_position.x)
-            m_remain.x = 0;
-    }
     m_position.x = pos_x;
     m_position.y = pos_y;
+
+    if (tmp_x == -1 || tmp_x > 1)
+        m_remain = {-80, 0};
+    if (tmp_x == 1 || tmp_x < -1)
+        m_remain = {80, 0};
+    if (tmp_y == -1 || tmp_y > 1)
+        m_remain = {0, -80};
+    if (tmp_y == 1 || tmp_y < -1)
+        m_remain = {0, 80};
+    // std::cout << "TMP X : " << tmp_x << " TMP Y : " << tmp_y << std::endl;
 }
 
 void zappy::Player::animatePlayer(sf::Vector2i &size)
@@ -101,85 +96,102 @@ void zappy::Player::animatePlayer(sf::Vector2i &size)
         animateWest(size);
 }
 
-void zappy::Player::animateNorth(sf::Vector2i &size)
+void zappy::Player::animateSouth(sf::Vector2i &size)
 {
-    if (m_remain.y < 0) {
-        m_position_map.y -= 1;
-        m_remain.y += 1;
-        if (m_position_map.y < 0)
-            m_position_map.y = size.y * TILE_SIZE * SCALING;
-        if (m_rect.top != 242)
-            m_rect = {0, 242, 32, 32};
-        if (m_clock.getElapsedTime().asSeconds() > 0.07F) {
-            m_rect.left += m_rect.width;
-            if (m_rect.left / 32 >= 10)
-                m_rect.left = 0;
-            m_clock.restart();
-        }
-    } else
-        m_rect = {96, 274, 32, 32};
+    playerMovement();
+    checkBoundaries(size);
+    if (m_remain.y == 0.F) {
+        m_rect = {96, 274 + (320 * (m_level - 1)), 32, 32};
+        return;
+    }
+    if (m_expulse) {
+        expulsedSouth();
+        return;
+    }
+    if (m_rect.top != 242 + (320 * (m_level - 1)))
+        m_rect = {0, 242 + (320 * (m_level - 1)), 32, 32};
+    if (m_clock.getElapsedTime().asSeconds() > 0.07F) {
+        m_rect.left += m_rect.width;
+        if (m_rect.left / 32 >= 10)
+            m_rect.left = 0;
+        m_clock.restart();
+    }
 }
 
 void zappy::Player::animateEast(sf::Vector2i &size)
 {
-    if (m_remain.x > 0) {
-        m_position_map.x += 1;
-        m_remain.x -= 1;
-        if (m_position_map.x > size.x * TILE_SIZE * SCALING)
-            m_position_map.x = 0;
-        if (m_rect.top != 146)
-            m_rect = {0, 146, 32, 32};
-        if (m_clock.getElapsedTime().asSeconds() > 0.07F) {
-            m_rect.left += m_rect.width;
-            if (m_rect.left / 32 >= 10)
-                m_rect.left = 0;
-            m_clock.restart();
-        }
-    } else
-        m_rect = {64, 274, 32, 32};
+    playerMovement();
+    checkBoundaries(size);
+    if (m_remain.x == 0.F) {
+        m_rect = {64, 274 + (320 * (m_level - 1)), 32, 32};
+        return;
+    }
+    if (m_expulse) {
+        expulsedEast();
+        return;
+    }
+    if (m_rect.top != 146 + (320 * (m_level - 1)))
+        m_rect = {0, 146 + (320 * (m_level - 1)), 32, 32};
+    if (m_clock.getElapsedTime().asSeconds() > 0.07F) {
+        m_rect.left += m_rect.width;
+        if (m_rect.left / 32 >= 10)
+            m_rect.left = 0;
+        m_clock.restart();
+    }
 }
 
-void zappy::Player::animateSouth(sf::Vector2i &size)
+void zappy::Player::animateNorth(sf::Vector2i &size)
 {
-    if (m_remain.y > 0) {
-        m_position_map.y += 1;
-        m_remain.y -= 1;
-        if (m_position_map.y > size.y * TILE_SIZE * SCALING)
-            m_position_map.y = 0;
-        if (m_rect.top != 178)
-            m_rect = {0, 178, 32, 32};
-        if (m_clock.getElapsedTime().asSeconds() > 0.07F) {
-            m_rect.left += m_rect.width;
-            if (m_rect.left / 32 >= 10)
-                m_rect.left = 0;
-            m_clock.restart();
-        }
-    } else
-        m_rect = {0, 274, 32, 32};
+    playerMovement();
+    checkBoundaries(size);
+    if (m_remain.y == 0.F) {
+        m_rect = {0, 274 + (320 * (m_level - 1)), 32, 32};
+        return;
+    }
+    if (m_expulse) {
+        expulsedNorth();
+        return;
+    }
+    if (m_rect.top != 178 + (320 * (m_level - 1)))
+        m_rect = {0, 178 + (320 * (m_level - 1)), 32, 32};
+    if (m_clock.getElapsedTime().asSeconds() > 0.07F) {
+        m_rect.left += m_rect.width;
+        if (m_rect.left / 32 >= 10)
+            m_rect.left = 0;
+        m_clock.restart();
+    }
 }
 
 void zappy::Player::animateWest(sf::Vector2i &size)
 {
-    if (m_remain.x < 0) {
-        m_position_map.x -= 1;
-        m_remain.x += 1;
-        if (m_position_map.x < 0)
-            m_position_map.x = size.x * TILE_SIZE * SCALING;
-        if (m_rect.top != 210)
-            m_rect = {0, 210, 32, 32};
-        if (m_clock.getElapsedTime().asSeconds() > 0.07F) {
-            m_rect.left += m_rect.width;
-            if (m_rect.left / 32 >= 10)
-                m_rect.left = 0;
-            m_clock.restart();
-        }
-    } else
-        m_rect = {32, 274, 32, 32};
+    playerMovement();
+    checkBoundaries(size);
+    if (m_remain.x == 0.F) {
+        m_rect = {32, 274 + (320 * (m_level - 1)), 32, 32};
+        return;
+    }
+    if (m_expulse) {
+        expulsedWest();
+        return;
+    }
+    if (m_rect.top != 210 + (320 * (m_level - 1)))
+        m_rect = {0, 210 + (320 * (m_level - 1)), 32, 32};
+    if (m_clock.getElapsedTime().asSeconds() > 0.07F) {
+        m_rect.left += m_rect.width;
+        if (m_rect.left / 32 >= 10)
+            m_rect.left = 0;
+        m_clock.restart();
+    }
 }
 
-sf::Vector2f zappy::Player::getPosition() const
+sf::Vector2f zappy::Player::getWorldPosition() const
 {
-    return this->m_position_map;
+    return m_position_map;
+}
+
+sf::Vector2i zappy::Player::getLocalPosition() const
+{
+    return m_position;
 }
 
 void zappy::Player::setPlayerInventory(Inventory &inventory)
@@ -194,8 +206,8 @@ zappy::Inventory zappy::Player::getInventory() const
 
 void zappy::Player::animateDeath()
 {
-    if (m_rect.top != 306) {
-        m_rect.top = 306;
+    if (m_rect.top != 306 + (320 * (m_level - 1))) {
+        m_rect.top = 306 + (320 * (m_level - 1));
         m_rect.left = 0;
     }
     if (m_clock.getElapsedTime().asSeconds() > 0.1F && m_rect.left < 128) {
@@ -254,4 +266,102 @@ void zappy::Player::triggerSelection(bool status)
 const std::string &zappy::Player::getTeam() const
 {
     return m_team;
+}
+
+int zappy::Player::getLevel() const
+{
+    return m_level;
+}
+
+void zappy::Player::triggerExpulse()
+{
+    m_expulse = true;
+}
+
+void zappy::Player::expulsedEast()
+{
+    if (m_rect.top != 370 + (320 * (m_level - 1)))
+        m_rect = {0, 370 + (320 * (m_level - 1)), 32, 32};
+    if (m_clock.getElapsedTime().asSeconds() > 0.07F) {
+        if (m_rect.left < 320)
+            m_rect.left += m_rect.width;
+        if (m_rect.left >= 320)
+            m_expulse = false;
+        m_clock.restart();
+    }
+}
+
+void zappy::Player::expulsedNorth()
+{
+    if (m_rect.top != 338 + (320 * (m_level - 1)))
+        m_rect = {0, 338 + (320 * (m_level - 1)), 32, 32};
+    if (m_clock.getElapsedTime().asSeconds() > 0.07F) {
+        if (m_rect.left < 320)
+            m_rect.left += m_rect.width;
+        if (m_rect.left >= 320)
+            m_expulse = false;
+        m_clock.restart();
+    }
+}
+
+void zappy::Player::expulsedSouth()
+{
+    if (m_rect.top != 402 + (320 * (m_level - 1)))
+        m_rect = {0, 402 + (320 * (m_level - 1)), 32, 32};
+    if (m_clock.getElapsedTime().asSeconds() > 0.07F) {
+        if (m_rect.left < 320)
+            m_rect.left += m_rect.width;
+        if (m_rect.left >= 320)
+            m_expulse = false;
+        m_clock.restart();
+    }
+}
+
+void zappy::Player::expulsedWest()
+{
+    if (m_rect.top != 434 + (320 * (m_level - 1)))
+        m_rect = {0, 434 + (320 * (m_level - 1)), 32, 32};
+    if (m_clock.getElapsedTime().asSeconds() > 0.07F) {
+        if (m_rect.left < 320)
+            m_rect.left += m_rect.width;
+        if (m_rect.left >= 320)
+            m_expulse = false;
+        m_clock.restart();
+    }
+}
+
+void zappy::Player::playerMovement()
+{
+    if (m_remain.x < 0) {
+        m_position_map.x += 4;
+        m_remain.x += 4;
+        return;
+    }
+    if (m_remain.x > 0) {
+        m_position_map.x -= 4;
+        m_remain.x -= 4;
+        return;
+    }
+    if (m_remain.y < 0) {
+        m_position_map.y += 4;
+        m_remain.y += 4;
+        return;
+    }
+    if (m_remain.y > 0) {
+        m_position_map.y -= 4;
+        m_remain.y -= 4;
+        return;
+    }
+}
+
+void zappy::Player::checkBoundaries(sf::Vector2i &size)
+{
+    if (m_position_map.x < 0)
+        m_position_map.x = size.x * TILE_SIZE * SCALING;
+    if (m_position_map.y > size.y * TILE_SIZE * SCALING)
+        m_position_map.y = 0;
+    if (m_position_map.x > size.x * TILE_SIZE * SCALING)
+        m_position_map.x = 0;
+    if (m_position_map.y < 0)
+        m_position_map.y = size.y * TILE_SIZE * SCALING;
 }

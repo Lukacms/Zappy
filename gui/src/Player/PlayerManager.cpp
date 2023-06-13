@@ -7,6 +7,7 @@
 
 #include <Inventory.hh>
 #include <SFML/Audio/Sound.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <algorithm>
 #include <ios>
 #include <iostream>
@@ -27,6 +28,7 @@ zappy::PlayerManager::PlayerManager()
 
 void zappy::PlayerManager::animatePlayers()
 {
+    depthManager();
     for (auto &player : m_players)
         player.animatePlayer(m_size);
     deletePlayers();
@@ -35,7 +37,7 @@ void zappy::PlayerManager::animatePlayers()
 void zappy::PlayerManager::depthManager()
 {
     auto compare = [](Player &player_a, Player &player_b) {
-        return player_a.getPosition().y > player_b.getPosition().y;
+        return player_a.getLocalPosition().y < player_b.getLocalPosition().y;
     };
     std::sort(m_players.begin(), m_players.end(), compare);
 }
@@ -55,8 +57,7 @@ void zappy::PlayerManager::changePlayerStats(zappy::Ppo &position)
 {
     for (auto &player : m_players) {
         if (player.getId() == position.player_nb) {
-            player.movePlayer(position.x_tile_coord, position.y_tile_coord,
-                              static_cast<Orientation>(position.orientation));
+            player.movePlayer(position.x_tile_coord, position.y_tile_coord, position.orientation);
             break;
         }
     }
@@ -102,11 +103,23 @@ void zappy::PlayerManager::addPlayer(Pnw &new_player)
     m_players.emplace_back(infos);
 }
 
-void zappy::PlayerManager::explusePlayer(Pex &expulsed_player)
+void zappy::PlayerManager::expulsePlayer(Pex &expulsed_player)
 {
-    for (auto iterator = m_players.begin(); iterator != m_players.end(); iterator++) {
-        if (iterator->getId() == expulsed_player.player_nb)
-            m_players.erase(iterator);
+    Player expulser;
+    sf::Vector2i expulser_position;
+    sf::Vector2i position;
+
+    for (auto &player : m_players) {
+        if (player.getId() == expulsed_player.player_nb) {
+            expulser = player;
+            break;
+        }
+    }
+    expulser_position = expulser.getLocalPosition();
+    for (auto &player : m_players) {
+        position = player.getLocalPosition();
+        if (position == expulser_position && expulser.getId() != player.getId())
+            player.triggerExpulse();
     }
 }
 
