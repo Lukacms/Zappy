@@ -18,9 +18,10 @@ int add_egg_to_tile(server_t *server, vector2i_t pos, int egg)
     if ((size = len_eggs(server->map.tiles[pos.y][pos.x].eggs)) < 0)
         size = 0;
     server->map.tiles[pos.y][pos.x].eggs =
-        realloc(server->map.tiles[pos.y][pos.x].eggs, sizeof(int) * (size + 1));
+        realloc(server->map.tiles[pos.y][pos.x].eggs, sizeof(int) * (size + 2));
     if (!server->map.tiles[pos.y][pos.x].eggs)
         return FAILURE;
     server->map.tiles[pos.y][pos.x].eggs[size] = egg;
+    server->map.tiles[pos.y][pos.x].eggs[size + 1] = -1;
     return SUCCESS;
 }

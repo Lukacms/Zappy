@@ -62,8 +62,7 @@ static void error_command(char **tab, server_t *server, client_node_t *client)
     }
 }
 
-int parse_event_client(server_t *server, const char *line,
-                    client_node_t *client)
+int parse_event_client(server_t *server, char *line, client_node_t *client)
 {
     char **tab = NULL;
 
@@ -75,6 +74,7 @@ int parse_event_client(server_t *server, const char *line,
         return set_error(client->cfd, UNKNOWN_COMMAND, false);
     }
     error_command(tab, server, client);
+    free(line);
     free_array(tab);
     return SUCCESS;
 }

@@ -5,6 +5,7 @@
 ** update_ticks
 */
 
+#include <stdio.h>
 #include <zappy/server.h>
 #include <zappy/server/client.h>
 #include <zappy/server/clock/utils.h>
@@ -17,8 +18,10 @@ static void update_ticks_clients(server_t *server, int ticks_elapsed)
     if (!(client = server->clients.head))
         return;
     for (unsigned int i = 0; i < server->clients.length; i++) {
-        if (client->state != AI)
+        if (client->state != AI) {
+            client = client->next;
             continue;
+        }
         if (client->stats.action.type == ACTION &&
             ticks_elapsed >= client->stats.action.ticks) {
             client->stats.action.type = NOTHING;

@@ -35,6 +35,8 @@ static tile_t *set_default_tile(tile_t *tile, u_int size)
 {
     for (u_int i = 0; i < size; i++) {
         tile[i] = (tile_t){0};
+        tile[i].eggs = NULL;
+        tile[i].players_uuid = NULL;
     }
     tile[size] = (tile_t){0};
     tile[size].end = true;

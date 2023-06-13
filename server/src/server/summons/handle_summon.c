@@ -5,14 +5,14 @@
 ** handle_summon
 */
 
+#include <stdlib.h>
 #include <string.h>
 #include <zappy/server.h>
 #include <zappy/server/client.h>
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
-static int set_client_state(const char *cmd, client_node_t *client,
-                            server_t *server)
+static int set_client_state(char *cmd, client_node_t *client, server_t *server)
 {
     char **tab = NULL;
     int status = 0;
@@ -26,10 +26,11 @@ static int set_client_state(const char *cmd, client_node_t *client,
     else
         status = add_client_to_team(client, server, tab[0]);
     free_array(tab);
+    free(cmd);
     return status;
 }
 
-static int handle_client_summon(const char *cmd, client_node_t *client,
+static int handle_client_summon(char *cmd, client_node_t *client,
                                 server_t *server)
 {
     if (!cmd)

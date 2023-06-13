@@ -37,8 +37,10 @@ int get_summon(server_t *server, client_node_t *client)
     if (!server || !client)
         return FAILURE;
     memset(summon, '\0', BUFFER_SIZE);
-    if ((size = read(client->cfd, summon, BUFFER_SIZE)) <= 0)
+    if ((size = read(client->cfd, summon, BUFFER_SIZE)) <= 0) {
+        free(summon);
         return client_exists(server, client);
+    }
     summon[size - 1] = '\0';
     if (add_summon(summon, client) != SUCCESS)
         free(summon);

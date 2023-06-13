@@ -13,8 +13,8 @@
 int add_summon(char *summon, client_node_t *client)
 {
     unsigned int ind = 0;
-    if (!summon || !client)
 
+    if (!summon || !client)
         return FAILURE;
     while (ind < MAX_WAITING_SUMMONS && client->queue[ind].size < 0)
         ind++;
