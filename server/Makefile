@@ -103,6 +103,8 @@ SRC_TESTS	=	tests/redirect.c	\
 				tests/tests_launch.c	\
 				tests/load/tests_create_server.c	\
 				tests/tests_utils.c	\
+				tests/server/create_server.c	\
+				tests/server/tests_eggs.c	\
 
 OBJ_TESTS	=	$(SRC:.c=.o)  $(SRC_TESTS:.c=.o)
 OBJ_TESTS	+=	$(SRC_LOAD:.c=.o) $(SRC_UTILS:.c=.o) $(SRC_SUMMONS:.c=.o)

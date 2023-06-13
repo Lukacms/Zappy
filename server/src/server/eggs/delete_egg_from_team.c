@@ -16,13 +16,11 @@ static egg_t **delete_from_egg_array(egg_t **src, u_int ind)
     egg_t **dest = NULL;
     int flag = 0;
 
-    if (!src || (size = array_len(src)) < ind) {
-        free(src);
-        return NULL;
-    }
+    if (!src || (size = array_len(src)) < ind)
+        return src;
     if (!(dest = malloc(sizeof(egg_t *) * (size))))
         return NULL;
-    dest[size] = NULL;
+    dest[size - 1] = NULL;
     for (u_int i = 0; i < size - 1; i++) {
         if (i == ind)
             flag = 1;

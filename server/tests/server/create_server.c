@@ -1,17 +1,14 @@
 /*
 ** EPITECH PROJECT, 2023
-** tests
+** server
 ** File description:
-** launch
+** create_server
 */
 
-#include <criterion/criterion.h>
-#include <criterion/internal/redirect.h>
+#include <stdlib.h>
+#include <string.h>
 #include <zappy/config/config.h>
 #include <zappy/server.h>
-#include <zappy/server/destroy.h>
-
-void redirect(void);
 
 static char **dup_array(const char *const origin[])
 {
@@ -32,19 +29,7 @@ static char **dup_array(const char *const origin[])
     return dest;
 }
 
-Test(create_server, null_arguments)
-{
-    cr_assert_eq(create_server(NULL, NULL), FAILURE);
-}
-
-Test(create_server, null_args)
-{
-    server_t server = {0};
-
-    cr_assert_eq(create_server(&server, NULL), FAILURE);
-}
-
-Test(update_server_with_args, basic_server)
+int create_default_server(server_t *server)
 {
     args_config_t args = {
         .freq = DEFAULT_FREQ,
@@ -54,9 +39,9 @@ Test(update_server_with_args, basic_server)
         .world = (vector2i_t){.x = DEFAULT_WIDTH, .y = DEFAULT_HEIGHT},
         .team_names = dup_array(DEFAULT_TEAMS),
     };
-    server_t server = {0};
 
-    cr_assert_eq(update_server_with_args(&server, &args), SUCCESS);
-    destroy_arguments(&args);
-    destroy_server(&server);
+    if (!server)
+        return FAILURE;
+    update_server_with_args(server, &args);
+    return SUCCESS;
 }

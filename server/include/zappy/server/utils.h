@@ -12,7 +12,7 @@
 
 #define QUOTATION "\""
 
-size_t array_len(void *);
+ssize_t array_len(void *);
 int char_in_str(const char *, char);
 void free_array(void *);
 char *generate_uuid(void);
