@@ -79,6 +79,6 @@ int forward_func(server_t *server, char *args[], client_node_t *client)
     dprintf(client->cfd, BASIC_VALID);
     add_ticks_occupied(client, RESTRAINT_FORWARD, server);
     send_toall_guicli(server, DISPATCH_PPO, client->cfd, client->stats.pos.x,
-                      client->stats.pos.y, client->stats.orientation);
+                        client->stats.pos.y, client->stats.orientation);
     return SUCCESS;
 }
