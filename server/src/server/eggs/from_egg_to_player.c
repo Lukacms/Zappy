@@ -10,7 +10,7 @@
 
 int from_egg_to_player(client_node_t *client, team_t **team)
 {
-    if (!client || !team)
+    if (!client || !team || !(*team))
         return FAILURE;
     client->stats.pos = (*team)->eggs[(*team)->spots_free]->pos;
     free((*team)->eggs[(*team)->spots_free]);

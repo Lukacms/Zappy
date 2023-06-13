@@ -32,7 +32,7 @@ int kill_player(server_t *server, client_node_t *client)
     rebase_nodes(server, client);
     delete_client_from_team(client, server);
     send_toall_guicli(server, DISPATCH_PDI, client->cfd);
-    if (fcntl(client->cfd, F_GETFD) != 0)
+    if (fcntl(client->cfd, F_GETFD) > 0)
         dprintf(client->cfd, AI_DEATH);
     free(client->uuid);
     FD_CLR(client->cfd, &server->clients_fd);
