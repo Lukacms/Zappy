@@ -11,6 +11,13 @@
 #include <zappy/server/clock/utils.h>
 #include <zappy/server/map_utils.h>
 
+// TODO by doudou
+static void check_incantation(server_t *server, client_node_t *client)
+{
+    client->stats.action.type = NOTHING;
+    client->stats.action.ticks = -1;
+}
+
 static void update_ticks_clients(server_t *server, int ticks_elapsed)
 {
     client_node_t *client = 0;
@@ -26,6 +33,10 @@ static void update_ticks_clients(server_t *server, int ticks_elapsed)
             ticks_elapsed >= client->stats.action.ticks) {
             client->stats.action.type = NOTHING;
             client->stats.action.ticks = -1;
+        }
+        if (client->stats.action.type == INCANTATION &&
+            ticks_elapsed >= client->stats.action.ticks) {
+            check_incantation(server, client);
         }
         client = client->next;
     }
