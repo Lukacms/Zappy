@@ -22,5 +22,6 @@ void delete_client_from_team(client_node_t *client, server_t *server)
             break;
         }
     }
-    team->spots_free++;
+    team->nb_clients--;
+    add_egg_to_team(client, server);
 }

@@ -28,3 +28,8 @@ Test(launch, test_basic, .init = redirect)
     cr_assert_eq(launch(&args), FAILURE);
     cr_assert_stderr_eq_str("Zappy: Address already in use\n");
 }
+
+Test(server_loop, null_args)
+{
+    cr_assert_eq(server_loop(NULL), FAILURE);
+}

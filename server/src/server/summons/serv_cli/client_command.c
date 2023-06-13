@@ -15,7 +15,6 @@
 #include <zappy/server/utils.h>
 
 static const summons_funptr_t SUMMON[] = {
-    {.summon = ZAPPY_GUI_CONNECT, .handler = &gui_connect_func, .type = NONE},
     {.summon = ZAPPY_MSG, .handler = &msz_func, .type = GUI},
     {.summon = ZAPPY_BCT, .handler = &bct_func, .type = GUI},
     {.summon = ZAPPY_PNW, .handler = &mct_func, .type = GUI},
@@ -29,26 +28,32 @@ static const summons_funptr_t SUMMON[] = {
     {.summon = ZAPPY_RIGHT, .handler = &right_func, .type = AI},
     {.summon = ZAPPY_LEFT, .handler = &left_func, .type = AI},
     {.summon = ZAPPY_LOOK, .handler = &look_func, .type = AI},
+    {.summon = ZAPPY_FORK, .handler = &fork_func, .type = AI},
     {.summon = ZAPPY_INVENTORY, .handler = &inventory_func, .type = AI},
+    {.summon = ZAPPY_BROADCAST, .handler = &broadcast_func, .type = AI},
     {.summon = ZAPPY_CONNECT_NBR, .handler = &connect_nbr_func, .type = AI},
+    {.summon = ZAPPY_EJECT, .handler = &eject_func, .type = AI},
+    {.summon = ZAPPY_TAKE, .handler = &take_func, .type = AI},
+    {.summon = ZAPPY_SET, .handler = &set_func, .type = AI},
+    {.summon = ZAPPY_INCANTATION, .handler = &incantation_func, .type = AI},
     {0},
 };
 
 static int parse_command(char **summon, server_t *server, client_node_t *client)
 {
     if (!server || !summon || !(*summon))
-        return FAILURE;
+        return NOT_FOUND;
     for (int i = 0; SUMMON[i].handler; i += 1) {
         if (strcmp(SUMMON[i].summon, summon[0]) == 0 &&
             SUMMON[i].type == client->state)
             return SUMMON[i].handler(server, summon, client);
     }
-    return FAILURE;
+    return NOT_FOUND;
 }
 
 static void error_command(char **tab, server_t *server, client_node_t *client)
 {
-    if (tab == NULL || parse_command(tab, server, client) != 0) {
+    if (tab == NULL || parse_command(tab, server, client) == NOT_FOUND) {
         if (client->state == GUI) {
             dprintf(client->cfd, GUI_UNKNOWN);
             return;

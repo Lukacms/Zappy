@@ -9,6 +9,6 @@
 
 #include <zappy/server/infos.h>
 
-int gettickselapsed(zappy_clock_t *clock);
-void update_ticks_clients(server_t *server);
-int add_ticks_occupied(client_node_t *client, int restraint, server_t *server);
+int gettickselapsed(zappy_clock_t *);
+void update_ticks(server_t *);
+int add_ticks_occupied(client_node_t *, int, server_t *);

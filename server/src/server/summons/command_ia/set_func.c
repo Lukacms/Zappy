@@ -24,12 +24,12 @@ int set_func(server_t *server, char *args[], client_node_t *client)
             server->map.tiles[client->stats.pos.x][client->stats.pos.y]
                 .slots[i].units += client->stats.inventory[i].units;
             client->stats.inventory[i].units = 0;
-            send_toall_guicli(server, "pdr %i %i\n", client->uuid,
+            send_toall_guicli(server, DISPATCH_PDR, client->cfd,
                             client->stats.inventory[i].resource);
-            dprintf(client->cfd, "ok");
+            dprintf(client->cfd, BASIC_VALID);
+            add_ticks_occupied(client, RESTRAINT_SET, server);
             return SUCCESS;
         }
     }
-    add_ticks_occupied(client, RESTRAINT_SET, server);
     return set_error(client->cfd, INVALID_ACTION, false);
 }

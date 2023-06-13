@@ -12,21 +12,25 @@
 #define INIT_FOOD 10
 
 // exclusively related to client
-int add_client_node(client_node_t *new_node, server_t *server);
-client_node_t *find_client_by_uuid(const char *uuid, server_t *server);
-client_node_t *find_client_by_fd(int fd, server_t *server);
-void delete_client_by_fd(int fd, server_t *server);
-void delete_client_by_uuid(const char *uuid, server_t *server);
-int connect_new_client(server_t *server);
+int add_client_node(client_node_t *, server_t *);
+client_node_t *find_client_by_uuid(const char *, server_t *);
+client_node_t *find_client_by_fd(int fd, server_t *);
+void delete_client_by_fd(int fd, server_t *);
+void delete_client_by_uuid(const char *, server_t *);
+int connect_new_client(server_t *);
+int kill_player(server_t *, client_node_t *);
+int starve_players(server_t *);
+void destroy_client(server_t *, client_node_t *);
 
 // team related
-int add_client_to_team(client_node_t *client, server_t *server,
-                        const char *team);
-team_t *find_team_by_name(const char *name, server_t *server);
-team_t *find_team_by_uuid(const char *uuid, server_t *server);
-void delete_client_from_team(client_node_t *client, server_t *server);
+int add_client_to_team(client_node_t *, server_t *, const char *);
+team_t *find_team_by_name(const char *, server_t *);
+team_t *find_team_by_uuid(const char *, server_t *);
+void delete_client_from_team(client_node_t *, server_t *);
 
 // egg related
-int create_eggs(server_t *server);
-int from_egg_to_player(client_node_t *client, team_t **team);
-int add_egg_to_team(client_node_t *client, server_t *server);
+int create_eggs(server_t *);
+int from_egg_to_player(client_node_t *, team_t **);
+int add_egg_to_team(client_node_t *, server_t *);
+int delete_egg_from_team(server_t *, int);
+egg_t **find_egg_by_nb(server_t *, int);

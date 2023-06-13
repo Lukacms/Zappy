@@ -8,13 +8,16 @@
 #include <stdio.h>
 #include <zappy/server.h>
 #include <zappy/server/clock/utils.h>
+#include <zappy/server/summon/utils.h>
 
 static int set_client_orientation(server_t *server, client_node_t *client,
                                 orientation_t orientation)
 {
     client->stats.orientation = orientation;
-    dprintf(client->cfd, "ok\n");
+    dprintf(client->cfd, BASIC_VALID);
     add_ticks_occupied(client, RESTRAINT_LEFT, server);
+    send_toall_guicli(server, DISPATCH_PPO, client->cfd, client->stats.pos.x,
+                    client->stats.pos.y, client->stats.orientation);
     return SUCCESS;
 }
 
@@ -29,5 +32,5 @@ int right_func(server_t *server, char __attribute__((unused)) * args[],
         case EAST: return set_client_orientation(server, client, SOUTH);
         case WEST: return set_client_orientation(server, client, NORTH); break;
     }
-    return 1;
+    return FAILURE;
 }

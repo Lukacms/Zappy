@@ -34,3 +34,14 @@ bool has_stock_left(const int *stock)
             return true;
     return false;
 }
+
+int len_eggs(const int *src)
+{
+    int size = 0;
+
+    if (!src)
+        return -1;
+    while (src[size] != -1)
+        size++;
+    return size;
+}

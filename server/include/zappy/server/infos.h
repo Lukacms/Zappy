@@ -23,6 +23,9 @@
 #define MAX_BODY_LENGTH 512
 
 #define INVENTORY_SLOTS 7
+#define MEAL_TIME 126
+#define CHAR_INT 48
+#define DIRECTIONNAL 5
 
 static const char __attribute__((unused)) *
     RESOURCES_INVENTORY[INVENTORY_SLOTS] = {
@@ -42,6 +45,7 @@ typedef enum resource_s {
 typedef enum action_s {
     NOTHING,
     ACTION,
+    INCANTATION,
 } action_t;
 
 typedef enum orientation_s {
@@ -59,7 +63,7 @@ typedef enum player_s {
 
 typedef struct inventory_s {
     resource_t resource;
-    size_t units;
+    ssize_t units;
 } inventory_t;
 
 typedef struct stats_s {
@@ -91,6 +95,7 @@ typedef struct client_node_s {
 typedef struct clients_s {
     client_node_t *head;
     size_t length;
+    int last_meal;
 } clients_t;
 
 typedef struct egg_s {
@@ -111,7 +116,7 @@ typedef struct team_s {
 typedef struct tile_s {
     inventory_t slots[INVENTORY_SLOTS];
     char **players_uuid;
-    int **eggs;
+    int *eggs;
     bool end;
 } tile_t;
 

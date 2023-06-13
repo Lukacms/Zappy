@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2023
-** incantation
+** incantation_func
 ** File description:
 ** zappy
 */
@@ -13,7 +13,7 @@
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
-int incantation(server_t *server, char *args[], client_node_t *client)
+int incantation_func(server_t *server, char *args[], client_node_t *client)
 {
     if (!server || !client)
         return FAILURE;
@@ -25,9 +25,9 @@ int incantation(server_t *server, char *args[], client_node_t *client)
             server->map.tiles[client->stats.pos.x][client->stats.pos.y]
                 .slots[i].units += 1;
             client->stats.inventory[i].units -= 1;
-            send_toall_guicli(server, "pdr %i %i\n", client->uuid,
+            send_toall_guicli(server, DISPATCH_PDR, client->cfd,
                             client->stats.inventory[i].resource);
-            dprintf(client->cfd, "ok");
+            dprintf(client->cfd, BASIC_VALID);
             return SUCCESS;
         }
     }

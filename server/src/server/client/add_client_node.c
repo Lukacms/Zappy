@@ -14,9 +14,9 @@ int add_client_node(client_node_t *new_client, server_t *server)
         return FAILURE;
     new_client->next = new_client;
     new_client->prev = new_client;
-    if (server->clients.length == 0)
+    if (!server->clients.head) {
         server->clients.head = new_client;
-    else {
+    } else {
         new_client->prev = server->clients.head->prev;
         new_client->next = server->clients.head;
         server->clients.head->prev->next = new_client;

@@ -7,8 +7,8 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <zappy/server.h>
 #include <zappy/server/clock/utils.h>
-#include <zappy/server/summon/infos.h>
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
@@ -25,12 +25,12 @@ int take_func(server_t *server, char *args[], client_node_t *client)
                     .slots[i].units;
             server->map.tiles[client->stats.pos.x][client->stats.pos.y]
                 .slots[i].units = 0;
-            send_toall_guicli(server, "pgt %i %i\n", client->uuid,
+            send_toall_guicli(server, DISPATCH_PGT, client->cfd,
                             client->stats.inventory[i].resource);
-            dprintf(client->cfd, "ok");
-            return 0;
+            dprintf(client->cfd, BASIC_VALID);
+            add_ticks_occupied(client, RESTRAINT_TAKE, server);
+            return SUCCESS;
         }
     }
-    add_ticks_occupied(client, RESTRAINT_TAKE, server);
     return set_error(client->cfd, INVALID_ACTION, false);
 }
