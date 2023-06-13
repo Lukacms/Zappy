@@ -19,7 +19,7 @@ void dprint_tile(map_t, size_t, size_t, client_node_t *);
 
 int parse_event_client(server_t *, const char *, client_node_t *);
 
-/* IA funptr */
+/* AI funptr */
 int forward_north(server_t *, client_node_t *);
 int forward_south(server_t *, client_node_t *);
 int forward_east(server_t *, client_node_t *);
