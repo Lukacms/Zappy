@@ -41,6 +41,7 @@ SRC_SUMMONS	=	src/server/summons/command_ai/dprint_tile.c	\
 				src/server/summons/command_ai/connect_nbr_func.c	\
 				src/server/summons/command_ai/forward_func.c	\
 				src/server/summons/command_ai/fork_func.c	\
+				src/server/summons/command_ai/check_incantation_end.c	\
 				src/server/summons/add_summon.c	\
 				src/server/summons/handle_summon.c	\
 				src/server/summons/pop_summon.c	\

@@ -49,3 +49,4 @@ int take_func(server_t *, char *[], client_node_t *);
 int set_func(server_t *, char *[], client_node_t *);
 int incantation_func(server_t *, char *[], client_node_t *);
 int fork_func(server_t *, char *[], client_node_t *);
+int check_incantation_end(server_t *server, client_node_t *client);
