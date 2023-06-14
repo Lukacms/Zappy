@@ -27,7 +27,6 @@ zappy::Player::Player(const zappy::PlayerInfo &infos)
     m_position_map.y = m_position.y * TILE_SIZE * SCALING + (TILE_SIZE * SCALING / 2);
     m_is_dead = false;
     m_delete = false;
-    std::cout << static_cast<int>(m_orientation) << std::endl;
 }
 
 // Methods
@@ -39,6 +38,7 @@ int zappy::Player::getId() const
 
 void zappy::Player::setPlayerLevel(int level)
 {
+    std::cout << "GIVE LEVEL : " << level << std::endl;
     m_level = level;
 }
 
@@ -75,7 +75,6 @@ void zappy::Player::movePlayer(int pos_x, int pos_y, Orientation orientation)
         m_remain = {0, -80};
     if (tmp_y == 1 || tmp_y < -1)
         m_remain = {0, 80};
-    // std::cout << "TMP X : " << tmp_x << " TMP Y : " << tmp_y << std::endl;
 }
 
 void zappy::Player::animatePlayer(sf::Vector2i &size)
@@ -84,8 +83,13 @@ void zappy::Player::animatePlayer(sf::Vector2i &size)
         animateDeath();
         return;
     }
+    playerMovement();
     if (m_selected)
         animateSelected();
+    if (m_elevate) {
+        animateElevation();
+        return;
+    }
     if (m_orientation == Orientation::North)
         animateNorth(size);
     if (m_orientation == Orientation::East)
@@ -98,7 +102,6 @@ void zappy::Player::animatePlayer(sf::Vector2i &size)
 
 void zappy::Player::animateSouth(sf::Vector2i &size)
 {
-    playerMovement();
     checkBoundaries(size);
     if (m_remain.y == 0.F) {
         m_rect = {96, 274 + (320 * (m_level - 1)), 32, 32};
@@ -120,7 +123,6 @@ void zappy::Player::animateSouth(sf::Vector2i &size)
 
 void zappy::Player::animateEast(sf::Vector2i &size)
 {
-    playerMovement();
     checkBoundaries(size);
     if (m_remain.x == 0.F) {
         m_rect = {64, 274 + (320 * (m_level - 1)), 32, 32};
@@ -142,7 +144,6 @@ void zappy::Player::animateEast(sf::Vector2i &size)
 
 void zappy::Player::animateNorth(sf::Vector2i &size)
 {
-    playerMovement();
     checkBoundaries(size);
     if (m_remain.y == 0.F) {
         m_rect = {0, 274 + (320 * (m_level - 1)), 32, 32};
@@ -164,7 +165,6 @@ void zappy::Player::animateNorth(sf::Vector2i &size)
 
 void zappy::Player::animateWest(sf::Vector2i &size)
 {
-    playerMovement();
     checkBoundaries(size);
     if (m_remain.x == 0.F) {
         m_rect = {32, 274 + (320 * (m_level - 1)), 32, 32};
@@ -364,4 +364,24 @@ void zappy::Player::checkBoundaries(sf::Vector2i &size)
         m_position_map.x = 0;
     if (m_position_map.y < 0)
         m_position_map.y = size.y * TILE_SIZE * SCALING;
+}
+
+void zappy::Player::animateElevation()
+{
+    if (m_clock.getElapsedTime().asSeconds() >= 1.F) {
+        m_clock.restart();
+        if (m_rect.left != 288) {
+            m_rect.left = 288;
+            m_rect.top = 274 + (320 * (m_level - 1));
+        }
+        if (m_rect.top == 274 + (320 * (m_level - 1)))
+            m_rect.top = 274 + (320 * m_level);
+        else if (m_rect.top == 274 + (320 * m_level))
+            m_rect.top = 274 + (320 * (m_level - 1));
+    }
+}
+
+void zappy::Player::triggerElevation(bool status)
+{
+    m_elevate = status;
 }

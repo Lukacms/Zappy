@@ -115,6 +115,7 @@ bool zappy::Client::fillRingBuffer()
 void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window ,const std::string &str)
 {
     std::vector<std::string> parsed;
+    std::cout << "COMMAND : " << str << std::endl;
     parsed = parser(str);
     Packet variant = get_variant(parsed);
     auto visitor = make_lambda_visitor(
@@ -157,7 +158,7 @@ void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window ,c
         },
         [&](Plv &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());
-            arg.incantation_level = static_cast<short>(std::atoi(parsed[5].c_str()));
+            arg.incantation_level = std::atoi(parsed[2].c_str());
             game.changePlayerLevel(arg);
         },
         [&](Pin &arg) {
@@ -188,13 +189,13 @@ void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window ,c
             arg.incantation_level = static_cast<short>(std::atoi(parsed[3].c_str()));
             for (size_t i{4}; i < parsed.size(); i++)
                 arg.player_list.push_back(std::atoi(parsed[i].c_str()));
-            // game.startIncantation(arg);
+            game.startIncantation(arg);
         },
         [&](Pie &arg) {
             arg.x_tile_coord = std::atoi(parsed[1].c_str());
             arg.y_tile_coord = std::atoi(parsed[2].c_str());
             arg.result = std::atoi(parsed[3].c_str());
-            // game.endIncantation(arg);
+            game.endIncantation(arg);
         },
         [&](Pkf &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());

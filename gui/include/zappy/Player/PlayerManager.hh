@@ -14,10 +14,14 @@
 #include <memory>
 #include <string_view>
 #include <vector>
+#include <deque>
 #include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/Player/Player.hh>
 
 constexpr std::string_view DEATH_SOUND{"./gui/assets/sound/death.ogg"};
+constexpr std::string_view INCANTATION_SOUND{"./gui/assets/sound/treasure.ogg"};
+constexpr std::string_view INCANTATION_FAILED{"./gui/assets/sound/itemget.ogg"};
+constexpr std::string_view INCANTATION_SUCCESS{"./gui/assets/sound/error.ogg"};
 
 namespace zappy
 {
@@ -44,18 +48,25 @@ namespace zappy
             void playerDeath(Pdi &dead_player);
             bool selectPlayer(sf::Event &event, sf::RenderWindow &window);
             void deletePlayers();
+            void startIncantation(Pic &incantation);
+            void endIncantation(Pie &end);
             [[nodiscard]] Player &getSelectedPlayer();
 
         private:
             void depthManager();
             void deselecPlayer(int player_id);
+            void verifySounds();
 
             bool m_player_is_selected = false;
             Player m_selected_player;
             int m_selected_player_id;
             std::vector<Player> m_players;
+            std::vector<int> m_elevating_players;
             sf::Vector2i m_size;
             sf::SoundBuffer m_death;
-            sf::Sound m_sound;
+            sf::SoundBuffer m_incantation;
+            sf::SoundBuffer m_success;
+            sf::SoundBuffer m_failure;
+            std::deque<sf::Sound> m_sounds;
     };
 } // namespace zappy

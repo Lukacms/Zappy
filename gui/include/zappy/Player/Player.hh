@@ -54,6 +54,7 @@ namespace zappy
             void triggerDeath();
             void triggerSelection(bool status);
             void triggerExpulse();
+            void triggerElevation(bool status);
 
             [[nodiscard]] int getId() const;
             [[nodiscard]] sf::Vector2f getWorldPosition() const;
@@ -77,14 +78,16 @@ namespace zappy
             void expulsedWest();
             void animateSelected();
             void playerMovement();
+            void animateElevation();
 
-                int m_id;
+            int m_id;
             int m_level;
             bool m_is_dead = false;
             bool m_delete = false;
             bool m_selected = false;
             bool m_spark = true;
             bool m_expulse = false;
+            bool m_elevate = false;
             Inventory m_inventory;
             Orientation m_orientation;
             std::string m_team;

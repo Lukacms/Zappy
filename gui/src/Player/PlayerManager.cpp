@@ -20,8 +20,9 @@
 zappy::PlayerManager::PlayerManager()
 {
     m_death.loadFromFile(DEATH_SOUND.data());
-    m_sound.setBuffer(m_death);
-    m_sound.setVolume(100.0F);
+    m_incantation.loadFromFile(INCANTATION_SOUND.data());
+    m_failure.loadFromFile(INCANTATION_SUCCESS.data());
+    m_success.loadFromFile(INCANTATION_FAILED.data());
 }
 
 // Methods
@@ -29,6 +30,7 @@ zappy::PlayerManager::PlayerManager()
 void zappy::PlayerManager::animatePlayers()
 {
     depthManager();
+    verifySounds();
     for (auto &player : m_players)
         player.animatePlayer(m_size);
     deletePlayers();
@@ -127,7 +129,11 @@ void zappy::PlayerManager::playerDeath(Pdi &dead_player)
 {
     for (auto &player : m_players) {
         if (player.getId() == dead_player.player_nb) {
-            m_sound.play();
+            m_sounds.emplace_front();
+            auto sound = m_sounds.begin();
+            sound->setBuffer(m_death);
+            sound->setVolume(100.F);
+            sound->play();
             player.triggerDeath();
             break;
         }
@@ -185,4 +191,53 @@ void zappy::PlayerManager::deselecPlayer(int player_id)
 zappy::Player &zappy::PlayerManager::getSelectedPlayer()
 {
     return m_selected_player;
+}
+
+void zappy::PlayerManager::startIncantation(Pic &incantation)
+{
+    m_sounds.emplace_front();
+    auto sound = m_sounds.begin();
+    sound->setBuffer(m_incantation);
+    sound->setVolume(100.F);
+    sound->play();
+    for (auto &player : m_players) {
+        for (auto &identity : incantation.player_list)
+            if (player.getId() == identity) {
+                player.triggerElevation(true);
+                m_elevating_players.emplace_back(player.getId());
+            }
+    }
+}
+
+void zappy::PlayerManager::endIncantation(Pie &end)
+{
+    sf::Vector2i position{end.x_tile_coord, end.y_tile_coord};
+
+    m_sounds.emplace_front();
+    auto sound = m_sounds.begin();
+    if (end.result == 0)
+        sound->setBuffer(m_failure);
+    else
+        sound->setBuffer(m_success);
+    sound->setVolume(100.F);
+    sound->play();
+    for (auto &player : m_players) {
+        for (auto iterator = m_elevating_players.begin(); iterator != m_elevating_players.end();) {
+            if (player.getId() == *iterator && player.getLocalPosition() == position) {
+                player.triggerElevation(false);
+                iterator = m_elevating_players.erase(iterator);
+            } else
+                iterator += 1;
+        }
+    }
+}
+
+void zappy::PlayerManager::verifySounds()
+{
+    for (auto iterator = m_sounds.begin(); iterator != m_sounds.end();) {
+        if (iterator->getStatus() == sf::Sound::Stopped)
+            iterator = m_sounds.erase(iterator);
+        else
+            iterator++;
+    }
 }

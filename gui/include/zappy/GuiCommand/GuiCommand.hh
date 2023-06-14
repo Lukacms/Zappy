@@ -66,7 +66,7 @@ namespace zappy
 
     struct Plv {
             int player_nb{0};
-            short incantation_level{0};
+            int incantation_level{0};
     };
 
     struct Pin {

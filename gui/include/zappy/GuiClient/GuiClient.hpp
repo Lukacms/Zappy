@@ -42,7 +42,7 @@ namespace zappy
     };
 
     template <typename... Ts> struct LambdaVisitor : Ts... {
-            LambdaVisitor(Ts &&...lambda) : Ts{std::forward<Ts>(lambda)}... {};
+            LambdaVisitor(Ts &&...lambda) : Ts{std::forward<Ts>(lambda)}... {}
             using Ts::operator()...;
     };
 

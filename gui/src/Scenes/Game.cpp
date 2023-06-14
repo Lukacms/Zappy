@@ -102,3 +102,13 @@ void zappy::Game::playerDeath(Pdi &player)
 {
     m_player_manager.playerDeath(player);
 }
+
+void zappy::Game::startIncantation(Pic &player_incantation)
+{
+    m_player_manager.startIncantation(player_incantation);
+}
+
+void zappy::Game::endIncantation(Pie &player_incantation)
+{
+    m_player_manager.endIncantation(player_incantation);
+}
