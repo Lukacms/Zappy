@@ -100,6 +100,12 @@
 #define AI_EJECT "eject: %i\n"
 #define BASIC_VALID "ok\n"
 #define AI_DEATH "dead\n"
+#define VALID_INCANT "Current level: %zu\n"
+#define IN_INCANT "Elevation underway\n"
+
+static const __attribute__((unused)) char *INCANTATION_MANDATORY[] = {
+    "1100000", "2111000", "2201020", "4112010", "4121300", "6123010", "6222221",
+};
 
 typedef struct summon_queue_s {
     char *summon;

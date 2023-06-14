@@ -27,7 +27,7 @@ static void update_ticks_clients(server_t *server, int ticks_elapsed)
             client->stats.action.ticks = -1;
         }
         if (client->stats.action.type == INCANTATION) {
-            check_incantation_end(server, client);
+            check_incantation_end(server, client, ticks_elapsed);
         }
         client = client->next;
     }

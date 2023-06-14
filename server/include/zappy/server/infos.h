@@ -140,12 +140,6 @@ typedef struct server_s {
     zappy_clock_t clock;
 } server_t;
 
-typedef struct incantation_s {
-    int required_lvl;
-    int nb_players;
-    inventory_t resources[INVENTORY_SLOTS - 1];
-} incantation_t;
-
 typedef int (*cmd_handler_t)(server_t *, char *[], client_node_t *);
 
 typedef struct summons_funptr_s {

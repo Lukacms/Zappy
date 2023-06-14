@@ -28,19 +28,20 @@ SRC_LOAD	=	src/load/options/f_handler.c	\
 				src/load/update_server_with_args.c	\
 				src/load/create_server.c	\
 
-SRC_SUMMONS	=	src/server/summons/command_ai/dprint_tile.c	\
+SRC_SUMMONS	=	src/server/summons/command_ai/set_func.c	\
+				src/server/summons/command_ai/left_func.c	\
+				src/server/summons/command_ai/take_func.c	\
+				src/server/summons/command_ai/fork_func.c	\
+				src/server/summons/command_ai/look_func.c	\
+				src/server/summons/command_ai/eject_func.c	\
+				src/server/summons/command_ai/right_func.c	\
+				src/server/summons/command_ai/dprint_tile.c	\
+				src/server/summons/command_ai/forward_func.c	\
 				src/server/summons/command_ai/broadcast_func.c	\
 				src/server/summons/command_ai/inventory_func.c	\
-				src/server/summons/command_ai/look_func.c	\
-				src/server/summons/command_ai/set_func.c	\
-				src/server/summons/command_ai/left_func.c	\
-				src/server/summons/command_ai/right_func.c	\
-				src/server/summons/command_ai/take_func.c	\
-				src/server/summons/command_ai/incantation_func.c	\
-				src/server/summons/command_ai/eject_func.c	\
 				src/server/summons/command_ai/connect_nbr_func.c	\
-				src/server/summons/command_ai/forward_func.c	\
-				src/server/summons/command_ai/fork_func.c	\
+				src/server/summons/command_ai/incantation_func.c	\
+				src/server/summons/command_ai/utils_incantation.c	\
 				src/server/summons/command_ai/check_incantation_end.c	\
 				src/server/summons/add_summon.c	\
 				src/server/summons/handle_summon.c	\
