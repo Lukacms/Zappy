@@ -7,7 +7,10 @@
 
 #pragma once
 
-#include "zappy/Player/Player.hh"
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <zappy/GuiCommand/GuiCommand.hh>
+#include <zappy/Player/Player.hh>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -19,11 +22,14 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Event.hpp>
 #include <array>
+#include <deque>
 #include <string>
 #include <string_view>
 #include <zappy/Map/Tile.hh>
+#include <ctime>
 
 constexpr std::string_view MAIN_FONT{"./gui/assets/fonts/botw.otf"};
+constexpr std::string_view BROADCAST_SOUND{"./gui/assets/sound/announcement.ogg"};
 constexpr std::string_view LINEMATE{"Linemate"};
 constexpr std::string_view DERAUMEDE{"Deraumede"};
 constexpr std::string_view SIBUR{"Sibur"};
@@ -66,21 +72,28 @@ namespace zappy
             void setFocusedPlayer(zappy::Player &player);
             void eventManager(sf::Event &event, sf::RenderWindow &window);
             void turnHUD(bool status1, bool status2);
+            void addBroadcast(Pbc &broadcast);
 
         private:
             void initializeParchment();
             void initializeRupees();
             void initializeTexts();
             void initializeFood();
+            void initializeBroadcastView();
             void animateHUD();
             void animateRupees();
             void animateFood();
+            void animateBroadcast();
+            void resetBroadcast();
 
             void drawTexts(sf::RenderWindow &window);
             void drawSprites(sf::RenderWindow &window, sf::Sprite &sprite);
 
             sf::View m_hud_view{};
+            sf::View m_broadcast_view{};
             sf::Vector2f m_hud_scale{};
+            sf::SoundBuffer m_broadcast{};
+            sf::Sound m_sound_broadcast{};
             bool m_is_active{false};
             bool m_is_faded{false};
             int m_rupees_phases{0};
@@ -92,12 +105,14 @@ namespace zappy
             sf::Color m_color_text{69, 45, 16, 255};
             sf::Clock m_rupees_clock{};
             sf::Clock m_food_clock{};
+            sf::Clock m_broadcast_clock{};
 
             zappy::Tile m_parchment{};
             zappy::Tile m_food{};
             zappy::Text m_title{};
             zappy::Text m_food_text{};
             zappy::Text m_food_count{};
+            std::vector<Text> m_broadcast_messages{};
             std::array<Tile, 6> m_rupees{};
             std::array<Text, 6> m_texts{};
             std::array<Text, 6> m_ressources{};

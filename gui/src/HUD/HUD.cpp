@@ -5,10 +5,10 @@
 ** HUD
 */
 
-#include "Inventory.hh"
-#include "zappy/Player/Player.hh"
+#include <Inventory.hh>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -16,6 +16,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <cstddef>
+#include <ctime>
 #include <ios>
 #include <iostream>
 #include <iterator>
@@ -24,6 +25,7 @@
 #include <vector>
 #include <zappy/HUD/HUD.hh>
 #include <zappy/Map/Tile.hh>
+#include <zappy/Player/Player.hh>
 
 // Constructor && Destructor
 
@@ -31,10 +33,13 @@ zappy::HUD::HUD()
 {
     m_font.loadFromFile(MAIN_FONT.data());
     m_color = sf::Color{255, 255, 255, 255};
+    m_broadcast.loadFromFile(BROADCAST_SOUND.data());
+    m_sound_broadcast.setBuffer(m_broadcast);
     initializeParchment();
     initializeRupees();
     initializeTexts();
     initializeFood();
+    initializeBroadcastView();
 }
 
 // Methods
@@ -286,4 +291,77 @@ void zappy::HUD::drawTexts(sf::RenderWindow &window)
     m_text.setPosition(m_title.m_position);
     m_text.setString(m_title.m_str);
     window.draw(m_text);
+    window.setView(m_broadcast_view);
+    animateBroadcast();
+    m_text.setCharacterSize(80);
+    m_text.setFillColor({0, 0, 0});
+    for (auto &text : m_broadcast_messages) {
+        m_text.setPosition(text.m_position);
+        m_text.setString(text.m_str);
+        text.m_box = m_text.getGlobalBounds();
+        window.draw(m_text);
+    }
+}
+
+void zappy::HUD::initializeBroadcastView()
+{
+    sf::FloatRect rect{0.25F, 0.025F, 0.50F, 0.5F};
+
+    m_broadcast_view.setViewport(rect);
+}
+
+void zappy::HUD::animateBroadcast()
+{
+    if (m_broadcast_clock.getElapsedTime().asMilliseconds() > 1.F) {
+        m_broadcast_clock.restart();
+        for (size_t iterator = 0; iterator < m_broadcast_messages.size(); iterator += 1) {
+            if (iterator == 0 &&
+                m_broadcast_messages[iterator].m_position.x <=
+                    0 - m_broadcast_messages[iterator].m_box.width)
+                m_broadcast_messages[iterator].m_position.x = m_broadcast_view.getSize().x;
+            else if (m_broadcast_messages.size() > 1 &&
+                     m_broadcast_messages[iterator].m_position.x <=
+                         0 - m_broadcast_messages[iterator].m_box.width)
+                m_broadcast_messages[iterator].m_position.x =
+                    m_broadcast_messages[iterator - 1].m_position.x +
+                    m_broadcast_messages[iterator - 1].m_box.width + 100;
+            else
+                m_broadcast_messages[iterator].m_position.x -= 2;
+        }
+    }
+}
+
+void zappy::HUD::addBroadcast(Pbc &broadcast)
+{
+    Text new_broadcast{};
+    std::time_t time;
+    std::tm *now;
+
+    std::time(&time);
+    now = std::localtime(&time);
+    if (m_broadcast_messages.size() > 6)
+        m_broadcast_messages.erase(m_broadcast_messages.end() - 1);
+    new_broadcast.m_str = "Player " + std::to_string(broadcast.player_nb) + " said at  " +
+        std::to_string(now->tm_hour) + ":" +
+        (std::to_string(now->tm_min).size() == 1 ? "0" + std::to_string(now->tm_min) :
+                                                   std::to_string(now->tm_min)) +
+        " :  " + broadcast.message;
+    m_text.setCharacterSize(80);
+    m_text.setString(new_broadcast.m_str);
+    new_broadcast.m_box = m_text.getGlobalBounds();
+    m_broadcast_messages.insert(m_broadcast_messages.cbegin(), new_broadcast);
+    resetBroadcast();
+    m_sound_broadcast.play();
+}
+
+void zappy::HUD::resetBroadcast()
+{
+    for (size_t iterator = 0; iterator < m_broadcast_messages.size(); iterator += 1) {
+        if (iterator == 0)
+            m_broadcast_messages[iterator].m_position.x = m_broadcast_view.getSize().x;
+        else
+            m_broadcast_messages[iterator].m_position.x =
+                m_broadcast_messages[iterator - 1].m_position.x +
+                m_broadcast_messages[iterator - 1].m_box.width + 100;
+    }
 }

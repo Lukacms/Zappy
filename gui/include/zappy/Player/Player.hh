@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "Inventory.hh"
+#include <Inventory.hh>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>

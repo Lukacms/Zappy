@@ -5,7 +5,7 @@
 ** GuiClient
 */
 
-#include "zappy/Player/Player.hh"
+#include <zappy/Player/Player.hh>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Network/IpAddress.hpp>
 #include <SFML/Network/Socket.hpp>
@@ -125,7 +125,8 @@ bool zappy::Client::fillRingBuffer()
     return true;
 }
 
-void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window ,const std::string &str)
+void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window,
+                                  const std::string &str)
 {
     std::vector<std::string> parsed;
     std::cout << "COMMAND : " << str << std::endl;
@@ -193,8 +194,9 @@ void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window ,c
         },
         [&](Pbc &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());
-            arg.message = parsed[2];
-            // game.broadcast(arg);
+            for (size_t iterator = 2; iterator < parsed.size(); iterator += 1)
+                arg.message += parsed[iterator] + " ";
+            game.broadcast(arg);
         },
         [&](Pic &arg) {
             arg.x_tile_coord = std::atoi(parsed[1].c_str());

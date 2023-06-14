@@ -113,3 +113,8 @@ void zappy::Game::endIncantation(Pie &player_incantation)
 {
     m_player_manager.endIncantation(player_incantation);
 }
+
+void zappy::Game::broadcast(Pbc &broadcast)
+{
+    m_hud.addBroadcast(broadcast);
+}

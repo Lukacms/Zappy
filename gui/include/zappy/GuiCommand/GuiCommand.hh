@@ -6,8 +6,8 @@
 */
 
 #pragma once
-#include "zappy/HUD/HUD.hh"
-#include "zappy/Player/Player.hh"
+
+#include <zappy/Player/Player.hh>
 #include <array>
 
 #include <string_view>

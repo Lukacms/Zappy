@@ -14,6 +14,7 @@
 #include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/Player/Player.hh>
 #include <zappy/Player/PlayerManager.hh>
+#include <SFML/Window/Event.hpp>
 
 // Constructor && Destructor
 
