@@ -5,6 +5,7 @@
 ** from_egg_to_player_tile
 */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <zappy/server.h>
 #include <zappy/server/map_utils.h>
@@ -16,7 +17,7 @@ static int *shorten_array(int *src, int nb)
     int *dest = NULL;
     int flag = 0;
 
-    if (size <= 0 || !(dest = malloc(sizeof(int) * (len_eggs(src)))))
+    if (size <= 0 || !(dest = malloc(sizeof(int) * (size))))
         return NULL;
     for (int i = 0; i < size - 1; i++) {
         if (src[i] == nb)
@@ -41,9 +42,14 @@ int from_egg_to_player_tile(server_t *s, client_node_t *client, egg_t *e)
     if (!s->map.tiles[e->pos.y][e->pos.x].players_uuid)
         return FAILURE;
     s->map.tiles[e->pos.y][e->pos.x].players_uuid[size] = client->uuid;
-    for (u_int i = 0; s->map.tiles[e->pos.y][e->pos.x].eggs[i]; i++)
-        if (s->map.tiles[e->pos.y][e->pos.x].eggs[i] == e->nb)
+    for (u_int i = 0; s->map.tiles[e->pos.y][e->pos.x].eggs &&
+         s->map.tiles[e->pos.y][e->pos.x].eggs[i] != -1;
+         i++) {
+        if (s->map.tiles[e->pos.y][e->pos.x].eggs[i] == e->nb) {
             s->map.tiles[e->pos.y][e->pos.x].eggs =
                 shorten_array(s->map.tiles[e->pos.y][e->pos.x].eggs, i);
+            break;
+        }
+    }
     return SUCCESS;
 }

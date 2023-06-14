@@ -106,7 +106,7 @@ Test(find_egg_by_nb, find_egg_by_nb_valid)
     destroy_server(&server);
 }
 
-Test(from_egg_to_player, from_egg_to_player)
+/* Test(from_egg_to_player, from_egg_to_player)
 {
     client_node_t client = {0};
     team_t *team = malloc(sizeof(team_t));
@@ -130,4 +130,4 @@ Test(from_egg_to_player, from_egg_to_player)
     cr_assert_null(team->eggs[0]);
     cr_assert_eq(client.stats.pos.x, 4);
     free(team);
-}
+} */

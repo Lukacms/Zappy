@@ -29,12 +29,12 @@ int add_client_to_team(client_node_t *client, server_t *server,
         return FAILURE;
     if ((team_ind = find_team_by_name(team_name, server)) < 0)
         return set_error(client->cfd, UNKNOWN_COMMAND, false);
-    if (server->teams[team_ind]->nb_clients <= 0)
+    if (server->teams[team_ind]->spots_free <= 0)
         return set_error(client->cfd, INVALID_ACTION, false);
     client->state = AI;
     client->uuid_team = server->teams[team_ind]->uuid;
     server->teams[team_ind]->spots_free--;
-    if (from_egg_to_player(client, &server->teams[team_ind]) != SUCCESS)
+    if (from_egg_to_player(client, &server->teams[team_ind], server) != SUCCESS)
         return FAILURE;
     for (unsigned int i = 0; i < server->teams[team_ind]->nb_clients; i++)
         if (!server->teams[team_ind]->uuid_clients[i])

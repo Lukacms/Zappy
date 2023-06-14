@@ -23,6 +23,7 @@ int update_map(server_t *server)
 {
     int tmp = 0;
     int stocks[INVENTORY_SLOTS] = {0};
+    vector2i_t pos = {0};
 
     if (!server)
         return FAILURE;
@@ -30,11 +31,10 @@ int update_map(server_t *server)
         stocks[i] = server->map.init_stock[i] - find_stocks(server->map, i);
     while (has_stock_left(stocks)) {
         tmp = rand() % (INVENTORY_SLOTS + 1);
-        server->map
-            .tiles[rand() % server->map.size.y][rand() % server->map.size.x]
-            .slots[tmp]
-            .units += stock(server->map.size, DENSITY_INVENTORY[tmp],
-                            &(server->map.init_stock[tmp]));
+        pos = (vector2i_t){rand() % server->map.size.y,
+                           rand() % server->map.size.x};
+        server->map.tiles[pos.y][pos.x].slots[tmp].units +=
+            stock(server->map.size, DENSITY_INVENTORY[tmp], &(stocks[tmp]));
     }
     return SUCCESS;
 }

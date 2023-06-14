@@ -16,12 +16,13 @@ void delete_client_from_team(client_node_t *client, server_t *server)
     if (!client || !server ||
         (team_ind = find_team_by_uuid(client->uuid_team, server)) < 0)
         return;
-    for (unsigned int i = 0; i < server->teams[team_ind]->nb_clients; i++) {
+    for (unsigned int i = 0; i < server->teams[team_ind]->nb_clients &&
+         server->teams[team_ind]->uuid_clients[i];
+         i++) {
         if (!strcmp(client->uuid, server->teams[team_ind]->uuid_clients[i])) {
             server->teams[team_ind]->uuid_clients[i] = NULL;
             break;
         }
     }
     server->teams[team_ind]->nb_clients--;
-    add_egg_to_team(client, server);
 }

@@ -5,6 +5,7 @@
 ** main
 */
 
+#include <stdlib.h>
 #include <zappy/config/arguments.h>
 #include <zappy/server.h>
 #include <zappy/server/utils.h>
@@ -23,6 +24,7 @@ int main(int argc, char *const argv[])
 {
     args_config_t args = default_config();
 
+    srand(time(NULL));
     if (parse_args(&args, argc, argv) != SUCCESS)
         return print_help(FAILURE);
     if (args.help)

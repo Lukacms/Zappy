@@ -28,7 +28,7 @@ void delete_client_from_team(client_node_t *, server_t *);
 
 // egg related
 int create_eggs(server_t *);
-int from_egg_to_player(client_node_t *, team_t **);
+int from_egg_to_player(client_node_t *, team_t **, server_t *);
 int add_egg_to_team(client_node_t *, server_t *);
 int delete_egg_from_team(server_t *, int);
 egg_t **find_egg_by_nb(server_t *, int);

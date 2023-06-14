@@ -110,7 +110,7 @@ typedef struct team_s {
     char **uuid_clients;
     egg_t **eggs;
     size_t nb_clients;
-    size_t spots_free;
+    ssize_t spots_free;
 } team_t;
 
 typedef struct tile_s {

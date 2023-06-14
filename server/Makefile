@@ -104,10 +104,11 @@ SRC_TESTS	=	tests/redirect.c	\
 				tests/tests_launch.c	\
 				tests/tests_utils.c	\
 				tests/template.c	\
-				tests/server/tests_clients.c	\
+				tests/server/tests_map.c	\
 				tests/server/tests_eggs.c	\
 				tests/server/tests_clock.c	\
 				tests/server/tests_misc.c	\
+				tests/server/tests_clients.c	\
 				tests/server/create_server.c	\
 
 OBJ_TESTS	=	$(SRC:.c=.o)  $(SRC_TESTS:.c=.o)
