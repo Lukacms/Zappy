@@ -28,14 +28,14 @@ zappy::Map::Map(int width, int height)
     zappy::Tile tile = {};
 
     std::srand(static_cast<unsigned int>(time(nullptr)));
-    for (size_t x = 0; x < width; x += 1) {
+    for (size_t x_value = 0; x_value < static_cast<size_t>(width); x_value += 1) {
         m_map.emplace_back();
-        for (size_t y = 0; y < height; y += 1) {
+        for (size_t y_value = 0; y_value < static_cast<size_t>(height); y_value += 1) {
             random = std::rand() % TILE_NUMBER;
-            tile.m_position = {static_cast<float>(x) * (TILE_SIZE * SCALING),
-                               static_cast<float>(y) * (TILE_SIZE * SCALING)};
+            tile.m_position = {static_cast<float>(x_value) * (TILE_SIZE * SCALING),
+                               static_cast<float>(y_value) * (TILE_SIZE * SCALING)};
             tile.m_rect = {random * TILE_SIZE + 61, 56, TILE_SIZE, TILE_SIZE};
-            m_map[x].emplace_back(tile);
+            m_map[x_value].emplace_back(tile);
         }
     }
     m_map[0][0].m_inventory.linemate = 100;

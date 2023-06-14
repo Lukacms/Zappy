@@ -17,7 +17,7 @@
 
 zappy::WeatherManager::WeatherManager()
 {
-    std::srand(time(nullptr)); // NOLINT
+    std::srand(static_cast<unsigned int>(time(nullptr)));
     m_weathers[0] = Weather::DAY;
     m_weathers[1] = Weather::DAY;
     m_weathers[2] = Weather::RAINY;
@@ -43,7 +43,7 @@ void zappy::WeatherManager::checkWeather(zappy::MusicManager &music_manager)
         changeDayNight();
     // std::cout << static_cast<int>(m_cycles) << std::endl;
     m_clock.restart();
-    random = std::rand() % m_weathers.size();
+    random = std::rand() % static_cast<int>(m_weathers.size());
     new_weather = m_weathers[static_cast<size_t>(random)];
     if (new_weather == m_state)
         return;
@@ -71,19 +71,22 @@ void zappy::WeatherManager::animateFilter()
 {
     sf::Color current_color = m_filter.getFillColor();
 
-    if (m_filter_status && current_color.a < 130 && m_animation_clock.getElapsedTime().asSeconds() >= 0.02F) {
+    if (m_filter_status && current_color.a < 130 &&
+        m_animation_clock.getElapsedTime().asSeconds() >= 0.02F) {
         current_color.a += 1;
         m_filter.setFillColor(current_color);
         m_animation_clock.restart();
     }
-    if (!m_filter_status && current_color.a > 0 && m_animation_clock.getElapsedTime().asSeconds() >= 0.02F) {
+    if (!m_filter_status && current_color.a > 0 &&
+        m_animation_clock.getElapsedTime().asSeconds() >= 0.02F) {
         current_color.a -= 1;
         m_filter.setFillColor(current_color);
         m_animation_clock.restart();
     }
 }
 
-void zappy::WeatherManager::changeWeather(zappy::Weather new_weather, zappy::MusicManager &music_manager)
+void zappy::WeatherManager::changeWeather(zappy::Weather new_weather,
+                                          zappy::MusicManager &music_manager)
 {
     m_engine.setDelete();
     if (new_weather == Weather::RAINY) {

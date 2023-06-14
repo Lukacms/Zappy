@@ -1,4 +1,5 @@
-/* ** EPITECH PROJECT, 2023
+/*
+** EPITECH PROJECT, 2023
 ** GuiClient
 ** File description:
 ** GuiClient
@@ -30,13 +31,25 @@ zappy::Client::Client(const std::string &name, unsigned short port)
 
 void zappy::Client::sendCommand(const std::string &cmd)
 {
-    m_socket.send(cmd.c_str(), cmd.size());
+    const char *data_ptr = cmd.c_str();
+    std::size_t data_size = cmd.size();
+    std::size_t total_sent = 0;
+    sf::Socket::Status send_status;
+
+    while (total_sent < data_size) {
+        std::size_t sent = 0;
+        send_status = m_socket.send(data_ptr + total_sent, data_size - total_sent, sent);
+        if (send_status == sf::Socket::Error) {
+            std::cerr << "Failed to send data to the server" << std::endl;
+            return;
+        }
+        total_sent += sent;
+    }
 }
 
 void zappy::Client::sendGraphic()
 {
-    if (m_socket.send("GRAPHIC\n", 8) != sf::Socket::Done)
-        throw;
+    sendCommand("GRAPHIC\n");
 }
 
 bool zappy::Client::WelcomeSuppressor()

@@ -7,20 +7,21 @@
 
 #pragma once
 
+#include "zappy/Egg/EggManager.hh"
 #include "zappy/Weather/WeatherManager.hh"
-#include <zappy/MusicManager/MusicManager.hh>
-#include <zappy/ParticleEngine/ParticleEngine.hh>
-#include <SFML/System/Clock.hpp>
-#include <zappy/GuiCommand/GuiCommand.hh>
-#include <zappy/Player/Player.hh>
-#include <zappy/Player/PlayerManager.hh>
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
 #include <string_view>
 #include <zappy/Camera.hh>
+#include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/HUD/HUD.hh>
 #include <zappy/Map/Map.hh>
+#include <zappy/MusicManager/MusicManager.hh>
+#include <zappy/ParticleEngine/ParticleEngine.hh>
+#include <zappy/Player/Player.hh>
+#include <zappy/Player/PlayerManager.hh>
 #include <zappy/Scenes/AScene.hh>
 
 constexpr std::string_view GAME_TEXTURE{"./gui/assets/sprites/Game_texture.png"};
@@ -58,7 +59,7 @@ namespace zappy
             void playerDeath(Pdi &player);
 
             void eggLayed(Enw &egg_infos);
-            void playerEggConnect(Ebo &player_infos);
+            void playerEggConnect(Ebo &egg_selected);
             void eggDeath(Edi &egg_infos);
 
             void getTimeUnit(Sgt &time_unit);
@@ -77,5 +78,7 @@ namespace zappy
             zappy::WeatherManager m_weather;
 
             sf::Sound m_sound;
+            zappy::EggManager m_egg_manager{};
+            int m_test_flag{0};
     };
 } // namespace zappy

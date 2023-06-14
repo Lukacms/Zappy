@@ -163,8 +163,10 @@ add_executable(
     zappy_gui
     src/main.cpp
     src/GUI/GUI.cpp
-    src/Map/Map.cpp
+    src/GuiClient/GuiClient.cpp
+    src/RingBuffer.cpp
     src/Camera.cpp
+    src/Map/Map.cpp
     src/HUD/HUD.cpp
     src/Scenes/Game.cpp
     src/Player/Player.cpp
@@ -177,6 +179,7 @@ add_executable(
     src/ParticleEngine/FogParticle.cpp
     src/ParticleEngine/ParticleEngine.cpp
     src/Weather/WeatherManager.cpp
+    src/Egg/EggManager.cpp
     )
 
 # rules for zappy_gui project

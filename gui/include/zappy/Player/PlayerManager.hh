@@ -11,10 +11,10 @@
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <deque>
 #include <memory>
 #include <string_view>
 #include <vector>
-#include <deque>
 #include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/Player/Player.hh>
 
@@ -35,12 +35,12 @@ namespace zappy
 
             PlayerManager &operator=(PlayerManager const &to_copy) = default;
             PlayerManager &operator=(PlayerManager &&to_move) = default;
+            void changePlayerStats(Pin &inventory);
 
             void animatePlayers();
             void addPlayer(Pnw &new_player);
             void changePlayerStats(Ppo &position);
             void changePlayerStats(Plv &level);
-            void changePlayerStats(Pin &inventory);
             void drawPlayers(sf::RenderWindow &window, sf::Sprite &sprite);
             void eventManager(sf::RenderWindow &window, sf::Event &event);
             void setMapSize(sf::Vector2i &size);

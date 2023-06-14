@@ -21,7 +21,7 @@
 
 zappy::Player::Player(const zappy::PlayerInfo &infos)
     : m_id{infos.m_id}, m_level{infos.m_level}, m_orientation{infos.m_orientation},
-      m_team{infos.m_team}, m_position{static_cast<int>(infos.m_x), static_cast<int>(infos.m_y)}
+      m_position{static_cast<int>(infos.m_x), static_cast<int>(infos.m_y)}, m_team{infos.m_team}
 {
     m_position_map.x = m_position.x * TILE_SIZE * SCALING + (TILE_SIZE * SCALING / 2);
     m_position_map.y = m_position.y * TILE_SIZE * SCALING + (TILE_SIZE * SCALING / 2);

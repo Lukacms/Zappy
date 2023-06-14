@@ -66,6 +66,17 @@ namespace zappy
             [[nodiscard]] int getLevel() const;
 
         private:
+            int m_id;
+            int m_level;
+            Orientation m_orientation;
+            sf::Clock m_clock;
+            sf::Vector2i m_position;
+            sf::Vector2f m_remain;
+            sf::Vector2f m_position_map;
+            sf::IntRect m_rect;
+            sf::FloatRect m_box;
+            Inventory m_inventory;
+            std::string m_team;
             void animateNorth(sf::Vector2i &size);
             void animateEast(sf::Vector2i &size);
             void animateSouth(sf::Vector2i &size);
@@ -80,24 +91,13 @@ namespace zappy
             void playerMovement();
             void animateElevation();
 
-            int m_id;
-            int m_level;
             bool m_is_dead = false;
             bool m_delete = false;
             bool m_selected = false;
             bool m_spark = true;
             bool m_expulse = false;
             bool m_elevate = false;
-            Inventory m_inventory;
-            Orientation m_orientation;
-            std::string m_team;
 
-            sf::Vector2i m_position;
-            sf::Vector2f m_position_map;
-            sf::Vector2f m_remain;
-            sf::IntRect m_rect;
-            sf::FloatRect m_box;
-            sf::Clock m_clock;
             sf::Clock m_clock_selected;
             sf::Color m_color = {255, 255, 255};
     };

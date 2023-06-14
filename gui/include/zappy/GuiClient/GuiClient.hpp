@@ -7,11 +7,11 @@
 
 #pragma once
 
-#include <zappy/RingBuffer.hh>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/Network/TcpSocket.hpp>
 #include <zappy/GuiCommand/GuiCommand.hh>
+#include <zappy/RingBuffer.hh>
 #include <zappy/Scenes/Game.hh>
 
 namespace zappy
@@ -42,7 +42,10 @@ namespace zappy
     };
 
     template <typename... Ts> struct LambdaVisitor : Ts... {
-            LambdaVisitor(Ts &&...lambda) : Ts{std::forward<Ts>(lambda)}... {}
+            LambdaVisitor(Ts &&...lambda) : Ts{std::forward<Ts>(lambda)}...
+            {
+            }
+
             using Ts::operator()...;
     };
 

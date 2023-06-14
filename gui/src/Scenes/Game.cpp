@@ -34,6 +34,7 @@ void zappy::Game::draw(sf::RenderWindow &window)
     m_player_manager.drawPlayers(window, m_sprite);
     m_weather.draw(window);
     m_hud.draw(window, m_sprite);
+    m_egg_manager.drawEgg(window, m_sprite, m_player_manager);
 }
 
 void zappy::Game::manageEvent(sf::RenderWindow &window, sf::Event &event)
