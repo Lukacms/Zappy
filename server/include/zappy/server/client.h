@@ -15,8 +15,6 @@
 int add_client_node(client_node_t *, server_t *);
 client_node_t *find_client_by_uuid(const char *, server_t *);
 client_node_t *find_client_by_fd(int fd, server_t *);
-void delete_client_by_fd(int fd, server_t *);
-void delete_client_by_uuid(const char *, server_t *);
 int connect_new_client(server_t *);
 int kill_player(server_t *, client_node_t *);
 int starve_players(server_t *);
@@ -24,8 +22,8 @@ void destroy_client(server_t *, client_node_t *);
 
 // team related
 int add_client_to_team(client_node_t *, server_t *, const char *);
-team_t *find_team_by_name(const char *, server_t *);
-team_t *find_team_by_uuid(const char *, server_t *);
+int find_team_by_name(const char *name, server_t *server);
+int find_team_by_uuid(const char *, server_t *);
 void delete_client_from_team(client_node_t *, server_t *);
 
 // egg related

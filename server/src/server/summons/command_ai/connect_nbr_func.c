@@ -14,12 +14,12 @@
 
 int connect_nbr_func(server_t *server, char *args[], client_node_t *client)
 {
-    team_t *team = NULL;
+    int team_ind = -1;
 
     if (!args || array_len(args) != 2 || !server)
         return set_error(client->cfd, INVALID_ACTION, false);
-    if (!(team = find_team_by_uuid(client->uuid_team, server)))
+    if ((team_ind = find_team_by_uuid(client->uuid_team, server)) < 0)
         return set_error(client->cfd, INVALID_ACTION, false);
-    dprintf(client->cfd, "%zu\n", team->spots_free);
+    dprintf(client->cfd, "%zu\n", server->teams[team_ind]->spots_free);
     return SUCCESS;
 }

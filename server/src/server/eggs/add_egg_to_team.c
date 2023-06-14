@@ -18,25 +18,37 @@ static egg_t *fill_infos(server_t *server, egg_t *egg, char *const uuid)
     return egg;
 }
 
+static int update_team_infos(server_t *server, int ind)
+{
+    server->teams[ind]->nb_clients++;
+    server->teams[ind]->spots_free++;
+    server->teams[ind]->eggs =
+        realloc(server->teams[ind]->eggs,
+                sizeof(egg_t *) * (server->teams[ind]->nb_clients + 1));
+    server->teams[ind]->uuid_clients =
+        realloc(server->teams[ind]->uuid_clients,
+                sizeof(char *) * (server->teams[ind]->nb_clients + 1));
+    if (!server->teams[ind]->eggs || !server->teams[ind]->uuid_clients)
+        return FAILURE;
+    server->teams[ind]->eggs[server->teams[ind]->nb_clients] = NULL;
+    server->teams[ind]->uuid_clients[server->teams[ind]->nb_clients] = NULL;
+    return SUCCESS;
+}
+
 int add_egg_to_team(client_node_t *client, server_t *server)
 {
-    team_t *team = NULL;
+    int ind = -1;
 
     if (!client || !server ||
-        !(team = find_team_by_uuid(client->uuid_team, server)))
+        (ind = find_team_by_uuid(client->uuid_team, server)) < 0)
         return FAILURE;
-    team->nb_clients++;
-    team->spots_free++;
-    team->eggs = realloc(team->eggs, sizeof(egg_t *) * (team->nb_clients + 1));
-    team->uuid_clients =
-        realloc(team->uuid_clients, sizeof(char *) * (team->nb_clients + 1));
-    if (!team->eggs || !team->uuid_clients)
+    if (update_team_infos(server, ind) != SUCCESS)
         return FAILURE;
-    team->eggs[team->nb_clients] = NULL;
-    team->uuid_clients[team->nb_clients] = NULL;
-    if (!(team->eggs[team->nb_clients - 1] = malloc(sizeof(egg_t))))
+    if (!(server->teams[ind]->eggs[server->teams[ind]->nb_clients - 1] =
+              malloc(sizeof(egg_t))))
         return FAILURE;
-    team->eggs[team->nb_clients - 1] =
-        fill_infos(server, team->eggs[team->nb_clients - 1], team->uuid);
+    server->teams[ind]->eggs[server->teams[ind]->nb_clients - 1] = fill_infos(
+        server, server->teams[ind]->eggs[server->teams[ind]->nb_clients - 1],
+        server->teams[ind]->uuid);
     return SUCCESS;
 }

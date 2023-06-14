@@ -8,24 +8,24 @@
 #include <string.h>
 #include <zappy/server.h>
 
-team_t *find_team_by_uuid(const char *uuid, server_t *server)
+int find_team_by_uuid(const char *uuid, server_t *server)
 {
     if (!uuid || !server || !server->teams)
-        return NULL;
+        return -1;
     for (unsigned int i = 0; server->teams[i]; i++) {
         if (strcmp(uuid, server->teams[i]->uuid) == SUCCESS)
-            return server->teams[i];
+            return i;
     }
-    return NULL;
+    return -1;
 }
 
-team_t *find_team_by_name(const char *name, server_t *server)
+int find_team_by_name(const char *name, server_t *server)
 {
     if (!name || !server || !server->teams)
-        return NULL;
+        return -1;
     for (unsigned int i = 0; server->teams[i]; i++) {
         if (strcmp(name, server->teams[i]->team_name) == SUCCESS)
-            return server->teams[i];
+            return i;
     }
-    return NULL;
+    return -1;
 }

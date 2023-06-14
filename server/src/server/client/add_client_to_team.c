@@ -16,29 +16,29 @@ static void send_infos(server_t *server, client_node_t *client, team_t *team)
     dprintf(client->cfd, "%zu\n%zu %zu\n", team->spots_free, server->map.size.x,
             server->map.size.y);
     send_toall_guicli(server, DISPATCH_PNW, client->cfd, client->stats.pos.x,
-                    client->stats.pos.y, client->stats.orientation,
-                    client->stats.level, team->team_name);
+                      client->stats.pos.y, client->stats.orientation,
+                      client->stats.level, team->team_name);
 }
 
 int add_client_to_team(client_node_t *client, server_t *server,
-                    const char *team_name)
+                       const char *team_name)
 {
-    team_t *team = NULL;
+    int team_ind = -1;
 
     if (!client || !server || !team_name)
         return FAILURE;
-    if (!(team = find_team_by_name(team_name, server)))
+    if ((team_ind = find_team_by_name(team_name, server)) < 0)
         return set_error(client->cfd, UNKNOWN_COMMAND, false);
-    if (team->spots_free <= 0)
+    if (server->teams[team_ind]->nb_clients <= 0)
         return set_error(client->cfd, INVALID_ACTION, false);
     client->state = AI;
-    client->uuid_team = team->uuid;
-    team->spots_free--;
-    if (from_egg_to_player(client, &team) != SUCCESS)
+    client->uuid_team = server->teams[team_ind]->uuid;
+    server->teams[team_ind]->spots_free--;
+    if (from_egg_to_player(client, &server->teams[team_ind]) != SUCCESS)
         return FAILURE;
-    for (unsigned int i = 0; i < team->nb_clients; i++)
-        if (!team->uuid_clients[i])
-            team->uuid_clients[i] = client->uuid;
-    send_infos(server, client, team);
+    for (unsigned int i = 0; i < server->teams[team_ind]->nb_clients; i++)
+        if (!server->teams[team_ind]->uuid_clients[i])
+            server->teams[team_ind]->uuid_clients[i] = client->uuid;
+    send_infos(server, client, server->teams[team_ind]);
     return SUCCESS;
 }
