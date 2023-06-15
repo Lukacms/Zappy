@@ -106,17 +106,21 @@ Test(find_egg_by_nb, find_egg_by_nb_valid)
     destroy_server(&server);
 }
 
-/* Test(from_egg_to_player, from_egg_to_player)
+Test(from_egg_to_player, from_egg_to_player)
 {
+    server_t server = {0};
     client_node_t client = {0};
     team_t *team = malloc(sizeof(team_t));
     team_t *teams[] = {NULL, NULL};
 
-    cr_assert_eq(from_egg_to_player(NULL, NULL), FAILURE);
-    cr_assert_eq(from_egg_to_player(&client, NULL), FAILURE);
-    cr_assert_eq(from_egg_to_player(&client, teams), FAILURE);
+    cr_assert_eq(create_default_server(&server, 4237), SUCCESS);
+    cr_assert_eq(from_egg_to_player(NULL, NULL, NULL), FAILURE);
+    cr_assert_eq(from_egg_to_player(&client, NULL, NULL), FAILURE);
+    cr_assert_eq(from_egg_to_player(&client, teams, NULL), FAILURE);
     if (!team)
         cr_assert_eq(0, 1);
+    team->eggs = NULL;
+    cr_assert_eq(from_egg_to_player(&client, &team, &server), FAILURE);
     team->eggs = malloc(sizeof(egg_t *) * 2);
     if (!team->eggs)
         cr_assert_eq(1, 2);
@@ -126,8 +130,9 @@ Test(find_egg_by_nb, find_egg_by_nb_valid)
     *(team->eggs[0]) = (egg_t){0};
     team->eggs[0]->pos = (vector2i_t){4, 4};
     team->spots_free = 0;
-    cr_assert_eq(from_egg_to_player(&client, &team), SUCCESS);
+    cr_assert_eq(from_egg_to_player(&client, &team, &server), SUCCESS);
     cr_assert_null(team->eggs[0]);
     cr_assert_eq(client.stats.pos.x, 4);
     free(team);
-} */
+    destroy_server(&server);
+}

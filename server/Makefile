@@ -110,6 +110,7 @@ SRC_TESTS	=	tests/redirect.c	\
 				tests/server/tests_misc.c	\
 				tests/server/tests_clients.c	\
 				tests/server/create_server.c	\
+				tests/server/tests_summons_gui.c	\
 
 OBJ_TESTS	=	$(SRC:.c=.o)  $(SRC_TESTS:.c=.o)
 OBJ_TESTS	+=	$(SRC_LOAD:.c=.o) $(SRC_UTILS:.c=.o) $(SRC_SUMMONS:.c=.o)

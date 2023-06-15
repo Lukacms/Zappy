@@ -31,8 +31,8 @@ int update_map(server_t *server)
         stocks[i] = server->map.init_stock[i] - find_stocks(server->map, i);
     while (has_stock_left(stocks)) {
         tmp = rand() % (INVENTORY_SLOTS + 1);
-        pos = (vector2i_t){rand() % server->map.size.y,
-                           rand() % server->map.size.x};
+        pos = (vector2i_t){rand() % server->map.size.x,
+                           rand() % server->map.size.y};
         server->map.tiles[pos.y][pos.x].slots[tmp].units +=
             stock(server->map.size, DENSITY_INVENTORY[tmp], &(stocks[tmp]));
     }

@@ -5,7 +5,7 @@
 ** change_player_pos
 */
 
-#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <zappy/server.h>
 #include <zappy/server/utils.h>
@@ -19,8 +19,10 @@ static bool is_tile(map_t *map, vector2i_t pos)
 
 static int swap_tiles(server_t *srv, u_int ind, vector2i_t old, vector2i_t pos)
 {
-    int len = array_len(srv->map.tiles[pos.y][pos.x].players_uuid) + 1;
+    int len = array_len(srv->map.tiles[pos.y][pos.x].players_uuid);
 
+    if (len <= 0)
+        len = 1;
     srv->map.tiles[pos.y][pos.x].players_uuid =
         realloc_array(srv->map.tiles[pos.y][pos.x].players_uuid, len,
                       strlen(srv->map.tiles[old.y][old.x].players_uuid[ind]));
@@ -28,10 +30,12 @@ static int swap_tiles(server_t *srv, u_int ind, vector2i_t old, vector2i_t pos)
         return FAILURE;
     srv->map.tiles[pos.y][pos.x].players_uuid[len - 1] =
         srv->map.tiles[old.y][old.x].players_uuid[ind];
-    srv->map.tiles[old.y][old.x].players_uuid =
-        delete_from_array(srv->map.tiles[old.y][old.x].players_uuid, ind);
-    if (!srv->map.tiles[old.y][old.x].players_uuid)
-        return FAILURE;
+    if (ind == 0) {
+        free(srv->map.tiles[old.y][old.x].players_uuid);
+        srv->map.tiles[old.y][old.x].players_uuid = NULL;
+    } else
+        srv->map.tiles[old.y][old.x].players_uuid =
+            delete_from_array(srv->map.tiles[old.y][old.x].players_uuid, ind);
     return SUCCESS;
 }
 
