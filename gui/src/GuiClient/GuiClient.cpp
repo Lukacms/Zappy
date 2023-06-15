@@ -8,6 +8,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Network/IpAddress.hpp>
 #include <SFML/Network/Socket.hpp>
+#include <SFML/System/Clock.hpp>
 #include <algorithm>
 #include <cstddef>
 #include <cstdlib>
@@ -56,10 +57,13 @@ bool zappy::Client::WelcomeSuppressor()
 {
     char buff[4096] = {0}; // NOLINT
     std::size_t size;
+    sf::Clock clk{};
 
-    if (m_socket.receive(&buff, 4096, size) != sf::Socket::Done)
-        return false;
-    return std::string{buff} == "WELCOME\n";
+    while (clk.getElapsedTime().asSeconds() < 20) {
+        if (m_socket.receive(&buff, 4096, size) != sf::Socket::Done)
+            return true;
+    }
+    throw;
 }
 
 static std::vector<std::string> parser(const std::string &buff)

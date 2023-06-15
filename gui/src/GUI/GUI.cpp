@@ -37,8 +37,7 @@ sf::RenderWindow &zappy::GUI::getWindow()
 
 int zappy::GUI::start()
 {
-    while (!m_client.WelcomeSuppressor())
-        ;
+    m_client.WelcomeSuppressor();
     m_client.sendGraphic();
     while (m_window.isOpen()) {
         m_window.clear(sf::Color{74, 173, 74});
