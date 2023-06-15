@@ -5,6 +5,7 @@
 ** delete_egg_from_team
 */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <zappy/server.h>
