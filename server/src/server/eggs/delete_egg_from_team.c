@@ -6,9 +6,19 @@
 */
 
 #include <stdlib.h>
+#include <string.h>
 #include <zappy/server.h>
+#include <zappy/server/clock/utils.h>
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
+
+static void send_infos(server_t *server, int egg)
+{
+    char output[BUFFER_SIZE] = {0};
+
+    sprintf(output, DISPATCH_EDI, egg);
+    send_toall_guicli(server, output);
+}
 
 static egg_t **delete_from_egg_array(egg_t **src, u_int ind)
 {
@@ -39,7 +49,7 @@ static int check_team_eggs(server_t *server, int id, u_int ind)
         return FAILURE;
     for (u_int i = 0; teams[ind]->eggs[i]; i++) {
         if (teams[ind]->eggs[i]->nb == id) {
-            send_toall_guicli(server, DISPATCH_EDI, teams[ind]->eggs[i]->nb);
+            send_infos(server, teams[ind]->eggs[i]->nb);
             teams[ind]->eggs = delete_from_egg_array(teams[ind]->eggs, i);
             flag = 1;
             break;
