@@ -1,0 +1,68 @@
+{
+      "Broadcast": [
+            {
+                  "evolution": ".-.. . --- / .--. --- .-.. -.. / .-.. .- / ... .- .-.. --- .--. .",
+                  "need food": "-. . . -.. / .-.. .. -. . -- .- - .",
+                  "need linemate": "-. . . -.. / -.. . .-. .- ..- -- . .-. .",
+                  "need deraumere": "-. . . -.. / ... .. -... ..- .-.",
+                  "need sibur": "-. . . -.. / -- . -. -.. .. .- -. .",
+                  "need mendiane": "-. . . -.. / .--. .... .. .-. .- ...",
+                  "need  phiras": "-. . . -.. / - .... -.-- ... - .- -- .",
+                  "need thystame": ".. / .... .- ...- . / -.. .-. --- .--. / .- -. / .. - . -- / --- ..-. / ..-. --- --- -..",
+                  "i have drop an item of food": ".. / .... .- ...- . / -.. .-. --- .--. / .- -. / .. - . -- / --- ..-. / .-.. .. -. . -- .- - .",
+                  "i have drop an item of linemate": ".. / .... .- ...- . / -.. .-. --- .--. / .- -. / .. - . -- / --- ..-. / -.. . .-. .- ..- -- . .-. .",
+                  "i have drop an item of sibur": ".. / .... .- ...- . / -.. .-. --- .--. / .- -. / .. - . -- / --- ..-. / ... .. -... ..- .-.",
+                  "i have drop an item of mendiane": ".. / .... .- ...- . / -.. .-. --- .--. / .- -. / .. - . -- / --- ..-. / -- . -. -.. .. .- -. .",
+                  "i have drop an item of  phiras": ".. / .... .- ...- . / -.. .-. --- .--. / .- -. / .. - . -- / --- ..-. / .--. .... .. .-. .- ...",
+                  "i have drop an item of thystame": ".. / .... .- ...- . / -.. .-. --- .--. / .- -. / .. - . -- / --- ..-. / - .... -.-- ... - .- -- ."
+            },
+            {
+                  "evolution": "vamos a la fiesta",
+                  "need food": "necesito de comer",
+                  "need linemate": "necesito compañero de línea",
+                  "need deraumere": "necesita deraumere",
+                  "need sibur": "necesito sibur",
+                  "need mendiane": "necesito mendiane",
+                  "need  phiras": "necesito phiras",
+                  "need thystame": "necesito tistamo",
+                  "i have drop an item of food": "he dejado caer un artículo de comida",
+                  "i have drop an item of linemate": "he dejado caer un artículo de compañero de línea",
+                  "i have drop an item of sibur": "he dejado caer un artículo de sibur",
+                  "i have drop an item of mendiane": "se me ha caído un artículo de mendiane",
+                  "i have drop an item of  phiras": "he dejado caer un artículo de phiras",
+                  "i have drop an item of thystame": "he dejado caer un artículo de thystame"
+            },
+            {
+                  "evolution": "Arbeiten",
+                  "need food": "brauche Bier",
+                  "need linemate": "Ich brauche einen Linienkameraden",
+                  "need deraumere": "brauche deraumere",
+                  "need sibur": "brauche Sibur",
+                  "need mendiane": "brauche Bettler",
+                  "need  phiras": "brauche Phiras",
+                  "need thystame": "brauche Thysta",
+                  "i have drop an item of food": "Ich habe ein Stück Bier fallen lassen",
+                  "i have drop an item of linemate": "Ich habe einen Artikel von Linemate fallen lassen",
+                  "i have drop an item of sibur": "Ich habe ein Stück Sibur fallen lassen",
+                  "i have drop an item of mendiane": "Ich habe ein Stück Mendiane fallen lassen",
+                  "i have drop an item of  phiras": "Ich habe einen Gegenstand von Phiras fallen lassen",
+                  "i have drop an item of thystame": "Ich habe ein Stück Thystame fallen lassen"
+            },
+            {
+                  "evolution": "evoluzzjoni",
+                  "need food": "bżonn l-ikel",
+                  "need linemate": "bżonn linemate",
+                  "need deraumere": "bżonn deraumere",
+                  "need sibur": "bżonn sibur",
+                  "need mendiane": "bżonn mendiane",
+                  "need  phiras": "bżonn phiras",
+                  "need thystame": "bżonn thystame",
+                  "i have drop an item of food": "I waqqa oġġett ta 'ikel",
+                  "i have drop an item of linemate": "għandi qatra oġġett ta 'linemate",
+                  "i have drop an item of sibur": "għandi qatra oġġett ta 'sibur",
+                  "i have drop an item of mendiane": "għandi qatra oġġett ta 'mendiane",
+                  "i have drop an item of  phiras": "għandi qatra oġġett ta 'phiras",
+                  "i have drop an item of thystame": "għandi qatra oġġett ta 'thystame"
+            }
+      ]
+}
