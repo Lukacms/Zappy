@@ -21,7 +21,7 @@ static int client_exists(server_t *server, client_node_t *client)
 {
     if (fcntl(client->cfd, F_GETFD) <= 0) {
         if (client->state == AI)
-            kill_player(server, client);
+            kill_player(server, client, false);
         else
             destroy_client(server, client);
         return FAILURE;

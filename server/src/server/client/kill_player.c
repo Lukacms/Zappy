@@ -25,22 +25,22 @@ static void rebase_nodes(server_t *server, client_node_t *client)
         server->clients.head = NULL;
 }
 
-static void send_infos(server_t *server, client_node_t *client)
+static void send_infos(server_t *server, client_node_t *client, bool alive)
 {
     char output[BUFFER_SIZE] = {0};
 
     sprintf(output, DISPATCH_PDI, client->cfd);
     send_toall_guicli(server, output);
-    if (fcntl(client->cfd, F_GETFD) > 0)
+    if (alive)
         dprintf(client->cfd, AI_DEATH);
 }
 
-int kill_player(server_t *server, client_node_t *client)
+int kill_player(server_t *server, client_node_t *client, bool alive)
 {
     if (!server || !client)
         return FAILURE;
     rebase_nodes(server, client);
-    send_infos(server, client);
+    send_infos(server, client, alive);
     delete_client_from_team(client, server);
     free(client->uuid);
     FD_CLR(client->cfd, &server->clients_fd);

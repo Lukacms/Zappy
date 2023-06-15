@@ -22,7 +22,7 @@ int starve_players(server_t *server)
         tmp->stats.inventory[FOOD].units -= 1;
         if (tmp->stats.inventory[FOOD].units < 0) {
             tmp = tmp->next;
-            kill_player(server, tmp->prev);
+            kill_player(server, tmp->prev, true);
             continue;
         }
         tmp = tmp->next;

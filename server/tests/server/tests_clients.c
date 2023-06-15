@@ -69,12 +69,12 @@ Test(kill_player, kill_player)
     server_t server = {0};
     client_node_t *client = malloc(sizeof(client_node_t));
 
-    cr_assert_eq(kill_player(NULL, NULL), FAILURE);
-    cr_assert_eq(kill_player(&server, NULL), FAILURE);
+    cr_assert_eq(kill_player(NULL, NULL, false), FAILURE);
+    cr_assert_eq(kill_player(&server, NULL, false), FAILURE);
     cr_assert_eq(create_default_server(&server, 4241), SUCCESS);
     client->cfd = open("./tmp", O_CREAT | O_TRUNC | O_RDWR);
     cr_assert_eq(add_client_node(client, &server), SUCCESS);
-    cr_assert_eq(kill_player(&server, client), SUCCESS);
+    cr_assert_eq(kill_player(&server, client, false), SUCCESS);
     cr_assert_null(server.clients.head);
     remove("./tmp");
     destroy_server(&server);
