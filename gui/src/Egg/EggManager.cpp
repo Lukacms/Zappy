@@ -7,6 +7,8 @@
 
 #include "zappy/Map/Tile.hh"
 #include "zappy/Player/Player.hh"
+#include <ios>
+#include <iostream>
 #include <zappy/Egg/EggManager.hh>
 
 void zappy::EggManager::addEggs(Enw &egg_infos)
@@ -25,12 +27,12 @@ void zappy::EggManager::eggHatch(Ebo &egg_selected)
             break;
         }
     }
+    std::cout << "test\n";
     if (index == -1)
-        return;
-    if (!m_eggs_infos[static_cast<size_t>(index)].is_dead)
         return;
     m_eggs_infos[static_cast<size_t>(index)].is_hatching = true;
     m_eggs_infos[static_cast<size_t>(index)].rect.left = 368;
+    std::cout << "test2\n";
 }
 
 void zappy::EggManager::eggDeath(Edi &egg_infos)
@@ -53,8 +55,10 @@ void zappy::EggManager::eggDeath(Edi &egg_infos)
 
 void zappy::EggManager::eggHatchAnimation(size_t index, zappy::PlayerManager &player_manager)
 {
+    std::cout << "bbbb\n";
     if (!(m_eggs_infos[index].anim_clock.getElapsedTime().asSeconds() > 1.2F))
         return;
+    std::cout << "salut\n";
     m_eggs_infos[index].anim_clock.restart();
     if (m_eggs_infos[index].rect.left >= 368 + m_eggs_infos[index].rect.width &&
         !m_eggs_infos[index].reset_hatch_anim) {
@@ -110,7 +114,10 @@ void zappy::EggManager::drawEgg(sf::RenderWindow &window, sf::Sprite &sprite,
 {
     if (m_eggs_infos.empty())
         return;
+    std::boolalpha(std::cout);
     for (size_t index{0}; index < m_eggs_infos.size(); index++) {
+        std::cout << "for loop\n";
+        std::cout << m_eggs_infos[index].is_hatching << '\n';
         if (m_eggs_infos[index].is_hatching)
             eggHatchAnimation(index, player_manager);
         else if (m_eggs_infos[index].is_dead)
@@ -139,6 +146,7 @@ void zappy::EggManager::deleteUseless()
         return;
     for (auto iterator = m_eggs_infos.begin(); iterator != m_eggs_infos.end(); iterator++) {
         if (iterator->is_deletable) {
+            std::cout << "delete\n";
             m_eggs_infos.erase(iterator);
             deleteUseless();
             break;

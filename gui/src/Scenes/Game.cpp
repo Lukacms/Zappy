@@ -30,11 +30,11 @@ void zappy::Game::draw(sf::RenderWindow &window)
     m_weather.checkWeather(m_music_manager);
     m_sprite.setTexture(m_texture);
     m_map.draw(window, m_sprite);
+    m_egg_manager.drawEgg(window, m_sprite, m_player_manager);
     m_player_manager.animatePlayers();
     m_player_manager.drawPlayers(window, m_sprite);
     m_weather.draw(window);
     m_hud.draw(window, m_sprite);
-    m_egg_manager.drawEgg(window, m_sprite, m_player_manager);
 }
 
 void zappy::Game::manageEvent(sf::RenderWindow &window, sf::Event &event)
@@ -117,4 +117,23 @@ void zappy::Game::endIncantation(Pie &player_incantation)
 void zappy::Game::broadcast(Pbc &broadcast)
 {
     m_hud.addBroadcast(broadcast);
+}
+
+void zappy::Game::eggLayed(Enw &egg_infos)
+{
+    m_egg_manager.addEggs(egg_infos);
+}
+
+void zappy::Game::eggDeath(Edi &egg_infos)
+{
+    m_egg_manager.eggDeath(egg_infos);
+}
+
+void zappy::Game::playerEggConnect(Ebo &egg_selected)
+{
+    m_egg_manager.eggHatch(egg_selected);
+}
+
+void zappy::Game::eggGoingLayed(Pkf &player_layer)
+{
 }

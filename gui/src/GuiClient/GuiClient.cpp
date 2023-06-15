@@ -5,7 +5,6 @@
 ** GuiClient
 */
 
-#include <zappy/Player/Player.hh>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Network/IpAddress.hpp>
 #include <SFML/Network/Socket.hpp>
@@ -20,6 +19,7 @@
 #include <vector>
 #include <zappy/GuiClient/GuiClient.hpp>
 #include <zappy/GuiCommand/GuiCommand.hh>
+#include <zappy/Player/Player.hh>
 #include <zappy/Scenes/Game.hh>
 
 zappy::Client::Client(const std::string &name, unsigned short port)
@@ -214,7 +214,7 @@ void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window,
         },
         [&](Pkf &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());
-            // game.eggGoingLayed(arg);
+            game.eggGoingLayed(arg);
         },
         [&](Pdr &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());
@@ -235,15 +235,15 @@ void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window,
             arg.player_nb = std::atoi(parsed[2].c_str());
             arg.x_tile_coord = std::atoi(parsed[3].c_str());
             arg.y_tile_coord = std::atoi(parsed[4].c_str());
-            // game.eggLayed(arg);
+            game.eggLayed(arg);
         },
         [&](Ebo &arg) {
             arg.egg_number = std::atoi(parsed[1].c_str());
-            // game.playerEggConnect(arg);
+            game.playerEggConnect(arg);
         },
         [&](Edi &arg) {
             arg.egg_number = std::atoi(parsed[1].c_str());
-            // game.eggDeath(arg);
+            game.eggDeath(arg);
         },
         [&](Ukn & /*arg*/) { return; },
         [&](Sgt &arg) {
