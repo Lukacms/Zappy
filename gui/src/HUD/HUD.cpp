@@ -312,22 +312,26 @@ void zappy::HUD::initializeBroadcastView()
 
 void zappy::HUD::animateBroadcast()
 {
-    if (m_broadcast_clock.getElapsedTime().asMilliseconds() > 1.F) {
-        m_broadcast_clock.restart();
-        for (size_t iterator = 0; iterator < m_broadcast_messages.size(); iterator += 1) {
-            if (iterator == 0 &&
-                m_broadcast_messages[iterator].m_position.x <=
-                    0 - m_broadcast_messages[iterator].m_box.width)
-                m_broadcast_messages[iterator].m_position.x = m_broadcast_view.getSize().x;
-            else if (m_broadcast_messages.size() > 1 &&
-                     m_broadcast_messages[iterator].m_position.x <=
-                         0 - m_broadcast_messages[iterator].m_box.width)
-                m_broadcast_messages[iterator].m_position.x =
-                    m_broadcast_messages[iterator - 1].m_position.x +
-                    m_broadcast_messages[iterator - 1].m_box.width + 100;
-            else
-                m_broadcast_messages[iterator].m_position.x -= 2;
-        }
+    if (m_broadcast_clock.getElapsedTime().asMilliseconds() < 1.F)
+        return;
+    m_broadcast_clock.restart();
+    if (m_broadcast_messages.size() == 1 &&
+        m_broadcast_messages[0].m_position.x <= 0 - m_broadcast_messages[0].m_box.width)
+        m_broadcast_messages[0].m_position.x = m_broadcast_view.getSize().x;
+    for (size_t iterator = 0; iterator < m_broadcast_messages.size(); iterator += 1) {
+        if (iterator == 0 &&
+            m_broadcast_messages[iterator].m_position.x <=
+                0 - m_broadcast_messages[iterator].m_box.width)
+            m_broadcast_messages[iterator].m_position.x = m_broadcast_messages.back().m_position.x +
+                m_broadcast_messages.back().m_box.width + 100;
+        else if (m_broadcast_messages.size() > 1 &&
+                 m_broadcast_messages[iterator].m_position.x <=
+                     0 - m_broadcast_messages[iterator].m_box.width)
+            m_broadcast_messages[iterator].m_position.x =
+                m_broadcast_messages[iterator - 1].m_position.x +
+                m_broadcast_messages[iterator - 1].m_box.width + 100;
+        else
+            m_broadcast_messages[iterator].m_position.x -= 5;
     }
 }
 
@@ -359,9 +363,10 @@ void zappy::HUD::resetBroadcast()
     for (size_t iterator = 0; iterator < m_broadcast_messages.size(); iterator += 1) {
         if (iterator == 0)
             m_broadcast_messages[iterator].m_position.x = m_broadcast_view.getSize().x;
-        else
+        else {
             m_broadcast_messages[iterator].m_position.x =
                 m_broadcast_messages[iterator - 1].m_position.x +
                 m_broadcast_messages[iterator - 1].m_box.width + 100;
+        }
     }
 }
