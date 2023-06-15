@@ -73,26 +73,27 @@
     "bct %zu %zu %zd %zd %zd %zd %zd %zd %zd\n"   // content of a tile
 #define DISPATCH_TNA "tna %s\n"                   // name of all a team
 #define DISPATCH_PNW "pnw %d %zu %zu %d %zu %s\n" // connection of a new player
-#define DISPATCH_PPO "ppo %d %d %d %d\n"          // player’s position
-#define DISPATCH_PLV "plv %d\n"                   // player’s level
-#define DISPATCH_PIN "pin %d %d %d %d %d %d %d %d %d %d\n" // player's inventory
-#define DISPATCH_PEX "pex %d\n"                            // expulsion
-#define DISPATCH_PBC "pbc %d %s\n"                         // broadcast
-#define DISPATCH_PIC "pic %d %d %d %d %d\n" // start of an incantation
-#define DISPATCH_PIE "pie %d %d %s\n"       // end of an incantation
-#define DISPATCH_PFK "pfk %d\n"             // egg laying by the player
-#define DISPATCH_PDR "pdr %d %d\n"          // resource dropping
-#define DISPATCH_PGT "pgt %d %d\n"          // resource collecting
-#define DISPATCH_PDI "pdi %d\n"             // death of a player
-#define DISPATCH_ENW "enw %d %d %d %d\n"    // an egg was laid by a player
-#define DISPATCH_EBO "ebo %d\n"             // player connection for an egg
-#define DISPATCH_EDI "edi %d\n"             // death of an egg
-#define DISPATCH_SGT "sgt %d\n"             // time unit request
-#define DISPATCH_SST "sst %d\n"             // time unit modification
-#define DISPATCH_SEG "seg %s\n"             // end of game
-#define DISPATCH_SMG "smg %s\n"             // message from the server
-#define DISPATCH_SUC "suc\n"                // unknown command
-#define DISPATCH_SBP "sbp\n"                // command parameter
+#define DISPATCH_PPO "ppo %d %zu %zu %d\n"        // player’s position
+#define DISPATCH_PLV "plv %d %zu\n"               // player’s level
+#define DISPATCH_PIN \
+    "pin %d %zu %zu %zd %zd %zd %zd %zd %zd %zd\n" // player's inventory
+#define DISPATCH_PEX "pex %d\n"                    // expulsion
+#define DISPATCH_PBC "pbc %d %s\n"                 // broadcast
+#define DISPATCH_PIC "pic %d %d %d %d %d\n"        // start of an incantation
+#define DISPATCH_PIE "pie %d %d %s\n"              // end of an incantation
+#define DISPATCH_PFK "pfk %d\n"                    // egg laying by the player
+#define DISPATCH_PDR "pdr %d %d\n"                 // resource dropping
+#define DISPATCH_PGT "pgt %d %d\n"                 // resource collecting
+#define DISPATCH_PDI "pdi %d\n"                    // death of a player
+#define DISPATCH_ENW "enw %d %d %d %d\n" // an egg was laid by a player
+#define DISPATCH_EBO "ebo %d\n"          // player connection for an egg
+#define DISPATCH_EDI "edi %d\n"          // death of an egg
+#define DISPATCH_SGT "sgt %d\n"          // time unit request
+#define DISPATCH_SST "sst %d\n"          // time unit modification
+#define DISPATCH_SEG "seg %s\n"          // end of game
+#define DISPATCH_SMG "smg %s\n"          // message from the server
+#define DISPATCH_SUC "suc\n"             // unknown command
+#define DISPATCH_SBP "sbp\n"             // command parameter
 
 /* send commands to AI */
 #define AI_INVENTORY \

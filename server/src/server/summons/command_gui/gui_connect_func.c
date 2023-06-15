@@ -33,11 +33,11 @@ int gui_connect_func(server_t *server, char *args[], client_node_t *client)
 {
     if (!server || !args || !client)
         return FAILURE;
-    client->state = GUI;
     msz_func(server, args, client);
     sgt_func(server, args, client);
     mct_func(server, args, client);
     tna_func(server, args, client);
     check_connected_clients(server, client);
+    client->state = GUI;
     return SUCCESS;
 }

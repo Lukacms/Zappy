@@ -6,28 +6,35 @@
 */
 
 #include <stdio.h>
-#include <string.h>
-#include <sys/types.h>
+#include <stdlib.h>
 #include <zappy/server.h>
 #include <zappy/server/utils.h>
 
+static void dispatch_infos(int fd, client_node_t *client)
+{
+    dprintf(fd, DISPATCH_PIN, client->cfd, client->stats.pos.x,
+            client->stats.pos.y, client->stats.inventory[FOOD].units,
+            client->stats.inventory[LINEMATE].units,
+            client->stats.inventory[DERAUMERE].units,
+            client->stats.inventory[SIBUR].units,
+            client->stats.inventory[MENDIANE].units,
+            client->stats.inventory[PHIRAS].units,
+            client->stats.inventory[THYSTAME].units);
+}
+
 int pin_func(server_t *server, char *args[], client_node_t *client)
 {
-    client_node_t *tmp = server->clients.head;
+    client_node_t *tmp = NULL;
+    int fd = 0;
 
-    if (!args || array_len(args) != 3)
+    if (!args || array_len(args) != 2 || !strisnum(args[1]) || !server ||
+        !client)
+        return FAILURE;
+    if (!(tmp = server->clients.head) || (fd = atoi(args[1])) <= 0)
         return FAILURE;
     for (u_int ind = 0; ind < server->clients.length; ind++) {
-        if (strcmp(args[1], tmp->uuid) == 0) {
-            dprintf(client->cfd, "pin %s %zu %zu %li %li %li %li %li %li %li\n",
-                    tmp->uuid, tmp->stats.pos.x, tmp->stats.pos.y,
-                    tmp->stats.inventory[FOOD].units,
-                    tmp->stats.inventory[LINEMATE].units,
-                    tmp->stats.inventory[DERAUMERE].units,
-                    tmp->stats.inventory[SIBUR].units,
-                    tmp->stats.inventory[MENDIANE].units,
-                    tmp->stats.inventory[PHIRAS].units,
-                    tmp->stats.inventory[THYSTAME].units);
+        if (fd == tmp->cfd) {
+            dispatch_infos(client->cfd, tmp);
             return SUCCESS;
         }
         tmp = tmp->next;
