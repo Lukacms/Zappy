@@ -49,10 +49,10 @@ typedef enum action_s {
 } action_t;
 
 typedef enum orientation_s {
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST,
+    NORTH = 1,
+    SOUTH = 3,
+    EAST = 2,
+    WEST = 4,
 } orientation_t;
 
 typedef enum player_s {
