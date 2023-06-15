@@ -21,11 +21,5 @@ int inventory_func(server_t *server, char *args[], client_node_t *c)
         c->stats.inventory[LINEMATE].units, c->stats.inventory[DERAUMERE].units,
         c->stats.inventory[SIBUR].units, c->stats.inventory[MENDIANE].units,
         c->stats.inventory[PHIRAS].units, c->stats.inventory[THYSTAME].units);
-    send_toall_guicli(
-        server, DISPATCH_PIN, c->cfd, c->stats.pos.x, c->stats.pos.y,
-        c->stats.inventory[FOOD].units, c->stats.inventory[LINEMATE].units,
-        c->stats.inventory[DERAUMERE].units, c->stats.inventory[SIBUR].units,
-        c->stats.inventory[MENDIANE].units, c->stats.inventory[PHIRAS].units,
-        c->stats.inventory[THYSTAME].units);
     return SUCCESS;
 }

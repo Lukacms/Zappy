@@ -70,11 +70,11 @@
 /* command to send to GUIs */
 #define DISPATCH_MSZ "msz %zu %zu\n" // map size
 #define DISPATCH_BCT \
-    "bct %d %d %zd %zd %zd %zd %zd %zd %zd\n"   // content of a tile
-#define DISPATCH_TNA "tna %d\n"                 // name of all a team
-#define DISPATCH_PNW "pnw #%d %d %d %d %d %d\n" // connection of a new player
-#define DISPATCH_PPO "ppo %d %d %d %d\n"        // player’s position
-#define DISPATCH_PLV "plv %d\n"                 // player’s level
+    "bct %zu %zu %zd %zd %zd %zd %zd %zd %zd\n"   // content of a tile
+#define DISPATCH_TNA "tna %s\n"                   // name of all a team
+#define DISPATCH_PNW "pnw %d %zu %zu %d %zu %s\n" // connection of a new player
+#define DISPATCH_PPO "ppo %d %d %d %d\n"          // player’s position
+#define DISPATCH_PLV "plv %d\n"                   // player’s level
 #define DISPATCH_PIN "pin %d %d %d %d %d %d %d %d %d %d\n" // player's inventory
 #define DISPATCH_PEX "pex %d\n"                            // expulsion
 #define DISPATCH_PBC "pbc %d %s\n"                         // broadcast

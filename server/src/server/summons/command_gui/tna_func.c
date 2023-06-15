@@ -11,12 +11,12 @@
 #include <zappy/server/utils.h>
 
 int tna_func(server_t *server, char __attribute__((unused)) * args[],
-            client_node_t *client)
+             client_node_t *client)
 {
-    if (!server)
+    if (!server || !client)
         return FAILURE;
     for (u_int ind = 0; server->teams[ind]; ind++) {
-        dprintf(client->cfd, "tna %s\n", server->teams[ind]->team_name);
+        dprintf(client->cfd, DISPATCH_TNA, server->teams[ind]->team_name);
     }
     return SUCCESS;
 }

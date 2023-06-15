@@ -6,6 +6,7 @@
 */
 
 #include <stdlib.h>
+#include <unistd.h>
 #include <zappy/server/destroy.h>
 
 static void free_line(tile_t *tiles, size_t size)
@@ -30,4 +31,5 @@ void destroy_server(server_t *server)
     for (u_int i = 0; server->map.tiles[i]; i++)
         free_line(server->map.tiles[i], server->map.size.x);
     free(server->map.tiles);
+    close(server->server_fd);
 }

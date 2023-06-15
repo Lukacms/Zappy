@@ -13,11 +13,14 @@
 
 static void send_infos(server_t *server, client_node_t *client, team_t *team)
 {
+    char output[BUFFER_SIZE] = {0};
+
     dprintf(client->cfd, "%zu\n%zu %zu\n", team->spots_free, server->map.size.x,
             server->map.size.y);
-    send_toall_guicli(server, DISPATCH_PNW, client->cfd, client->stats.pos.x,
-                      client->stats.pos.y, client->stats.orientation,
-                      client->stats.level, team->team_name);
+    sprintf(output, DISPATCH_PNW, client->cfd, client->stats.pos.x,
+            client->stats.pos.y, client->stats.orientation, client->stats.level,
+            team->team_name);
+    send_toall_guicli(server, output);
 }
 
 int add_client_to_team(client_node_t *client, server_t *server,

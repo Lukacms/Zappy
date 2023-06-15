@@ -37,14 +37,14 @@ Test(bct_func, bct_func, .init = redirect)
     cr_assert_eq(bct_func(&server, inv2, client), FAILURE);
     cr_assert_eq(bct_func(&server, inv3, client), FAILURE);
     cr_assert_eq(bct_func(&server, args, client), SUCCESS);
-    sprintf(output, DISPATCH_BCT, 1, 5,
-            server.map.tiles[1][5].slots[FOOD].units,
-            server.map.tiles[1][5].slots[LINEMATE].units,
-            server.map.tiles[1][5].slots[DERAUMERE].units,
-            server.map.tiles[1][5].slots[SIBUR].units,
-            server.map.tiles[1][5].slots[MENDIANE].units,
-            server.map.tiles[1][5].slots[PHIRAS].units,
-            server.map.tiles[1][5].slots[THYSTAME].units);
+    sprintf(output, DISPATCH_BCT, (ssize_t)1, (ssize_t)5,
+            server.map.tiles[5][1].slots[FOOD].units,
+            server.map.tiles[5][1].slots[LINEMATE].units,
+            server.map.tiles[5][1].slots[DERAUMERE].units,
+            server.map.tiles[5][1].slots[SIBUR].units,
+            server.map.tiles[5][1].slots[MENDIANE].units,
+            server.map.tiles[5][1].slots[PHIRAS].units,
+            server.map.tiles[5][1].slots[THYSTAME].units);
     cr_assert_stdout_eq_str(output);
     destroy_server(&server);
 }
@@ -63,4 +63,49 @@ Test(msz_func, msz_func, .init = redirect)
     cr_assert_eq(msz_func(&server, NULL, NULL), FAILURE);
     cr_assert_eq(msz_func(&server, NULL, client), SUCCESS);
     cr_assert_stdout_eq_str(output);
+    destroy_server(&server);
+}
+
+Test(mct_func, mct_func, .init = redirect)
+{
+    server_t server = {0};
+    client_node_t *client = malloc(sizeof(client_node_t));
+    char output[4096] = {0};
+    int size = 0;
+
+    cr_assert_eq(create_default_server(&server, 4246), SUCCESS);
+    client->cfd = STDOUT_FILENO;
+    for (ssize_t y = 0; (size_t)y < server.map.size.y; y++) {
+        for (ssize_t x = 0; (size_t)x < server.map.size.x; x++) {
+            size += sprintf(output + size, DISPATCH_BCT, y, x,
+                            server.map.tiles[y][x].slots[FOOD].units,
+                            server.map.tiles[y][x].slots[LINEMATE].units,
+                            server.map.tiles[y][x].slots[DERAUMERE].units,
+                            server.map.tiles[y][x].slots[SIBUR].units,
+                            server.map.tiles[y][x].slots[MENDIANE].units,
+                            server.map.tiles[y][x].slots[PHIRAS].units,
+                            server.map.tiles[y][x].slots[THYSTAME].units);
+        }
+    }
+    cr_assert_eq(mct_func(NULL, NULL, NULL), FAILURE);
+    cr_assert_eq(mct_func(&server, NULL, NULL), FAILURE);
+    cr_assert_eq(mct_func(&server, NULL, client), SUCCESS);
+    cr_assert_stdout_eq_str(output);
+    destroy_server(&server);
+}
+
+Test(tna_func, tna_func, .init = redirect)
+{
+    server_t server = {0};
+    client_node_t *client = malloc(sizeof(client_node_t));
+    char output[4096] = {0};
+
+    cr_assert_eq(create_default_server(&server, 4246), SUCCESS);
+    client->cfd = STDOUT_FILENO;
+    sprintf(output, "Team1\nTeam2\nTeam3\nTeam4\n");
+    cr_assert_eq(tna_func(NULL, NULL, NULL), FAILURE);
+    cr_assert_eq(tna_func(&server, NULL, NULL), FAILURE);
+    cr_assert_eq(tna_func(&server, NULL, client), SUCCESS);
+    cr_assert_stdout_eq_str(output);
+    destroy_server(&server);
 }
