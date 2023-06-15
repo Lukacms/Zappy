@@ -24,7 +24,7 @@ void destroy_server(server_t *server)
 {
     if (!server)
         return;
-    destroy_clients(&server->clients);
+    destroy_clients(&server->clients, server);
     destroy_teams(server->teams);
     if (!server->map.tiles)
         return;

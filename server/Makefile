@@ -82,6 +82,7 @@ SRC	=	src/launch.c	\
 		src/server/clock/update_ticks.c	\
 		src/server/server_loop.c	\
 		src/server/handle_signal.c	\
+		src/server/check_game_status.c	\
 		src/server/client/delete_client_from_team.c	\
 		src/server/client/connect_new_client.c	\
 		src/server/client/add_client_node.c	\

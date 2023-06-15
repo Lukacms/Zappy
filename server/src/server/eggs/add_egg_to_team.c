@@ -52,8 +52,8 @@ int add_egg_to_team(client_node_t *client, server_t *server)
         return FAILURE;
     if (update_team_infos(server, ind) != SUCCESS)
         return FAILURE;
-    server->teams[ind]->eggs[server->teams[ind]->nb_clients - 1] = fill_infos(
-        server, server->teams[ind]->eggs[server->teams[ind]->nb_clients - 1],
+    server->teams[ind]->eggs[server->teams[ind]->spots_free - 1] = fill_infos(
+        server, server->teams[ind]->eggs[server->teams[ind]->spots_free - 1],
         server->teams[ind]->uuid);
     return SUCCESS;
 }

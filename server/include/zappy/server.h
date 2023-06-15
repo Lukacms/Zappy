@@ -30,3 +30,4 @@ void handle_sigint(int);
 void set_server(server_t *);
 server_t *get_server(void);
 int server_loop(server_t *);
+int check_game_status(server_t *);

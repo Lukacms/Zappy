@@ -89,7 +89,7 @@
 #define DISPATCH_EDI "edi %d\n"             // death of an egg
 #define DISPATCH_SGT "sgt %d\n"             // time unit request
 #define DISPATCH_SST "sst %d\n"             // time unit modification
-#define DISPATCH_SEG "seg %d\n"             // end of game
+#define DISPATCH_SEG "seg %s\n"             // end of game
 #define DISPATCH_SMG "smg %s\n"             // message from the server
 #define DISPATCH_SUC "suc\n"                // unknown command
 #define DISPATCH_SBP "sbp\n"                // command parameter

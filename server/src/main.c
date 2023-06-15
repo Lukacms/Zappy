@@ -25,8 +25,11 @@ int main(int argc, char *const argv[])
     args_config_t args = default_config();
 
     srand(time(NULL));
-    if (parse_args(&args, argc, argv) != SUCCESS)
+    if (parse_args(&args, argc, argv) != SUCCESS) {
+        if (args.team_names)
+            free_array(args.team_names);
         return print_help(FAILURE);
+    }
     if (args.help)
         return print_help(SUCCESS);
     return launch(&args);

@@ -6,9 +6,10 @@
 */
 
 #include <stdlib.h>
+#include <zappy/server/client.h>
 #include <zappy/server/destroy.h>
 
-void destroy_clients(clients_t *clients)
+void destroy_clients(clients_t *clients, server_t *server)
 {
     client_node_t *client = NULL;
     client_node_t *anchor = NULL;
@@ -19,11 +20,7 @@ void destroy_clients(clients_t *clients)
     client = clients->head;
     for (u_int i = 0; i < clients->length; i++) {
         anchor = anchor->next;
-        free(client->uuid);
-        for (u_int i = 0; i < MAX_WAITING_SUMMONS && client->queue[i].summon;
-             i++)
-            free(client->queue[i].summon);
-        free(client);
+        destroy_client(server, client);
         client = anchor;
     }
 }

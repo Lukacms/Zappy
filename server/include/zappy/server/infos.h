@@ -27,6 +27,9 @@
 #define CHAR_INT 48
 #define DIRECTIONNAL 5
 
+#define CLIENTS_REQUIRED 6
+#define LVL_REQUIRED 8
+
 static const char __attribute__((unused)) *
     RESOURCES_INVENTORY[INVENTORY_SLOTS] = {
     "food", "linemate", "deraumere", "sibur", "mendiane", "phiras", "thystame",
