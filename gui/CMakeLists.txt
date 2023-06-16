@@ -180,6 +180,8 @@ add_executable(
     src/ParticleEngine/ParticleEngine.cpp
     src/Weather/WeatherManager.cpp
     src/Egg/EggManager.cpp
+    src/Scenes/Victory.cpp
+    src/Scenes/SceneManager.cpp
     )
 
 # rules for zappy_gui project

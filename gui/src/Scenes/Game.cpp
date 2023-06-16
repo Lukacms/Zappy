@@ -17,7 +17,7 @@
 
 // Constructor && Destructor
 
-zappy::Game::Game()
+zappy::Game::Game(zappy::MusicManager &music_manager) : m_music_manager{music_manager}
 {
     m_texture.loadFromFile(GAME_TEXTURE.data());
 }

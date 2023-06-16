@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <zappy/Scenes/SceneManager.hh>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Network.hpp>
 #include <SFML/Network/TcpSocket.hpp>
@@ -27,14 +28,14 @@ namespace zappy
             Client &operator=(Client &&to_move) = delete;
 
             void sendCommand(const std::string &cmd);
-            void receiveCommand(zappy::Game &game, sf::RenderWindow &window);
+            void receiveCommand(zappy::SceneManager &scene_manager, sf::RenderWindow &window);
             void sendGraphic();
             bool WelcomeSuppressor();
 
         private:
             zappy::Packet m_packet{};
             bool fillRingBuffer();
-            void applyCommands(zappy::Game &game, sf::RenderWindow &window, const std::string &str);
+            void applyCommands(zappy::SceneManager &scene_manager, sf::RenderWindow &window, const std::string &str);
 
             zappy::Packet packet{};
             sf::TcpSocket m_socket{};

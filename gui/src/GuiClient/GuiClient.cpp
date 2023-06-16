@@ -5,6 +5,8 @@
 ** GuiClient
 */
 
+#include <zappy/Scenes/SceneManager.hh>
+#include <zappy/Scenes/Victory.hh>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Network/IpAddress.hpp>
 #include <SFML/Network/Socket.hpp>
@@ -86,7 +88,7 @@ static zappy::Packet get_variant(std::vector<std::string> &parsed)
     return zappy::Packet{zappy::Ukn{}};
 }
 
-void zappy::Client::receiveCommand(zappy::Game &game, sf::RenderWindow &window)
+void zappy::Client::receiveCommand(zappy::SceneManager &scene_manager, sf::RenderWindow &window)
 {
     char buff[255] = {0}; // NOLINT
     std::size_t index{0};
@@ -103,7 +105,7 @@ void zappy::Client::receiveCommand(zappy::Game &game, sf::RenderWindow &window)
             buff[index] = tmp;
             index += 1;
         } else if (tmp == '\n') {
-            applyCommands(game, window, std::string{buff});
+            applyCommands(scene_manager, window, std::string{buff});
             index = 0;
             std::memset(buff, '\0', 255);
         } else {
@@ -129,18 +131,19 @@ bool zappy::Client::fillRingBuffer()
     return true;
 }
 
-void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window,
-                                  const std::string &str)
+void zappy::Client::applyCommands(zappy::SceneManager &scene_manager, sf::RenderWindow &window, const std::string &str)
 {
     std::vector<std::string> parsed;
     std::cout << "COMMAND : " << str << std::endl;
     parsed = parser(str);
     Packet variant = get_variant(parsed);
+    auto *game = dynamic_cast<Game *>(scene_manager.getScenes()[1].get());
+    auto *victory = dynamic_cast<Victory *>(scene_manager.getScenes()[2].get());
     auto visitor = make_lambda_visitor(
         [&](Msz &arg) {
             arg.x_map_size = std::atoi(parsed[1].c_str());
             arg.y_map_size = std::atoi(parsed[2].c_str());
-            game.createMap(arg, window);
+            game->createMap(arg, window);
         },
         [&](Bct &arg) {
             arg.x_tile_coord = std::atoi(parsed[1].c_str());
@@ -152,7 +155,7 @@ void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window,
             arg.ressources[4] = std::atoi(parsed[7].c_str());
             arg.ressources[5] = std::atoi(parsed[8].c_str());
             arg.ressources[6] = std::atoi(parsed[9].c_str());
-            game.changeTileInventory(arg);
+            game->changeTileInventory(arg);
         },
         [&](Tna &arg) {
             for (size_t i{1}; i < parsed.size(); i++)
@@ -165,19 +168,19 @@ void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window,
             arg.orientation = static_cast<short>(std::atoi(parsed[4].c_str()));
             arg.incantation_level = static_cast<short>(std::atoi(parsed[5].c_str()));
             arg.team_name = parsed[6];
-            game.addPlayer(arg);
+            game->addPlayer(arg);
         },
         [&](Ppo &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());
             arg.x_tile_coord = std::atoi(parsed[2].c_str());
             arg.y_tile_coord = std::atoi(parsed[3].c_str());
             arg.orientation = static_cast<Orientation>(std::atoi(parsed[4].c_str()));
-            game.movePlayer(arg);
+            game->movePlayer(arg);
         },
         [&](Plv &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());
             arg.incantation_level = std::atoi(parsed[2].c_str());
-            game.changePlayerLevel(arg);
+            game->changePlayerLevel(arg);
         },
         [&](Pin &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());
@@ -190,17 +193,17 @@ void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window,
             arg.ressources[4] = std::atoi(parsed[8].c_str());
             arg.ressources[5] = std::atoi(parsed[9].c_str());
             arg.ressources[6] = std::atoi(parsed[10].c_str());
-            game.changePlayerInventory(arg);
+            game->changePlayerInventory(arg);
         },
         [&](Pex &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());
-            game.expulsePlayer(arg);
+            game->expulsePlayer(arg);
         },
         [&](Pbc &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());
             for (size_t iterator = 2; iterator < parsed.size(); iterator += 1)
                 arg.message += parsed[iterator] + " ";
-            game.broadcast(arg);
+            game->broadcast(arg);
         },
         [&](Pic &arg) {
             arg.x_tile_coord = std::atoi(parsed[1].c_str());
@@ -208,17 +211,17 @@ void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window,
             arg.incantation_level = static_cast<short>(std::atoi(parsed[3].c_str()));
             for (size_t i{4}; i < parsed.size(); i++)
                 arg.player_list.push_back(std::atoi(parsed[i].c_str()));
-            game.startIncantation(arg);
+            game->startIncantation(arg);
         },
         [&](Pie &arg) {
             arg.x_tile_coord = std::atoi(parsed[1].c_str());
             arg.y_tile_coord = std::atoi(parsed[2].c_str());
             arg.result = std::atoi(parsed[3].c_str());
-            game.endIncantation(arg);
+            game->endIncantation(arg);
         },
         [&](Pkf &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());
-            game.eggGoingLayed(arg);
+            game->eggGoingLayed(arg);
         },
         [&](Pdr &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());
@@ -232,27 +235,27 @@ void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window,
         },
         [&](Pdi &arg) {
             arg.player_nb = std::atoi(parsed[1].c_str());
-            game.playerDeath(arg);
+            game->playerDeath(arg);
         },
         [&](Enw &arg) {
             arg.egg_number = std::atoi(parsed[1].c_str());
             arg.player_nb = std::atoi(parsed[2].c_str());
             arg.x_tile_coord = std::atoi(parsed[3].c_str());
             arg.y_tile_coord = std::atoi(parsed[4].c_str());
-            game.eggLayed(arg);
+            game->eggLayed(arg);
         },
         [&](Ebo &arg) {
             arg.egg_number = std::atoi(parsed[1].c_str());
-            game.playerEggConnect(arg);
+            game->playerEggConnect(arg);
         },
         [&](Edi &arg) {
             arg.egg_number = std::atoi(parsed[1].c_str());
-            game.eggDeath(arg);
+            game->eggDeath(arg);
         },
         [&](Ukn & /*arg*/) { return; },
         [&](Sgt &arg) {
             arg.time_unit = std::atoi(parsed[1].c_str());
-            // game.getTimeUnit(arg);
+            // game->getTimeUnit(arg);
         },
         [&](Sst &arg) {
             arg.time_unit_modificator = std::atof(parsed[1].c_str());
@@ -260,7 +263,8 @@ void zappy::Client::applyCommands(zappy::Game &game, sf::RenderWindow &window,
         },
         [&](Seg &arg) {
             arg.team_name = parsed[1];
-            // game.winTeam(arg);
+            victory->setVictoryTeam(arg.team_name);
+            scene_manager.changeScene(2);
         },
         [&](Smg &arg) {
             arg.servor_message = parsed[1];

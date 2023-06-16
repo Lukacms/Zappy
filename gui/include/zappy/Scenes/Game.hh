@@ -31,7 +31,7 @@ namespace zappy
     class Game : public AScene
     {
         public:
-            Game();
+            Game(MusicManager &music_manager);
             Game(Game const &to_copy) = delete;
             Game(Game &&to_move) = delete;
             ~Game() override = default;
@@ -74,7 +74,7 @@ namespace zappy
             zappy::Map m_map;
             zappy::Camera m_camera;
             zappy::PlayerManager m_player_manager;
-            zappy::MusicManager m_music_manager;
+            zappy::MusicManager &m_music_manager;
             zappy::WeatherManager m_weather;
 
             sf::Sound m_sound;

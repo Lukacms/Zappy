@@ -5,6 +5,9 @@
 ** GUI
 */
 
+#include "zappy/Scenes/IScene.hh"
+#include "zappy/Scenes/SceneManager.hh"
+#include "zappy/Scenes/Victory.hh"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -13,7 +16,10 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <cstddef>
+#include <functional>
 #include <iostream>
+#include <memory>
+#include <tuple>
 #include <vector>
 #include <zappy/GUI/GUI.hh>
 #include <zappy/Map/Map.hh>
@@ -30,11 +36,6 @@ zappy::GUI::GUI(const std::string &address, unsigned short port)
 
 // Methods
 
-sf::RenderWindow &zappy::GUI::getWindow()
-{
-    return this->m_window;
-}
-
 int zappy::GUI::start()
 {
     m_client.WelcomeSuppressor();
@@ -42,9 +43,10 @@ int zappy::GUI::start()
     while (m_window.isOpen()) {
         m_window.clear(sf::Color{74, 173, 74});
         eventManager();
-        this->game_scene.draw(this->m_window);
-        this->m_window.display();
-        m_client.receiveCommand(game_scene, m_window);
+        m_scene_manager.draw(m_window);
+        m_window.display();
+        m_client.receiveCommand(m_scene_manager, m_window);
+        m_client.sendCommand("mct\n");
     }
     return 0;
 }
@@ -56,6 +58,6 @@ void zappy::GUI::eventManager()
     while (m_window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             m_window.close();
-        this->game_scene.manageEvent(this->m_window, event);
+        m_scene_manager.manageEvent(m_window, event);
     }
 }

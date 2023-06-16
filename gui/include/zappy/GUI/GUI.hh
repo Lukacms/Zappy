@@ -7,15 +7,20 @@
 
 #pragma once
 
-#include "zappy/Camera.hh"
-#include "zappy/GuiClient/GuiClient.hpp"
-#include "zappy/HUD/HUD.hh"
-#include "zappy/Scenes/Game.hh"
+#include <zappy/Scenes/SceneManager.hh>
+#include <zappy/Camera.hh>
+#include <zappy/GuiClient/GuiClient.hpp>
+#include <zappy/HUD/HUD.hh>
+#include <zappy/Scenes/Game.hh>
+#include <zappy/Scenes/IScene.hh>
+#include <zappy/Scenes/Victory.hh>
 #include <SFML/Audio.hpp>
 #include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <array>
 #include <cstddef>
+#include <memory>
 #include <string_view>
 #include <vector>
 #include <zappy/Map/Map.hh>
@@ -39,17 +44,18 @@ namespace zappy
             GUI &operator=(GUI const &to_copy) = delete;
             GUI &operator=(GUI &&to_move) = delete;
 
-            [[nodiscard("PRENDS CETTE WINDOW")]] sf::RenderWindow &getWindow();
+            std::array<std::unique_ptr<IScene>, 3> &getScenes();
             void updateWindow();
             void clearWindow();
             void eventManager();
+            void changeScene(size_t index);
             void draw();
             int start();
 
         private:
             sf::RenderWindow m_window;
 
-            zappy::Game game_scene;
+            zappy::SceneManager m_scene_manager;
             zappy::Client m_client;
     };
 
