@@ -162,6 +162,29 @@ message("${BoldWhite}Finished loading zappy_gui-core${ColourReset}")
 add_executable(
     zappy_gui
     src/main.cpp
+    src/zappyError.cpp
+    src/GUI/GUI.cpp
+    src/GuiClient/GuiClient.cpp
+    src/RingBuffer.cpp
+    src/Camera.cpp
+    src/Map/Map.cpp
+    src/HUD/HUD.cpp
+    src/Scenes/Game.cpp
+    src/Player/Player.cpp
+    src/Player/PlayerManager.cpp
+    src/GuiClient/GuiClient.cpp
+    src/RingBuffer.cpp
+    src/MusicManager/MusicManager.cpp
+    src/ParticleEngine/AParticle.cpp
+    src/ParticleEngine/RainParticle.cpp
+    src/ParticleEngine/FogParticle.cpp
+    src/ParticleEngine/ParticleEngine.cpp
+    src/Weather/WeatherManager.cpp
+    src/Egg/EggManager.cpp
+    src/Scenes/Victory.cpp
+    src/Scenes/SceneManager.cpp
+    src/HUD/FrequencyPanel.cpp
+    src/HUD/TextButton.cpp
     )
 
 # rules for zappy_gui project
@@ -169,6 +192,11 @@ target_link_libraries(
     zappy_gui PRIVATE
     zappy_gui-interface
     zappy_gui-core
+    sfml-window
+    sfml-graphics
+    sfml-system
+    sfml-audio
+    sfml-network
     )
 target_link_options(zappy_gui PRIVATE -rdynamic)
 target_compile_options(zappy_gui PRIVATE ${WARNING_FLAGS})
