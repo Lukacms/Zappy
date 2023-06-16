@@ -5,10 +5,13 @@
 ## Ai
 ##
 
+import socket
+from ai.src.client.Commands import Commands
+
 RESOURCES = ['food', 'linemate', 'deraumere', 'sibur', 'mendiane', 'phiras', 'thystame']
 ELEVATION_RITUAL = {
     1: {'linemate' : 1},
-    2: {'linerame' : 1, 'deraumere' : 1, 'sibur' : 1},
+    2: {'linemate' : 1, 'deraumere' : 1, 'sibur' : 1},
     3: {'linemate' : 2, 'sibur' : 1, 'phiras' : 2},
     4: {'linemate' : 1, 'deraumere' : 1, 'sibur' : 2, 'phiras' : 1},
     5: {'linemate' : 1, 'deraumere' : 2, 'sibur' : 1, 'mendiane' : 3},
@@ -18,11 +21,11 @@ ELEVATION_RITUAL = {
 
 
 class Artifical_intelligence():
-    def __init__(self, team_name):
+    def __init__(self, team_name: str):
         self.inventory = {'food' : 0, 'linemate' : 0, 'deraumere' : 0, 'sibur' : 0, 'mendiane' : 0, 'phiras' : 0, 'thystame' : 0}
         self.broadcast_text = ""
-        self.look = ""
-        self.level = 1
+        self.look = {}
+        self.level = 2
         self.nb_player = 1
         self.life_units = 10
         self.connect_nbr = 0
@@ -30,71 +33,89 @@ class Artifical_intelligence():
         self.previous_action = ""
         self.action_to_do = ""
         self.object_to_take = ""
+        self.commands = Commands()
+        self.alone_on_tile = False
+        self.direction = []
 
-    def check_tile_info():
-        print("check_tile_info")
+    def check_if_alone(self, socket) -> bool:
+        self.commands.look(socket, self.look)
+        if "player" in self.look[0]:
+            # self.check_if_object(socket)
+            self.alone_on_tile = True
+        else:
+            self.alone_on_tile = False
+        return self.alone_on_tile
 
+    def check_if_object(self, socket) -> bool:
+        for item in RESOURCES:
+            if item in self.look[0]:
+                # self.object_needed(socket)
+                return True
+        return False
 
-    def move_forward(self):
-        self.action_to_do = "Forward"
+    def object_wanted(self, socket) -> bool:
+        if self.object_to_take in self.look[0]:
+            self.action_to_do = self.commands.take_object(self.object_to_take)
+            self.inventory[self.object_to_take] += 1
+            return True
+        else:
+            # self.object_needed(socket)
+            return False
 
+    def object_needed(self, socket) -> bool:
+        self.commands.parse_inventory(socket, self.inventory)
+        for item in ELEVATION_RITUAL[self.level].keys():
+            if item in self.look[0] and item != self.object_to_take and self.inventory[item] < ELEVATION_RITUAL[self.level][item]:
+                self.action_to_do = self.commands.take_object(item)
+                self.inventory[item] += 1
+                return True
+        # self.programmed_action(socket)
+        return False
 
-    def turn_left(self):
-        self.action_to_do = "Left"
+##############################################
+    def programmed_action(self, socket) -> bool:
+        if len(self.direction) == 0:
+            self.commands.parse_inventory(socket, self.inventory)
+            self.requirements_analysis()
+            return False
+        else:
+            if self.direction[0] == "forward":
+                self.commands.move_forward()
+            elif self.direction[0] == "left":
+                self.commands.turn_left()
+            else:
+                self.commands.turn_right()
+            self.direction.pop(0)
+            return True
+##############################################
 
+    def requirements_analysis(self):
+        print("+++++")
 
-    def turn_right(self):
-        self.action_to_do = "Right"
+    def decision_to_steal_object(self, socket) -> bool:
+        if self.object_needed(socket) == True:
+            return True
+        else:
+            self.commands.eject()
+            return False
 
+    def check_if_incantation(self, socket) -> bool:
+        nb_player = self.look[0].count("player")
+        nb_linemate = self.look[0].count("linemate")
+        nb_sibur = self.look[0].count("sibur")
+        if nb_player >= 2 and nb_linemate >= 2 and nb_sibur >= 2:
+            self.decision_to_steal_object(socket)
+            return True
+        return False
 
-    def parse_inv(self, socket):
-        self.action_to_do = "Inventory"
-        socket.send((self.action_to_do + '\n').encode())
-        str_response = socket.recv(1024).decode("utf-8").split(',')
-        for item in str_response:
-            parts = item.strip().strip('[ ').strip(' ]').split(' ')
-            key = parts[0]
-            value = int(parts[1])
-            if key in self.inventory:
-                self.inventory[key] = value
+    def check_if_evolution(self, socket) -> bool:
+        self.commands.parse_inventory(socket, self.inventory)
+        for item in ELEVATION_RITUAL[self.level].keys():
+            if self.inventory[item] != ELEVATION_RITUAL[self.level][item] or self.inventory['food'] < 400:
+                return False
+        return True
 
-
-    def nb_player_in_team(self, socket):
-        self.action_to_do = "Connect_nbr"
-        socket.send((self.action_to_do + '\n').encode())
-        str_response = socket.recv(1024).decode("utf-8")
-        self.nb_player = int(str_response)
-
-
-    def broadcast(self):
-        # fonction pour ajouter le message à broadcast
-        # self.broadcast_text = ...
-        self.action_to_do = "Broadcast " + self.broadcast_text
-
-
-    def fork(self):
-        self.action_to_do = "Fork"
-
-
-    def eject(self):
-        self.action_to_do = "Eject"
-
-
-    def take_object(self):
-        # fonction pour ajouter le nom de l'objet qui nous interesse
-        # self.object_to_take = ...
-        self.action_to_do = "Take " + self.object_to_take
-
-
-    def set_object(self):
-        # fonction pour ajouter les objects à drop pour évolution
-        # self.object_to_take = ...
-        self.action_to_do = "Set " + self.object_to_take
-
-    def algo(self, socket):
-        # Exemple de fonction pour lancer une action
-        # self.parse_inv(socket)
-        # self.action_to_do = turn_left()
-
-        # self.look(socket)
+    def algo(self, socket: socket.socket):
+        if self.alone_on_tile() == True:
+            print("alone")
         return self.action_to_do
