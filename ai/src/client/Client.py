@@ -66,6 +66,25 @@ class Client():
         print("pause_request")
         pass
 
+    # def client_launcher(self):
+    #     inputs= [stdin, socket]
+    #     outputs = []
+    #     excepts = []
+    #     try:
+    #         readable, writable, exceptional = select.select(inputs, outputs, excepts)
+    #     except select.error as e:
+    #         if e.args[0] != errno.EINTR:
+    #             print("select() error:", e)
+    #         return -1
+    #     if socket in readable:
+            # response: str = self.socket.recv(BUFFER_SIZE).decode("utf-8")
+            # print(f"{response}", end="")
+            # if "dead" in response:
+            #     self.close()
+    #     if stdin in readable:
+    #         return send_client(socket, state)
+    #     return state
+
     def client_launcher(self):
         try:
             while True:
@@ -83,8 +102,8 @@ class Client():
 
         except KeyboardInterrupt as e:
             self.close()
-
             print("KeyboardInterrupt:", str(e))
+
     def close(self):
         if self.socket:
             self.socket.close()

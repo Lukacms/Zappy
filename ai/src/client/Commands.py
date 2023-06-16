@@ -32,22 +32,13 @@ class Commands():
             if key in inventory:
                 inventory[key] = value
 
-    def look(self, socket: socket.socket, look_result: dict) -> str:
-        action_to_do = "Look"
-        socket.sendall((action_to_do + '\n').encode())
-        response = socket.recv(BUFFER_SIZE).decode("utf-8").strip()
-        print("look_response:", response)
-        if response.startswith("[") and response.endswith("]"):
-            response = response[1:-1]
-            tiles = response.split(',')
-            for contents in tiles:
-                tile_contents = contents.strip()
-                tile_index = tile_contents[0]
-                if len(tile_contents) >= 1:
-                    objects_on_tile = tile_contents
-                    print("look_parsing:", objects_on_tile)
-                    look_result[tile_index] = objects_on_tile
-        return action_to_do
+    def look(self, socket: socket.socket, look: dict) -> str:
+        self.action_to_do = "Look"
+        socket.sendall((self.action_to_do + '\n').encode())
+        response = socket.recv(BUFFER_SIZE).decode("utf-8").split(',')
+        for i,item in enumerate(response):
+            parts = item.strip().strip('[ ').strip(' ]')
+            look[i] = parts
 
     def nb_player_in_team(self, socket: socket.socket) -> int:
         self.action_to_do = "Connect_nbr"
@@ -70,14 +61,16 @@ class Commands():
         self.action_to_do = "Eject"
         return self.action_to_do
 
-    def take_object(self) -> str:
-        # fonction pour ajouter le nom de l'objet qui nous interesse
-        # self.object_to_take = ...
-        self.action_to_do = "Take " + self.object_to_take
+    def take_object(self, object_to_take: str) -> str:
+        self.action_to_do = "Take " + object_to_take
         return self.action_to_do
 
-    def set_object(self) -> str:
+    def set_object(self, object) -> str:
         # fonction pour ajouter les objects à drop pour évolution
         # self.object_to_take = ...
-        self.action_to_do = "Set " + self.object_to_take
+        self.action_to_do = "Set " + object
+        return self.action_to_do
+
+    def incantation(self) -> str:
+        self.action_to_do = "Incantation"
         return self.action_to_do
