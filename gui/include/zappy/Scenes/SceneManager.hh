@@ -30,7 +30,8 @@ namespace zappy
             SceneManager &operator=(SceneManager &&to_move) = delete;
 
             void draw(sf::RenderWindow &window) override;
-            void manageEvent(sf::RenderWindow &window, sf::Event &event) override;
+            void manageEvent(sf::RenderWindow &window, sf::Event &event,
+                             std::string &command_to_send) override;
             void changeScene(size_t index);
             std::array<std::unique_ptr<IScene>, 3> &getScenes();
 

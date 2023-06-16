@@ -24,9 +24,10 @@ void zappy::SceneManager::draw(sf::RenderWindow &window)
     m_scenes[m_scene_index]->draw(window);
 }
 
-void zappy::SceneManager::manageEvent(sf::RenderWindow &window, sf::Event &event)
+void zappy::SceneManager::manageEvent(sf::RenderWindow &window, sf::Event &event,
+                                      std::string &command_to_send)
 {
-    m_scenes[m_scene_index]->manageEvent(window, event);
+    m_scenes[m_scene_index]->manageEvent(window, event, command_to_send);
 }
 
 std::array<std::unique_ptr<zappy::IScene>, 3> &zappy::SceneManager::getScenes()

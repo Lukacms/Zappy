@@ -15,7 +15,8 @@
 
 // Constructor && Destructor
 
-zappy::Victory::Victory(zappy::MusicManager &music_manager) : m_music_manager{music_manager} {
+zappy::Victory::Victory(zappy::MusicManager &music_manager) : m_music_manager{music_manager}
+{
     m_music.setVolume(25.F);
     m_music.openFromFile(VICTORY_MUSIC.data());
     m_texture.loadFromFile(VICTORY_SCREEN.data());
@@ -44,7 +45,8 @@ void zappy::Victory::setVictoryTeam(const std::string &name)
     m_music_manager.loadNewMusic(VICTORY_MUSIC.data());
 }
 
-void zappy::Victory::manageEvent(sf::RenderWindow &window, sf::Event &event)
+void zappy::Victory::manageEvent(sf::RenderWindow &window, sf::Event &event,
+                                 [[maybe_unused]] std::string &command_to_send)
 {
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
         window.close();

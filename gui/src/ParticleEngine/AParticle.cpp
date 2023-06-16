@@ -6,7 +6,6 @@
 */
 
 #include <SFML/System/Vector2.hpp>
-#include <iostream>
 #include <zappy/ParticleEngine/AParticle.hh>
 
 // Constructor && Destructor

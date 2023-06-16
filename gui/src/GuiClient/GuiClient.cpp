@@ -5,8 +5,6 @@
 ** GuiClient
 */
 
-#include <zappy/Scenes/SceneManager.hh>
-#include <zappy/Scenes/Victory.hh>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Network/IpAddress.hpp>
 #include <SFML/Network/Socket.hpp>
@@ -24,6 +22,8 @@
 #include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/Player/Player.hh>
 #include <zappy/Scenes/Game.hh>
+#include <zappy/Scenes/SceneManager.hh>
+#include <zappy/Scenes/Victory.hh>
 #include <zappy/ZappyError.hh>
 
 zappy::Client::Client(const std::string &name, unsigned short port)
@@ -132,10 +132,10 @@ bool zappy::Client::fillRingBuffer()
     return true;
 }
 
-void zappy::Client::applyCommands(zappy::SceneManager &scene_manager, sf::RenderWindow &window, const std::string &str)
+void zappy::Client::applyCommands(zappy::SceneManager &scene_manager, sf::RenderWindow &window,
+                                  const std::string &str)
 {
     std::vector<std::string> parsed;
-    // std::cout << "COMMAND : " << str << std::endl;
     parsed = parser(str);
     Packet variant = get_variant(parsed);
     auto *game = dynamic_cast<Game *>(scene_manager.getScenes()[1].get());

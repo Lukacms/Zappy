@@ -9,7 +9,6 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <cstddef>
-#include <iostream>
 #include <zappy/HUD/TextButton.hh>
 
 // Constructor && Destructor

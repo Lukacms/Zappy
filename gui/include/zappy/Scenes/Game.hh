@@ -40,7 +40,8 @@ namespace zappy
             Game &operator=(Game &&to_move) = delete;
 
             void draw(sf::RenderWindow &window) final;
-            void manageEvent(sf::RenderWindow &window, sf::Event &event) final;
+            void manageEvent(sf::RenderWindow &window, sf::Event &event,
+                             std::string &command_to_send) final;
 
             void createMap(Msz &map, sf::RenderWindow &window);
             void changeTileInventory(Bct &tile);

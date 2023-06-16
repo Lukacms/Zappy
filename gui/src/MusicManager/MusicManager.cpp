@@ -5,7 +5,6 @@
 ** MusicManager
 */
 
-#include <iostream>
 #include <zappy/MusicManager/MusicManager.hh>
 
 // Constructor && Destructor
@@ -20,7 +19,8 @@ zappy::MusicManager::MusicManager()
 
 // Methods
 
-void zappy::MusicManager::fade() {
+void zappy::MusicManager::fade()
+{
     float volume = m_music.getVolume();
 
     if (m_fade_in && m_clock.getElapsedTime().asSeconds() > 0.1F) {
@@ -39,7 +39,7 @@ void zappy::MusicManager::fade() {
         volume += 1.F;
         if (volume >= 25.F)
             m_fade_out = false;
-        else 
+        else
             m_music.setVolume(volume);
         m_clock.restart();
     }

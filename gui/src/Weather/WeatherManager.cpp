@@ -9,7 +9,6 @@
 #include <SFML/System/Vector2.hpp>
 #include <cstdlib>
 #include <ctime>
-#include <iostream>
 #include <zappy/MusicManager/MusicManager.hh>
 #include <zappy/Weather/WeatherManager.hh>
 
@@ -41,7 +40,6 @@ void zappy::WeatherManager::checkWeather(zappy::MusicManager &music_manager)
         m_cycles = 0;
     if (m_cycles % 5 == 0)
         changeDayNight();
-    // std::cout << static_cast<int>(m_cycles) << std::endl;
     m_clock.restart();
     random = std::rand() % static_cast<int>(m_weathers.size());
     new_weather = m_weathers[static_cast<size_t>(random)];

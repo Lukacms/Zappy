@@ -11,7 +11,6 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <ios>
-#include <iostream>
 #include <ostream>
 #include <utility>
 #include <zappy/Map/Tile.hh>
@@ -38,7 +37,6 @@ int zappy::Player::getId() const
 
 void zappy::Player::setPlayerLevel(int level)
 {
-    std::cout << "GIVE LEVEL : " << level << std::endl;
     m_level = level;
 }
 

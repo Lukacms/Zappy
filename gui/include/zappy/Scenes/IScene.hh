@@ -26,6 +26,7 @@ namespace zappy
             IScene &operator=(IScene &&to_move) = default;
 
             virtual void draw(sf::RenderWindow &window) = 0;
-            virtual void manageEvent(sf::RenderWindow &window, sf::Event &event) = 0;
+            virtual void manageEvent(sf::RenderWindow &window, sf::Event &event,
+                                     std::string &command_to_send) = 0;
     };
-} // namespace IScene
+} // namespace zappy

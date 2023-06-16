@@ -5,11 +5,12 @@
 ** FrequencyPanel
 */
 
-#include <zappy/GuiClient/GuiClient.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <algorithm>
 #include <cstddef>
+#include <zappy/GuiClient/GuiClient.hpp>
 #include <zappy/HUD/FrequencyPanel.hh>
 
 // Constructor && Destructor
@@ -75,11 +76,23 @@ void zappy::FrequencyPanel::setPosition(sf::RenderWindow &window)
     }
 }
 
-void zappy::FrequencyPanel::manageEvent(sf::RenderWindow &window, sf::View &view, sf::Event &event)
+void zappy::FrequencyPanel::manageEvent(sf::RenderWindow &window, sf::View &view, sf::Event &event,
+                                        std::string &command_to_send)
 {
+    static const constexpr std::array<std::string, 3> tab_of_value{"50", "200", "500"};
     for (auto &button : m_buttons)
         button.manageEvent(window, view, event, m_frequency_index);
-    // if (m_frequency_index != m_old_index)
+
+    if (m_frequency_index != m_old_index) {
+        if (m_frequency_index < 1)
+            m_frequency_index = 3;
+        if (m_frequency_index > 3)
+            m_frequency_index = 1;
+        command_to_send.clear();
+        command_to_send =
+            std::string{"sst " + std::string{tab_of_value[m_frequency_index - 1]} + "\n"};
+        m_old_index = m_frequency_index;
+    }
 }
 
 void zappy::FrequencyPanel::setBox(sf::Text &text)

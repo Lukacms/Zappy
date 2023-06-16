@@ -15,8 +15,8 @@ int main(int argc, const char *argv[])
 {
     if (argc != 3)
         return FAILURE;
-    zappy::GUI gui{argv[1], static_cast<unsigned short>(std::atoi(argv[2]))};
     try {
+        zappy::GUI gui{argv[1], static_cast<unsigned short>(std::atoi(argv[2]))};
         gui.start();
     } catch (zappy::ZappyException &e) {
         std::cout << e.what();

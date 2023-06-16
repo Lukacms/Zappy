@@ -5,11 +5,10 @@
 ** EggManager
 */
 
+#include <ios>
+#include <zappy/Egg/EggManager.hh>
 #include <zappy/Map/Tile.hh>
 #include <zappy/Player/Player.hh>
-#include <ios>
-#include <iostream>
-#include <zappy/Egg/EggManager.hh>
 
 void zappy::EggManager::addEggs(Enw &egg_infos)
 {

@@ -17,7 +17,6 @@
 #include <SFML/Window/VideoMode.hpp>
 #include <cstddef>
 #include <functional>
-#include <iostream>
 #include <memory>
 #include <tuple>
 #include <vector>
@@ -54,10 +53,13 @@ int zappy::GUI::start()
 void zappy::GUI::eventManager()
 {
     sf::Event event;
+    std::string command_to_send{};
 
     while (m_window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             m_window.close();
-        m_scene_manager.manageEvent(m_window, event);
+        m_scene_manager.manageEvent(m_window, event, command_to_send);
     }
+    if (!command_to_send.empty())
+        m_client.sendCommand(command_to_send);
 }

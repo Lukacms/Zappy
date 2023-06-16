@@ -14,7 +14,6 @@
 #include <cstddef>
 #include <cstdlib>
 #include <ctime>
-#include <iostream>
 #include <ostream>
 #include <vector>
 #include <zappy/Map/Map.hh>

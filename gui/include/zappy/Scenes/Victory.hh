@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <zappy/MusicManager/MusicManager.hh>
 #include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -15,6 +14,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <string_view>
+#include <zappy/MusicManager/MusicManager.hh>
 #include <zappy/Scenes/AScene.hh>
 
 constexpr std::string_view VICTORY_MUSIC{"./gui/assets/music/victoryismine.ogg"};
@@ -36,7 +36,8 @@ namespace zappy
 
             void setVictoryTeam(const std::string &name);
             void draw(sf::RenderWindow &window) override;
-            void manageEvent(sf::RenderWindow &window, sf::Event &event) override;
+            void manageEvent(sf::RenderWindow &window, sf::Event &event,
+                             std::string &command_to_send) override;
 
         private:
             sf::Font m_font;

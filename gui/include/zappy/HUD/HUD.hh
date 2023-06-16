@@ -7,11 +7,8 @@
 
 #pragma once
 
-#include <zappy/HUD/FrequencyPanel.hh>
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
-#include <zappy/GuiCommand/GuiCommand.hh>
-#include <zappy/Player/Player.hh>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -23,11 +20,14 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Event.hpp>
 #include <array>
+#include <ctime>
 #include <deque>
 #include <string>
 #include <string_view>
+#include <zappy/GuiCommand/GuiCommand.hh>
+#include <zappy/HUD/FrequencyPanel.hh>
 #include <zappy/Map/Tile.hh>
-#include <ctime>
+#include <zappy/Player/Player.hh>
 
 constexpr std::string_view MAIN_FONT{"./gui/assets/fonts/botw.otf"};
 constexpr std::string_view BROADCAST_SOUND{"./gui/assets/sound/announcement.ogg"};
@@ -71,7 +71,8 @@ namespace zappy
             void displayFocusedTile(zappy::Tile &focused_tile);
             void setFocusedTile(zappy::Tile &tile);
             void setFocusedPlayer(zappy::Player &player);
-            void eventManager(sf::Event &event, sf::RenderWindow &window);
+            void eventManager(sf::Event &event, sf::RenderWindow &window,
+                              std::string &command_to_send);
             void turnHUD(bool status1, bool status2);
             void addBroadcast(Pbc &broadcast);
 

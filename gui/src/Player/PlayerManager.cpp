@@ -8,13 +8,12 @@
 #include <Inventory.hh>
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Event.hpp>
 #include <algorithm>
 #include <ios>
-#include <iostream>
 #include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/Player/Player.hh>
 #include <zappy/Player/PlayerManager.hh>
-#include <SFML/Window/Event.hpp>
 
 // Constructor && Destructor
 

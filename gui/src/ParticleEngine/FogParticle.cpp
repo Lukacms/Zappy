@@ -6,7 +6,6 @@
 */
 
 #include <SFML/System/Vector2.hpp>
-#include <iostream>
 #include <zappy/ParticleEngine/FogParticle.hh>
 
 // Constructor && Destructor
@@ -17,7 +16,8 @@ zappy::FogParticle::FogParticle()
     m_max_alpha = std::rand() % 20 + 80;
     m_shape.setSize(
         {static_cast<float>(std::rand() % 200 + 100), static_cast<float>(std::rand() % 50 + 100)});
-    m_shape.setPosition({static_cast<float>(std::rand() % 2200 - 2000), static_cast<float>(std::rand() % 1080)});
+    m_shape.setPosition(
+        {static_cast<float>(std::rand() % 2200 - 2000), static_cast<float>(std::rand() % 1080)});
     m_shape.setFillColor({167, 165, 172, 0});
 }
 
@@ -42,7 +42,8 @@ void zappy::FogParticle::animateFog()
 {
     sf::Color color = m_shape.getFillColor();
 
-    if (!m_must_be_delete && color.a < m_max_alpha && m_clock.getElapsedTime().asSeconds() > 0.05F) {
+    if (!m_must_be_delete && color.a < m_max_alpha &&
+        m_clock.getElapsedTime().asSeconds() > 0.05F) {
         m_clock.restart();
         color.a += 1;
         m_shape.setFillColor(color);

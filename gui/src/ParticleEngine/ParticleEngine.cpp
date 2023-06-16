@@ -8,7 +8,6 @@
 #include <SFML/System/Vector2.hpp>
 #include <cstddef>
 #include <cstdlib>
-#include <iostream>
 #include <memory>
 #include <zappy/ParticleEngine/AParticle.hh>
 #include <zappy/ParticleEngine/FogParticle.hh>

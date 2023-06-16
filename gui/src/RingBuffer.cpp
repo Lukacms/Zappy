@@ -6,7 +6,6 @@
 */
 
 #include <cstddef>
-#include <iostream>
 #include <zappy/RingBuffer.hh>
 
 // Constructor && Destructor

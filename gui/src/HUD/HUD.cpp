@@ -18,7 +18,6 @@
 #include <cstddef>
 #include <ctime>
 #include <ios>
-#include <iostream>
 #include <iterator>
 #include <ostream>
 #include <string>
@@ -128,14 +127,15 @@ void zappy::HUD::turnHUD(bool status1, bool status2)
     m_is_active = status1 || status2;
 }
 
-void zappy::HUD::eventManager(sf::Event &event, sf::RenderWindow &window)
+void zappy::HUD::eventManager(sf::Event &event, sf::RenderWindow &window,
+                              std::string &command_to_send)
 {
     sf::Vector2i tmp{event.mouseMove.x, event.mouseMove.y};
     sf::Vector2f point = window.mapPixelToCoords(tmp, m_hud_view);
 
     if (event.type == sf::Event::MouseMoved)
         m_is_faded = m_parchment.m_box.contains(point);
-    m_frequency_panel.manageEvent(window, m_hud_view, event);
+    m_frequency_panel.manageEvent(window, m_hud_view, event, command_to_send);
 }
 
 void zappy::HUD::initializeParchment()

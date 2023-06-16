@@ -32,7 +32,8 @@ namespace zappy
             FrequencyPanel &operator=(FrequencyPanel &&to_move) = delete;
 
             void draw(sf::RenderWindow &window, sf::Text &text);
-            void manageEvent(sf::RenderWindow &window, sf::View &view, sf::Event &event);
+            void manageEvent(sf::RenderWindow &window, sf::View &view, sf::Event &event,
+                             std::string &command_to_send);
 
         private:
             void setPosition(sf::RenderWindow &window);
