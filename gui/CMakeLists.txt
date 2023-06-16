@@ -183,6 +183,8 @@ add_executable(
     src/Egg/EggManager.cpp
     src/Scenes/Victory.cpp
     src/Scenes/SceneManager.cpp
+    src/HUD/FrequencyPanel.cpp
+    src/HUD/TextButton.cpp
     )
 
 # rules for zappy_gui project

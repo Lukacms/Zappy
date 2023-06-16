@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <zappy/HUD/FrequencyPanel.hh>
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <zappy/GuiCommand/GuiCommand.hh>
@@ -63,8 +64,8 @@ namespace zappy
             HUD(HUD &&to_move) = default;
             ~HUD() = default;
 
-            HUD &operator=(HUD const &to_copy) = default;
-            HUD &operator=(HUD &&to_move) = default;
+            HUD &operator=(HUD const &to_copy) = delete;
+            HUD &operator=(HUD &&to_move) = delete;
 
             void draw(sf::RenderWindow &window, sf::Sprite &sprite);
             void displayFocusedTile(zappy::Tile &focused_tile);
@@ -102,7 +103,7 @@ namespace zappy
             sf::Text m_text{};
             sf::Font m_font{};
             sf::Color m_color{};
-            sf::Color m_color_text{69, 45, 16, 255};
+            sf::Color m_color_text{31, 31, 31, 255};
             sf::Clock m_rupees_clock{};
             sf::Clock m_food_clock{};
             sf::Clock m_broadcast_clock{};
@@ -112,6 +113,7 @@ namespace zappy
             zappy::Text m_title{};
             zappy::Text m_food_text{};
             zappy::Text m_food_count{};
+            zappy::FrequencyPanel m_frequency_panel{};
             std::vector<Text> m_broadcast_messages{};
             std::array<Tile, 6> m_rupees{};
             std::array<Text, 6> m_texts{};

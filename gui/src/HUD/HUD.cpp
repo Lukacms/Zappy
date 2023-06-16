@@ -51,6 +51,7 @@ void zappy::HUD::draw(sf::RenderWindow &window, sf::Sprite &sprite)
     m_text.setFont(m_font);
     m_text.setFillColor(m_color_text);
     window.setView(m_hud_view);
+    m_frequency_panel.draw(window, m_text);
     animateHUD();
     drawSprites(window, sprite);
     drawTexts(window);
@@ -134,6 +135,7 @@ void zappy::HUD::eventManager(sf::Event &event, sf::RenderWindow &window)
 
     if (event.type == sf::Event::MouseMoved)
         m_is_faded = m_parchment.m_box.contains(point);
+    m_frequency_panel.manageEvent(window, m_hud_view, event);
 }
 
 void zappy::HUD::initializeParchment()
@@ -294,7 +296,7 @@ void zappy::HUD::drawTexts(sf::RenderWindow &window)
     window.setView(m_broadcast_view);
     animateBroadcast();
     m_text.setCharacterSize(80);
-    m_text.setFillColor({0, 0, 0});
+    m_text.setFillColor({31, 31, 31});
     for (auto &text : m_broadcast_messages) {
         m_text.setPosition(text.m_position);
         m_text.setString(text.m_str);

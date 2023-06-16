@@ -135,7 +135,7 @@ bool zappy::Client::fillRingBuffer()
 void zappy::Client::applyCommands(zappy::SceneManager &scene_manager, sf::RenderWindow &window, const std::string &str)
 {
     std::vector<std::string> parsed;
-    std::cout << "COMMAND : " << str << std::endl;
+    // std::cout << "COMMAND : " << str << std::endl;
     parsed = parser(str);
     Packet variant = get_variant(parsed);
     auto *game = dynamic_cast<Game *>(scene_manager.getScenes()[1].get());
