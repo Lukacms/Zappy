@@ -24,11 +24,12 @@
 #include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/Player/Player.hh>
 #include <zappy/Scenes/Game.hh>
+#include <zappy/ZappyError.hh>
 
 zappy::Client::Client(const std::string &name, unsigned short port)
 {
     if (m_socket.connect(sf::IpAddress{name}, port) != sf::Socket::Status::Done)
-        throw;
+        throw zappy::ZappyException{"cant connect to server\n"};
     m_socket.setBlocking(false);
 }
 
@@ -65,7 +66,7 @@ bool zappy::Client::WelcomeSuppressor()
         if (m_socket.receive(&buff, 4096, size) != sf::Socket::Done)
             return true;
     }
-    throw;
+    throw zappy::ZappyException{"Server do not send Welcome in time\n"};
 }
 
 static std::vector<std::string> parser(const std::string &buff)

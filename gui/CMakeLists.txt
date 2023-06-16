@@ -162,6 +162,7 @@ message("${BoldWhite}Finished loading zappy_gui-core${ColourReset}")
 add_executable(
     zappy_gui
     src/main.cpp
+    src/zappyError.cpp
     src/GUI/GUI.cpp
     src/GuiClient/GuiClient.cpp
     src/RingBuffer.cpp
