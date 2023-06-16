@@ -79,7 +79,7 @@ void zappy::FrequencyPanel::setPosition(sf::RenderWindow &window)
 void zappy::FrequencyPanel::manageEvent(sf::RenderWindow &window, sf::View &view, sf::Event &event,
                                         std::string &command_to_send)
 {
-    static const constexpr std::array<std::string, 3> tab_of_value{"50", "200", "500"};
+    static const std::array<std::string, 3> tab_of_value{"50", "200", "500"};
     for (auto &button : m_buttons)
         button.manageEvent(window, view, event, m_frequency_index);
 
