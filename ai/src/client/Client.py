@@ -69,11 +69,15 @@ class Client():
     def client_launcher(self):
         try:
             while True:
+                if self.ai.inventory == {'food' : 0, 'linemate' : 0, 'deraumere' : 0, 'sibur' : 0, 'mendiane' : 0, 'phiras' : 0, 'thystame' : 0}:
+                    self.ai.commands.parse_inventory(self.socket, self.ai.inventory)
                 request: str = Artifical_intelligence.algo(self.ai, self.socket)
                 self.send_request(request)
                 self.handle_response()
                 response: str = self.socket.recv(BUFFER_SIZE).decode("utf-8")
                 print(f"{response}", end="")
+                if response[0] == '[':
+                    self.ai.commands.look(response, self.ai.look)
                 if "dead" in response:
                     self.close()
 
