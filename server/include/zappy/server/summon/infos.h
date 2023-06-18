@@ -98,7 +98,7 @@
 /* send commands to AI */
 #define AI_INVENTORY \
     "[food %li, linemate %li, deraumere %li, sibur %li, mendiane %li, phiras " \
-    "%li, thystame %li]"
+    "%li, thystame %li]\n"
 #define AI_EJECT "eject: %i\n"
 #define BASIC_VALID "ok\n"
 #define AI_DEATH "dead\n"

@@ -13,7 +13,9 @@
 
 int inventory_func(server_t *server, char *args[], client_node_t *c)
 {
-    if (!args || array_len(args) != 2 || !server || !c)
+    if (!c || !server)
+        return FAILURE;
+    if (!args || array_len(args) != 1)
         return set_error(c->cfd, INVALID_ACTION, false);
     add_ticks_occupied(c, RESTRAINT_INVENTORY, server);
     dprintf(

@@ -26,7 +26,7 @@ int set_func(server_t *server, char *args[], client_node_t *client)
 {
     if (!server || !client)
         return FAILURE;
-    if (!args || array_len(args) != 3)
+    if (!args || array_len(args) != 2)
         return set_error(client->cfd, INVALID_ACTION, false);
     for (int i = 0; i < INVENTORY_SLOTS; i += 1) {
         if (client->stats.inventory[i].units != 0 &&

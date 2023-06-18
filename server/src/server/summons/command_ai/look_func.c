@@ -79,5 +79,5 @@ int look_func(server_t *server, char *args[], client_node_t *client)
     }
     dprintf(client->cfd, "]\n");
     add_ticks_occupied(client, RESTRAINT_LOOK, server);
-    return FAILURE;
+    return SUCCESS;
 }

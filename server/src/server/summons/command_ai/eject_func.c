@@ -33,8 +33,9 @@ int eject_func(server_t *server, char *args[], client_node_t *client)
 {
     client_node_t *tmp = NULL;
 
-    if (!args || array_len(args) != 2 || !server ||
-        !(tmp = server->clients.head))
+    if (!server || !client)
+        return FAILURE;
+    if (!args || array_len(args) != 2 || !(tmp = server->clients.head))
         return set_error(client->cfd, INVALID_ACTION, false);
     for (unsigned int ind = 0; ind < server->clients.length; ind++) {
         if (same_tile(tmp->stats.pos, client->stats.pos) &&

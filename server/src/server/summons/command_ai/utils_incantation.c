@@ -11,8 +11,11 @@
 
 bool mandatory_resources(server_t *server, vector2i_t pos, int lvl)
 {
-    tile_t tile = server->map.tiles[pos.y][pos.x];
+    tile_t tile = {0};
 
+    if (!server || pos.y >= server->map.size.y || pos.x >= server->map.size.y)
+        return false;
+    tile = server->map.tiles[pos.y][pos.x];
     return (
         (INCANTATION_MANDATORY[lvl - 1][1] - CHAR_INT) <= tile.slots[1].units &&
         (INCANTATION_MANDATORY[lvl - 1][2] - CHAR_INT) <= tile.slots[2].units &&
@@ -26,12 +29,14 @@ bool loop_clients_level_up(server_t *server, client_node_t *client)
 {
     int players_able = 0;
     client_node_t *tmp = NULL;
-    char **cli_in_tile =
-        server->map.tiles[client->stats.pos.x][client->stats.pos.y]
-            .players_uuid;
+    char **cli_tile = NULL;
 
-    for (int i = 0; cli_in_tile[i] != NULL; i += 1) {
-        tmp = find_client_by_uuid(cli_in_tile[i], server);
+    if (!server || !client ||
+        !(cli_tile = server->map.tiles[client->stats.pos.x][client->stats.pos.y]
+                         .players_uuid))
+        return FAILURE;
+    for (int i = 0; cli_tile[i] != NULL; i += 1) {
+        tmp = find_client_by_uuid(cli_tile[i], server);
         if (tmp->stats.level == client->stats.level)
             players_able += 1;
     }

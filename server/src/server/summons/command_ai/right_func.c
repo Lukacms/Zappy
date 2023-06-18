@@ -9,19 +9,20 @@
 #include <zappy/server.h>
 #include <zappy/server/clock/utils.h>
 #include <zappy/server/summon/utils.h>
+#include <zappy/server/utils.h>
 
 static void send_infos(server_t *server, client_node_t *client)
 {
     char output[BUFFER_SIZE] = {0};
 
     sprintf(output, DISPATCH_PPO, client->cfd, client->stats.pos.x,
-                    client->stats.pos.y, client->stats.orientation);
+            client->stats.pos.y, client->stats.orientation);
     send_toall_guicli(server, output);
     dprintf(client->cfd, BASIC_VALID);
 }
 
 static int set_client_orientation(server_t *server, client_node_t *client,
-                                orientation_t orientation)
+                                  orientation_t orientation)
 {
     client->stats.orientation = orientation;
     dprintf(client->cfd, BASIC_VALID);
@@ -31,7 +32,7 @@ static int set_client_orientation(server_t *server, client_node_t *client,
 }
 
 int right_func(server_t *server, char __attribute__((unused)) * args[],
-            client_node_t *client)
+               client_node_t *client)
 {
     if (!server || !client)
         return FAILURE;
@@ -41,5 +42,5 @@ int right_func(server_t *server, char __attribute__((unused)) * args[],
         case EAST: return set_client_orientation(server, client, SOUTH);
         case WEST: return set_client_orientation(server, client, NORTH); break;
     }
-    return FAILURE;
+    return set_error(client->cfd, INVALID_ACTION, false);
 }
