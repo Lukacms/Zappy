@@ -35,6 +35,7 @@ class Artifical_intelligence():
         self.previous_action = ""
         self.action_to_do = ""
         self.prog_action = []
+        self.go_levelup = False
         self.object_to_take = ""
         self.commands = Commands()
 
@@ -96,46 +97,57 @@ class Artifical_intelligence():
             return True
         return False
 
-    def turn_to_broadcast(self, direction: int):
+    def turn_to_broadcast(self, socket, direction: int):
         self.prog_action = []
         self.look = {}
+        self.go_levelup = True
+        if (direction == 0):
+            self.level_up(socket)
         if (direction == 1):
             self.prog_action.append(self.commands.move_forward())
+            self.prog_action.append("Look")
             return
         if (direction == 2):
             self.prog_action.append(self.commands.move_forward())
             self.prog_action.append(self.commands.turn_left())
             self.prog_action.append(self.commands.move_forward())
+            self.prog_action.append("Look")
             return
         if (direction == 3):
             self.prog_action.append(self.commands.turn_left())
             self.prog_action.append(self.commands.move_forward())
+            self.prog_action.append("Look")
             return
         if (direction == 4):
             self.prog_action.append(self.commands.turn_left())
             self.prog_action.append(self.commands.move_forward())
             self.prog_action.append(self.commands.turn_left())
             self.prog_action.append(self.commands.move_forward())
+            self.prog_action.append("Look")
             return
         if (direction == 5):
             self.prog_action.append(self.commands.turn_left())
             self.prog_action.append(self.commands.turn_left())
             self.prog_action.append(self.commands.move_forward())
+            self.prog_action.append("Look")
             return
         if (direction == 6):
             self.prog_action.append(self.commands.turn_right())
             self.prog_action.append(self.commands.move_forward())
             self.prog_action.append(self.commands.turn_right())
             self.prog_action.append(self.commands.move_forward())
+            self.prog_action.append("Look")
             return
         if (direction == 7):
             self.prog_action.append(self.commands.turn_right())
             self.prog_action.append(self.commands.move_forward())
+            self.prog_action.append("Look")
             return
         if (direction == 8):
             self.prog_action.append(self.commands.move_forward())
             self.prog_action.append(self.commands.turn_right())
             self.prog_action.append(self.commands.move_forward())
+            self.prog_action.append("Look")
             return
 
     def level_up(self, socket):
@@ -239,6 +251,7 @@ class Artifical_intelligence():
     def algo(self, socket: socket.socket):
         print("=========================")
         if (self.prog_action == []):
+            self.go_levelup = False
             self.commands.parse_inventory(socket, self.inventory)
             if (self.check_if_evolution(socket) == True):
                 print("~~~~~~~~~~~~~~~~~~~~~~~~~")

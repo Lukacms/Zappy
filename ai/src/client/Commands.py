@@ -23,6 +23,11 @@ class Commands():
         action_to_do = "Inventory"
         socket.sendall((action_to_do + '\n').encode())
         str_response = socket.recv(BUFFER_SIZE).decode("utf-8").split(',')
+        while ("message" in str_response[0]):
+            str_response = socket.recv(BUFFER_SIZE).decode("utf-8").split(',')
+        if ('[' not in str_response[0]):
+            print(str_response)
+            str_response = socket.recv(BUFFER_SIZE).decode("utf-8").split(',')
         for item in str_response:
             parts = item.strip().strip('[ ').strip(' ]').split(' ')
             key = parts[0]
@@ -41,9 +46,11 @@ class Commands():
             look[i] = parts
 
     def nb_player_in_team(self, socket: socket.socket) -> int:
-        self.action_to_do = "Connect_nbr"
-        socket.send((self.action_to_do + '\n').encode())
+        action_to_do = "Connect_nbr"
+        socket.send((action_to_do + '\n').encode())
         str_response = socket.recv(BUFFER_SIZE).decode("utf-8")
+        while ("message" in str_response):
+            str_response = socket.recv(BUFFER_SIZE).decode("utf-8").split(',')
         self.nb_player = int(str_response)
         return self.nb_player
 

@@ -73,8 +73,9 @@ class Client():
         self.ai.commands.parse_inventory(socket, self.ai.inventory)
         if "evolution" in message and \
             int(message[-1]) == self.ai.level and \
-                self.ai.inventory['food'] >= 8:
-            self.ai.turn_to_broadcast(cord)
+                self.ai.inventory['food'] >= 8 and \
+                self.ai.go_levelup == False:
+            self.ai.turn_to_broadcast(socket, cord)
             return
         else:
             if "message" in next_response:
@@ -84,11 +85,11 @@ class Client():
     def parse_response(self, response: str):
         if "dead" in response:
             self.close()
-        if response[0] == '[':
-            self.ai.commands.look(response, self.ai.look)
-            return
         if "Elevation underway" in response:
             self.ai.level_up(self.socket)
+            return
+        if response[0] == '[':
+            self.ai.commands.look(response, self.ai.look)
             return
         if "message" in response and "not my team" not in get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()):
             self.get_broadcast_in_my_team(self.socket, int(response.split(' ')[1][0]), get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()))
