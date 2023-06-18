@@ -7,6 +7,7 @@
 
 import socket
 BUFFER_SIZE = 1024
+from ai.src.broadcast.broadcast import set_broadcast_by_team
 
 class Commands():
     def move_forward(self) -> str:
@@ -19,8 +20,8 @@ class Commands():
         return "Right"
 
     def parse_inventory(self, socket: socket.socket , inventory) -> None:
-        self.action_to_do = "Inventory"
-        socket.sendall((self.action_to_do + '\n').encode())
+        action_to_do = "Inventory"
+        socket.sendall((action_to_do + '\n').encode())
         str_response = socket.recv(BUFFER_SIZE).decode("utf-8").split(',')
         for item in str_response:
             parts = item.strip().strip('[ ').strip(' ]').split(' ')
@@ -28,6 +29,10 @@ class Commands():
             value = int(parts[1])
             if key in inventory:
                 inventory[key] = value
+        print("#########################")
+        print("Inventory")
+        print(inventory)
+        print("#########################")
 
     def look(self, response, look: dict) -> str:
         response = response.split(',')
@@ -42,11 +47,11 @@ class Commands():
         self.nb_player = int(str_response)
         return self.nb_player
 
-    def broadcast(self) -> str:
+    def broadcast(self, team, broadcast_text) -> str:
         # fonction pour ajouter le message à broadcast
         # self.broadcast_text = ...
-        self.action_to_do = "Broadcast " + self.broadcast_text
-        return self.action_to_do
+        action_to_do = "Broadcast " + set_broadcast_by_team(int(team.split("m")[1]) ,broadcast_text)
+        return action_to_do
 
     def fork(self) -> str:
         action_to_do = "Fork"
@@ -60,10 +65,10 @@ class Commands():
         action_to_do = "Take " + object_to_take
         return action_to_do
 
-    def set_object(self) -> str:
+    def set_object(self, object_to_set) -> str:
         # fonction pour ajouter les objects à drop pour évolution
-        # self.object_to_take = ...
-        action_to_do = "Set " + object
+        # self.object_to_set = ...
+        action_to_do = "Set " + object_to_set
         return action_to_do
 
     def incantation(self) -> str:

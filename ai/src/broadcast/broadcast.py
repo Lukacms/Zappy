@@ -26,9 +26,3 @@ def set_broadcast_by_team(team: int, message: str) -> str:
             result = data['Broadcast'][team - 1][message]
     file.close()
     return result
-
-def main():
-    print(set_broadcast_by_team(int(argv[1]), argv[2]))
-
-if __name__ == "__main__":
-    exit(main())

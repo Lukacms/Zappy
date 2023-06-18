@@ -9,6 +9,7 @@ import socket
 from socket import AF_INET, SOCK_STREAM
 from ai.src.algorithm.Ai import Artifical_intelligence
 from ai.src.client.Commands import Commands
+from ai.src.broadcast.broadcast import get_broadcast_by_team
 
 BUFFER_SIZE = 1024
 EPITECH_SUCCESS = 0
@@ -66,20 +67,47 @@ class Client():
         print("pause_request")
         pass
 
+    def get_broadcast_in_my_team(self, socket: socket.socket, cord: int, message: str):
+        next_response = self.socket.recv(BUFFER_SIZE).decode("utf-8")
+        print(f"{next_response}", end="")
+        self.ai.commands.parse_inventory(socket, self.ai.inventory)
+        if "evolution" in message and \
+            int(message[-1]) == self.ai.level and \
+                self.ai.inventory['food'] >= 8:
+            self.ai.turn_to_broadcast(cord)
+            return
+        else:
+            if "message" in next_response:
+                return
+            self.parse_response(next_response)
+
+    def parse_response(self, response: str):
+        if "dead" in response:
+            self.close()
+        if response[0] == '[':
+            self.ai.commands.look(response, self.ai.look)
+            return
+        if "Elevation underway" in response:
+            self.ai.level_up(self.socket)
+            return
+        if "message" in response and "not my team" not in get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()):
+            self.get_broadcast_in_my_team(self.socket, int(response.split(' ')[1][0]), get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()))
+            return
+        if "ok" in response or "ok" in response:
+            return
+        self.client_launcher()
+
     def client_launcher(self):
+        request = ""
+        response = ""
         try:
             while True:
-                if self.ai.inventory == {'food' : 0, 'linemate' : 0, 'deraumere' : 0, 'sibur' : 0, 'mendiane' : 0, 'phiras' : 0, 'thystame' : 0}:
-                    self.ai.commands.parse_inventory(self.socket, self.ai.inventory)
-                request: str = Artifical_intelligence.algo(self.ai, self.socket)
+                request = Artifical_intelligence.algo(self.ai, self.socket)
                 self.send_request(request)
                 self.handle_response()
-                response: str = self.socket.recv(BUFFER_SIZE).decode("utf-8")
+                response = self.socket.recv(BUFFER_SIZE).decode("utf-8")
                 print(f"{response}", end="")
-                if response[0] == '[':
-                    self.ai.commands.look(response, self.ai.look)
-                if "dead" in response:
-                    self.close()
+                self.parse_response(response)
 
         except ValueError as e:
             self.close()
