@@ -20,9 +20,9 @@ class Commands():
         return "Right"
 
     def parse_inventory(self, socket: socket.socket , inventory) -> None:
-        action_to_do = "Inventory"
-        socket.sendall((action_to_do + '\n').encode())
-        str_response = socket.recv(BUFFER_SIZE).decode("utf-8").split(',')
+        # action_to_do = "Inventory"
+        # socket.sendall((action_to_do + '\n').encode())
+        # str_response = socket.recv(BUFFER_SIZE).decode("utf-8").split(',')
         while ("message" in str_response[0]):
             str_response = socket.recv(BUFFER_SIZE).decode("utf-8").split(',')
         if ('[' not in str_response[0]):
@@ -55,8 +55,6 @@ class Commands():
         return self.nb_player
 
     def broadcast(self, team, broadcast_text) -> str:
-        # fonction pour ajouter le message à broadcast
-        # self.broadcast_text = ...
         action_to_do = "Broadcast " + set_broadcast_by_team(int(team.split("m")[1]) ,broadcast_text)
         return action_to_do
 
@@ -73,8 +71,6 @@ class Commands():
         return action_to_do
 
     def set_object(self, object_to_set) -> str:
-        # fonction pour ajouter les objects à drop pour évolution
-        # self.object_to_set = ...
         action_to_do = "Set " + object_to_set
         return action_to_do
 

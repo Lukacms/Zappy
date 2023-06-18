@@ -6,8 +6,8 @@ from ai.src.utils.Arguments import Argument
 def main():
     (machine, port, name) = Argument.parse_arg()
     client = Client(machine, port, name)
-    client.server_connexion()
-    client.client_launcher()
+    client.start_connection()
+    client.launcher()
     client.close()
 
 if __name__ == '__main__':
