@@ -35,6 +35,7 @@ class Commands():
         print("#########################")
         print(nb_player)
         value_up_to_date = True
+        return value_up_to_date
 
     def broadcast(self, team, broadcast_text) -> str:
         action_to_do = "Broadcast " + set_broadcast_by_team(int(team.split("m")[1]) ,broadcast_text)

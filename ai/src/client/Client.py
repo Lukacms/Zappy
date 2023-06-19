@@ -10,7 +10,6 @@ import socket
 import selectors
 from socket import AF_INET, SOCK_STREAM
 from ai.src.algorithm.Ai import Artifical_intelligence
-from ai.src.client.Commands import Commands
 from ai.src.broadcast.broadcast import get_broadcast_by_team
 
 BUFFER_SIZE: int = 4096
@@ -50,21 +49,7 @@ class Client():
         except ValueError as e:
             print("Server connexion error:", e)
 
-#     def anaylse_data(self, data: str, nb: int):
-#         if nb == 1:
-#             self.ai.nb_team_unused_slots = int(data)
-#             self.ai.action_to_do = ""
-#             self.pending_player = 2
-#         else:
-#             print("analyse data before split: ", data)
-#             data = data.split()
-#             print("analyse data after split: ", data)
-#             self.ai.action_to_do = ""
-#             self.pending_player = 3
-#             self.connected_player = 1
-#             self.ai.is_processing = True
-
-    def get_broadcast_in_my_team(self, socket: socket.socket, cord: int, message: str):
+    def get_broadcast_in_my_team(self, cord: int, message: str):
         if "evolution" in message and \
             int(message[-1]) == self.ai.level and \
                 self.ai.inventory['food'] >= 6 and \
@@ -79,12 +64,13 @@ class Client():
             return
         if "dead" in response:
             print("Death of player number: ", self.client_num)
+            self.close()
             exit(EPITECH_SUCCESS)
         if "Current level:" in response:
             self.ai.actif = True
             self.ai.level = int(response.split(':')[1].strip())
         if "Elevation underway" in response:
-            self.ai.level_up(self.socket)
+            self.ai.level_up()
             return
         if response.isdigit() == True:
             self.ai.commands.nb_player_in_team(response, self.ai.nb_player, self.ai.value_up_to_date)
@@ -98,7 +84,7 @@ class Client():
             self.ai.actif = True
             return
         if "message" in response and "not my team" not in get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()):
-            self.get_broadcast_in_my_team(self.socket, int(response.split(' ')[1][0]), get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()))
+            self.get_broadcast_in_my_team(int(response.split(' ')[1][0]), get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()))
             return
         if "message" in response:
             print("not my team")
@@ -111,27 +97,6 @@ class Client():
             print(f"init_condition: {self.init_condition}")
             print(f"ai.actif: {self.ai.actif}")
             return
-            # elif self.pending_player < 3:
-            #     if "message" in line:
-            #         continue
-            #     self.anaylse_data(line, self.pending_player)
-            # elif self.just_log >= 3 and "message" in line:
-            #     if self.ia.clear_read == 1:
-            #         self.ia.clear_read = 0
-            #         data = data.split("\n")[-1]
-            #         continue
-            #    BROADCAST ?
-            # elif "Current level:" in line:
-            #     print("Current level step")
-            #     print("line: ", line)
-            # if self.ai.action_to_do == "Inventory\n" or self.ai.inventory == {'food' : 0, 'linemate' : 0, 'deraumere' : 0, 'sibur' : 0, 'mendiane' : 0, 'phiras' : 0, 'thystame' : 0}:
-            #     self.ai.commands.parse_inventory(self.socket, self.ai.inventory)
-            # elif self.ai.action_to_do == "Connect_nbr\n":
-            #     self.ai.nb_team_unused_slots = int(line)
-            #     print("Nb team unused slots:", self.ai.nb_team_unused_slots)
-            # if line[0].startswith('['):
-            #     self.ai.commands.look(data, self.ai.look)
-        # data = data.split("\n")[-1]
 
     def launcher(self):
         try:
@@ -150,20 +115,11 @@ class Client():
                         if (self.ai.action_to_do != "" and self.ai.actif == True):
                             print("\nEVENT_WRITE")
                             if self.name in self.ai.action_to_do:
-                                self.init_condition == True;
+                                self.init_condition == True
                             self.socket.sendall((self.ai.action_to_do + "\n").encode())
-                            print(f"action envoyé: {self.ai.action_to_do}")
+                            print(f"send data: {self.ai.action_to_do}")
                             self.ai.action_to_do = ""
                             self.ai.actif = False
-                        # if self.connected_player and self.ai.is_processing == True:
-                        #     self.ai.algo(self.socket)
-                        # if self.ai.action_to_do == (self.name + '\n') and self.connected_player == 0:
-                        #     self.pending_player = 1
-                        # print("before sendall(), action to do is: " + self.ai.action_to_do)
-                        # self.socket.sendall((self.ai.action_to_do).encode())
-                        # print("after sendall()")
-                        # self.ai.is_processing = False
-# FIN PARTIE CLIENT LEO A IMPLEMENTER / ADAPTER AVEC LE RESTE
 
         except ValueError as valueErr:
             print("Inappropriate argument value:", str(valueErr))
@@ -173,5 +129,5 @@ class Client():
             self.socket.close()
 
     def close(self):
-        self.selectors.unregister()
+        self.selectors.unregister(self.socket)
         self.socket.close()

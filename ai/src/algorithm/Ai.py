@@ -55,7 +55,7 @@ class Artifical_intelligence():
 
     def decision_to_steal_object(self, socket) -> None:
         if self.object_needed(0) == True:
-            return self.get_object(socket, 0)
+            return self.get_object(0)
         else:
             self.commands.eject()
 
@@ -65,7 +65,7 @@ class Artifical_intelligence():
         self.value_up_to_date = False
         self.go_levelup = True
         if (direction == 0):
-            self.level_up(socket)
+            self.level_up()
         if (direction == 1):
             self.prog_action.append("Forward\n")
             self.prog_action.append("Look\n")
@@ -113,7 +113,7 @@ class Artifical_intelligence():
             self.prog_action.append("Look\n")
             return
 
-    def level_up(self, socket):
+    def level_up(self):
         self.look = {}
         self.actif = False
 
@@ -134,24 +134,23 @@ class Artifical_intelligence():
             if "food" not in item and \
                 "player" not in item and \
                     self.inventory[item] >= ELEVATION_RITUAL[self.level][item]:
-                for tmp in range(ELEVATION_RITUAL[self.level][item]):
-                    self.prog_action.append(self.commands.set_object(item))
-                    self.inventory[item] -= 1
+                self.prog_action.append(self.commands.set_object(item))
+                self.inventory[item] -= 1
         self.prog_action.append("Incantation")
         return True
 
     def go_track_obj(self, tile, x, y) -> bool:
-        for yidx in range(y):
+        for _ in range(y):
             self.prog_action.append("Forward\n")
         if (x < 0):
             self.prog_action.append("Left\n")
             x = x * -1
-            for xidx in range(x):
+            for _ in range(x):
                 self.prog_action.append("Forward\n")
             return self.get_object(tile)
         if (x > 0):
             self.prog_action.append("Right\n")
-            for xidx in range(x):
+            for _ in range(x):
                 self.prog_action.append("Forward\n")
         return self.get_object(tile)
 
@@ -169,7 +168,7 @@ class Artifical_intelligence():
             value_tmp = 0
             for item in self.look[tile].split(' '):
                 if item != '':
-                    value_tmp += ITEM_VALUE[item]
+                    value_tmp += ITEM_VALUE.get(item, 0)
             if value_tmp > value:
                 value = value_tmp
                 max_y = y
@@ -195,7 +194,7 @@ class Artifical_intelligence():
 
     def algo(self) -> str:
         self.is_processing = True
-        print(f"========================={self.level}")
+        print(f"========================= lvl:{self.level}")
         if (self.prog_action == []):
             self.go_levelup = False
             if self.value_up_to_date == True:
