@@ -165,13 +165,8 @@ class Artifical_intelligence():
                 return self.go_track_obj(tile, x, y)
             value_tmp = 0
             for item in self.look[tile].split(' '):
-<<<<<<< Updated upstream
-                if item != '':
-                    value_tmp += ITEM_VALUE.get(item, 0)
-=======
                 if item in ITEM_VALUE:
-                    value_tmp += ITEM_VALUE[item]
->>>>>>> Stashed changes
+                    value_tmp += ITEM_VALUE.get(item, 0)
             if value_tmp > value:
                 value = value_tmp
                 max_y = y

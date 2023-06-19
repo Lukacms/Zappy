@@ -11,14 +11,17 @@ from ai.src.broadcast.broadcast import set_broadcast_by_team
 
 class Commands():
 
-    def parse_inventory(self, response , inventory: dict) -> None:
+    def parse_inventory(self, response, inventory: dict) -> None:
         tab = response.removeprefix('[ ').removesuffix(' ]').strip().split(',')
         for item in tab:
             parts = item.strip().split(' ')
-            key = parts[0]
-            value = int(parts[1])
-            if key in inventory:
-                inventory[key] = value
+            if len(parts) >= 2:
+                key = parts[0]
+                value = int(parts[1])
+                if key in inventory:
+                    inventory[key] = value
+            else:
+                print("Invalid inventory item:", item)
         print("#########################")
         print(inventory)
 
