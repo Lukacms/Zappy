@@ -8,8 +8,8 @@
 BUFFER_SIZE = 1024
 from ai.src.broadcast.broadcast import set_broadcast_by_team
 
-class Commands():
 
+class Commands():
     def parse_inventory(self, response, inventory: dict) -> None:
         tab = response.removeprefix('[ ').removesuffix(' ]').strip().split(',')
         for item in tab:

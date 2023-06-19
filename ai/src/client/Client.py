@@ -70,6 +70,7 @@ class Client():
             self.close()
             exit(EPITECH_SUCCESS)
         if "Current level:" in response:
+            self.stay = False
             self.ai.actif = True
             self.ai.level = int(response.split(':')[1].strip().split('\n')[0])
             return
@@ -94,7 +95,7 @@ class Client():
         if "message" in response:
             print("not my team")
             return
-        if "ok" in response or "k" in response:
+        if "ok" in response or "ko" in response:
             self.ai.actif = True
         if self.init_condition == False:
             self.init_condition = True
