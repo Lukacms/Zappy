@@ -11,13 +11,12 @@
 #include <zappy/server.h>
 #include <zappy/server/utils.h>
 
-int y_handler(args_config_t *args, char *const argv[],
+int y_handler(args_config_t *args, char __attribute__((unused)) *const argv[],
               int __attribute__((unused)) argc)
 {
-    if (!strisnum(argv[optind]))
+    if (!strisnum(optarg))
         return set_error(STDERR_FILENO, ERROR_HEIGHT, false);
-    if ((args->world.y = atoi(argv[optind])) <= 0)
+    if ((args->world.y = atoi(optarg)) <= 0)
         return set_error(STDERR_FILENO, ERROR_HEIGHT, false);
-    optind++;
     return SUCCESS;
 }

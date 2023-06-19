@@ -14,10 +14,9 @@
 int x_handler(args_config_t *args, char __attribute__((unused)) *const argv[],
               int __attribute__((unused)) argc)
 {
-    if (!strisnum(argv[optind]))
+    if (!strisnum(optarg))
         return set_error(STDERR_FILENO, ERROR_WIDTH, false);
-    if ((args->world.x = atoi(argv[optind])) <= 0)
+    if ((args->world.x = atoi(optarg)) <= 0)
         return set_error(STDERR_FILENO, ERROR_WIDTH, false);
-    optind++;
     return SUCCESS;
 }
