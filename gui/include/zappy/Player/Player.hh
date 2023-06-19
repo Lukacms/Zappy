@@ -64,6 +64,7 @@ namespace zappy
             [[nodiscard]] sf::FloatRect getColliderBox() const;
             [[nodiscard]] const std::string &getTeam() const;
             [[nodiscard]] int getLevel() const;
+            [[nodiscard]] bool getDeathStatus() const;
 
         private:
             int m_id;

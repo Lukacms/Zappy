@@ -383,3 +383,8 @@ void zappy::Player::triggerElevation(bool status)
 {
     m_elevate = status;
 }
+
+bool zappy::Player::getDeathStatus() const
+{
+    return m_is_dead;
+}

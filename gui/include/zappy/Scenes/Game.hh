@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "zappy/Egg/EggManager.hh"
-#include "zappy/Weather/WeatherManager.hh"
+#include <zappy/Egg/EggManager.hh>
+#include <zappy/Weather/WeatherManager.hh>
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>

@@ -128,7 +128,7 @@ void zappy::PlayerManager::expulsePlayer(Pex &expulsed_player)
 void zappy::PlayerManager::playerDeath(Pdi &dead_player)
 {
     for (auto &player : m_players) {
-        if (player.getId() == dead_player.player_nb) {
+        if (player.getId() == dead_player.player_nb && !player.getDeathStatus()) {
             m_sounds.emplace_front();
             auto sound = m_sounds.begin();
             sound->setBuffer(m_death);
