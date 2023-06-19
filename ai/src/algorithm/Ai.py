@@ -24,22 +24,19 @@ BUFFER_SIZE = 4096
 
 class Artifical_intelligence():
     def __init__(self, team_name: str):
-        self.inventory = {'food' : 0, 'linemate' : 0, 'deraumere' : 0, 'sibur' : 0, 'mendiane' : 0, 'phiras' : 0, 'thystame' : 0}
-        self.broadcast_text = ""
-        
+        self.value_up_to_date = False
         self.look = {}
-        self.level = 1
-        self.fork = 0
+        self.inventory = {'food' : 0, 'linemate' : 0, 'deraumere' : 0, 'sibur' : 0, 'mendiane' : 0, 'phiras' : 0, 'thystame' : 0}
         self.nb_player = 1
-        self.life_units = 10
-        self.connect_nbr = 0
+        #self.connect_nbr = 0
+        self.broadcast_text = ""
         self.team_name = team_name
+        self.level = 1
         self.previous_action = ""
         self.action_to_do = ""
+        self.actif = False
         self.prog_action = []
         self.go_levelup = False
-        self.is_processing = False
-        self.object_to_take = ""
         self.commands = Commands()
 
     def object_needed(self, value) -> bool:
@@ -65,6 +62,7 @@ class Artifical_intelligence():
     def turn_to_broadcast(self, socket, direction: int):
         self.prog_action = []
         self.look = {}
+        self.value_up_to_date = False
         self.go_levelup = True
         if (direction == 0):
             self.level_up(socket)
@@ -117,13 +115,7 @@ class Artifical_intelligence():
 
     def level_up(self, socket):
         self.look = {}
-        res = socket.recv(BUFFER_SIZE).decode("utf-8")
-        while "message" in res or "ok" in res:
-            res = socket.recv(BUFFER_SIZE).decode("utf-8")
-        print(res)
-        if "ko" in res:
-            return
-        self.level = int(res.split(':')[1].strip())
+        self.actif = False
 
     def check_if_evolution(self) -> bool:
         if self.inventory['food'] < 8 or self.look == {}:
@@ -135,6 +127,7 @@ class Artifical_intelligence():
             if self.inventory[item] < ELEVATION_RITUAL[self.level][item]:
                 return False
         if self.look[0].count("player") < ELEVATION_RITUAL[self.level]["player"]:
+            self.value_up_to_date = False
             self.prog_action.append(self.commands.broadcast(self.team_name ,"evolution" + str(self.level)))
             return True
         for item in ELEVATION_RITUAL[self.level].keys():
@@ -144,7 +137,7 @@ class Artifical_intelligence():
                 for tmp in range(ELEVATION_RITUAL[self.level][item]):
                     self.prog_action.append(self.commands.set_object(item))
                     self.inventory[item] -= 1
-        self.prog_action.append(self.commands.incantation())
+        self.prog_action.append("Incantation")
         return True
 
     def go_track_obj(self, tile, x, y) -> bool:
@@ -191,48 +184,34 @@ class Artifical_intelligence():
             return False
         return self.go_track_obj(max_tile, max_x, max_y)
 
-    def requirements_analysis(self, socket) -> None:
-        nb_player = self.commands.nb_player_in_team(socket)
-        if (nb_player < 8 and random.randint(1, 10) >= 8):
-            self.prog_action.append(self.commands.fork())
+    def requirements_analysis(self) -> None:
+        if (self.nb_player < 8 and random.randint(1, 10) >= 8):
+            self.prog_action.append("Fork")
             self.fork = 1
             return
         if self.track_obj_set() == False:
             print("N/A")
-            self.prog_action.append("Forward\n")
-
-    def track_object(self, socket) -> None:
-        print("Analysis")
-        self.requirements_analysis(socket)
-        self.action_to_do = self.prog_action[0]
-        self.prog_action = self.prog_action[1:]
-        self.look = {}
+            self.prog_action.append("Forward")
 
     def algo(self) -> str:
         self.is_processing = True
-        print("=========================")
+        print(f"========================={self.level}")
         if (self.prog_action == []):
             self.go_levelup = False
-            if self.previous_action == "Inventory":
-                # self.commands.parse_inventory(socket, self.inventory)
-                if (self.check_if_evolution() == True):
-                    print("~~~~~~~~~~~~~~~~~~~~~~~~~")
-                    self.action_to_do = self.prog_action[0]
-                    self.prog_action = self.prog_action[1:]
-                    self.previous_action = self.action_to_do
-                    print(self.action_to_do)
-                    return self.action_to_do
-                print("+++++++++++++++++++++++++")
-                if (self.look == {}):
-                    self.action_to_do = "Look\n"
+            if self.value_up_to_date == True:
+                if (self.check_if_evolution() == False):
+                    print("+++++++++++++++++++++++++")
+                    self.requirements_analysis()
                 else:
-                    self.track_object(socket)
-            else:
-                print("-------------------------")
-                self.action_to_do = self.prog_action[0]
-                self.prog_action = self.prog_action[1:]
+                    print("~~~~~~~~~~~~~~~~~~~~~~~~~")
+                self.value_up_to_date = False
             else:
                 self.prog_action.append("Inventory")
-            self.previous_action = self.action_to_do
-            print("action to do: ", self.action_to_do)
-            return self.action_to_do
+                self.prog_action.append("Look")
+                self.prog_action.append("Connect_nbr")
+                self.value_up_to_date = True
+        print("-------------------------")
+        self.action_to_do = self.prog_action[0]
+        self.prog_action = self.prog_action[1:]
+        self.previous_action = self.action_to_do
+        print("action to do: ", self.action_to_do)

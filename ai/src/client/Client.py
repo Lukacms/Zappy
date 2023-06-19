@@ -35,8 +35,7 @@ class Client():
         self.client_num = 0
         self.connected_player = 0
         self.pending_player = 0
-        self.requests_buffer = []
-        self.consecutive_requests = 0
+        self.init_condition = False
 
     def start_connection(self):
         try:
@@ -66,38 +65,52 @@ class Client():
 #             self.ai.is_processing = True
 
     def get_broadcast_in_my_team(self, socket: socket.socket, cord: int, message: str):
-        next_response = self.socket.recv(BUFFER_SIZE).decode(UNICODE)
-        print(f"{next_response}", end="")
-        self.ai.commands.parse_inventory(socket, self.ai.inventory)
         if "evolution" in message and \
             int(message[-1]) == self.ai.level and \
-                self.ai.inventory['food'] >= 8 and \
+                self.ai.inventory['food'] >= 6 and \
                 self.ai.go_levelup == False:
             self.ai.turn_to_broadcast(socket, cord)
             return
-        else:
-            if "message" in next_response:
-                return
-            self.parse_response(next_response)
 
     def parse_response(self, response: str):
-        tmp = response
-        for line in tmp[:-1]:
-            if "WELCOME" in line:
-                self.ai.action_to_do = (self.name + '\n')
-            if "dead" in response:
-                print("Death of player number: ", self.client_num)
-                exit(EPITECH_SUCCESS)
-            if "Elevation underway" in response:
-                self.ai.level_up(self.socket)
-                return
-            if response[0].startswith("["):
-            # and self.ai.action_to_do == "Look\n" ?
-                self.ai.commands.look(response, self.ai.look)
-                return
-            if "message" in response and "not my team" not in get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()):
-                self.get_broadcast_in_my_team(self.socket, int(response.split(' ')[1][0]), get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()))
-                return
+        if "WELCOME" in response:
+            self.ai.action_to_do = (self.name + '\n')
+            self.ai.actif = True
+            return
+        if "dead" in response:
+            print("Death of player number: ", self.client_num)
+            exit(EPITECH_SUCCESS)
+        if "Current level:" in response:
+            self.ai.actif = True
+            self.ai.level = int(response.split(':')[1].strip())
+        if "Elevation underway" in response:
+            self.ai.level_up(self.socket)
+            return
+        if response.isdigit() == True:
+            self.ai.commands.nb_player_in_team(response, self.ai.nb_player, self.ai.value_up_to_date)
+            self.ai.actif = True
+            return
+        if response.startswith("["):
+            if (response[7].isdigit() == True):
+                self.ai.commands.parse_inventory(response, self.ai.inventory)
+            else:
+                self.ai.commands.parse_look(response, self.ai.look)
+            self.ai.actif = True
+            return
+        if "message" in response and "not my team" not in get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()):
+            self.get_broadcast_in_my_team(self.socket, int(response.split(' ')[1][0]), get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()))
+            return
+        if "message" in response:
+            print("not my team")
+            return
+        if "ok" in response or "ko" in response:
+            self.ai.actif = True
+        if self.init_condition == False:
+            self.init_condition = True
+            self.ai.actif = True
+            print(f"init_condition: {self.init_condition}")
+            print(f"ai.actif: {self.ai.actif}")
+            return
             # elif self.pending_player < 3:
             #     if "message" in line:
             #         continue
@@ -121,25 +134,27 @@ class Client():
         # data = data.split("\n")[-1]
 
     def launcher(self):
-        data = ""
         try:
             while True:
                 event = self.selectors.select(timeout=None)
                 for _, mask in event:
                     if mask & selectors.EVENT_READ:
-                        print("EVENT READ")
+                        print("\nEVENT READ")
                         recieve_data = self.socket.recv(BUFFER_SIZE).decode(UNICODE)
-                        if recieve_data is None:
-                            data += recieve_data
-                        else:
-                            self.socket.close()
-                        self.parse_response(data)
+                        print(f"recieve_data: {recieve_data}")
+                        self.parse_response(recieve_data.strip())
 
                     if mask & selectors.EVENT_WRITE:
-                        print("EVENT_WRITE")
-                        self.ai.algo()
-                        self.socket.sendall((self.ai.action_to_do).encode())
-                        print(f"apres sendall(), action a faire: {self.ai.action_to_do}")
+                        if (self.init_condition == True and self.ai.actif == True):
+                            self.ai.algo()
+                        if (self.ai.action_to_do != "" and self.ai.actif == True):
+                            print("\nEVENT_WRITE")
+                            if self.name in self.ai.action_to_do:
+                                self.init_condition == True;
+                            self.socket.sendall((self.ai.action_to_do + "\n").encode())
+                            print(f"action envoyé: {self.ai.action_to_do}")
+                            self.ai.action_to_do = ""
+                            self.ai.actif = False
                         # if self.connected_player and self.ai.is_processing == True:
                         #     self.ai.algo(self.socket)
                         # if self.ai.action_to_do == (self.name + '\n') and self.connected_player == 0:
