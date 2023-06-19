@@ -37,6 +37,7 @@ class Artifical_intelligence():
         self.previous_action = ""
         self.action_to_do = ""
         self.prog_action = []
+        self.last_message = ""
         self.commands = Commands()
 
     def object_needed(self, value) -> bool:
@@ -117,7 +118,7 @@ class Artifical_intelligence():
         self.actif = False
 
     def check_if_evolution(self) -> bool:
-        if self.inventory['food'] < 8:
+        if self.inventory['food'] < 6:
             return False
         for item in ELEVATION_RITUAL[self.level].keys():
             if "player" in item:
@@ -182,7 +183,7 @@ class Artifical_intelligence():
         return self.go_track_obj(max_tile, max_x, max_y)
 
     def requirements_analysis(self) -> None:
-        if (self.nb_player < 8 and random.randint(1, 10) >= 8):
+        if (self.nb_player < 8 and random.randint(1, 10) >= 9):
             self.prog_action.append("Fork")
             self.fork = 1
             return

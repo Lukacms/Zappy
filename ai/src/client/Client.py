@@ -50,6 +50,8 @@ class Client():
             print("Server connexion error:", e)
 
     def get_broadcast_in_my_team(self, cord: int, message: str):
+        if int(message[-1]) != self.ai.level:
+            return
         if "evolution" in message and \
             int(message[-1]) == self.ai.level and \
                 self.ai.inventory['food'] >= 6 and \
@@ -86,6 +88,7 @@ class Client():
             self.ai.actif = True
             return
         if "message" in response and "not my team" not in get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()):
+            self.ai.last_message = response
             self.get_broadcast_in_my_team(int(response.split(' ')[1][0]), get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()))
             return
         if "message" in response:
@@ -108,6 +111,8 @@ class Client():
                     if mask & selectors.EVENT_READ:
                         print("\nEVENT READ")
                         recieve_data = self.socket.recv(BUFFER_SIZE).decode(UNICODE)
+                        if recieve_data == self.ai.last_message:
+                            continue
                         print(f"recieve_data: {recieve_data}")
                         self.parse_response(recieve_data.strip())
 
