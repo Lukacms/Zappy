@@ -30,16 +30,13 @@ int take_func(server_t *server, char *args[], client_node_t *client)
         return set_error(client->cfd, INVALID_ACTION, false);
     for (int i = 0; i < INVENTORY_SLOTS; i += 1) {
         if (server->map.tiles[client->stats.pos.x][client->stats.pos.y]
-                    .slots[i]
-                    .units != 0 &&
+                .slots[i].units != 0 &&
             strcmp(RESOURCES_INVENTORY[i], args[1]) == 0) {
             client->stats.inventory[i].units +=
                 server->map.tiles[client->stats.pos.x][client->stats.pos.y]
-                    .slots[i]
-                    .units;
+                    .slots[i].units;
             server->map.tiles[client->stats.pos.x][client->stats.pos.y]
-                .slots[i]
-                .units = 0;
+                .slots[i].units = 0;
             send_infos(server, client, i);
             add_ticks_occupied(client, RESTRAINT_TAKE, server);
             return SUCCESS;

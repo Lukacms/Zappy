@@ -69,13 +69,13 @@
 
 /* command to send to GUIs */
 #define DISPATCH_MSZ "msz %zu %zu\n" // map size
-#define DISPATCH_BCT \
+#define DISPATCH_BCT\
     "bct %zu %zu %zd %zd %zd %zd %zd %zd %zd\n"   // content of a tile
 #define DISPATCH_TNA "tna %s\n"                   // name of all a team
 #define DISPATCH_PNW "pnw %d %zu %zu %d %zu %s\n" // connection of a new player
 #define DISPATCH_PPO "ppo %d %zu %zu %d\n"        // player’s position
 #define DISPATCH_PLV "plv %d %zu\n"               // player’s level
-#define DISPATCH_PIN \
+#define DISPATCH_PIN\
     "pin %d %zu %zu %zd %zd %zd %zd %zd %zd %zd\n" // player's inventory
 #define DISPATCH_PEX "pex %d\n"                    // expulsion
 #define DISPATCH_PBC "pbc %d %s\n"                 // broadcast
@@ -96,10 +96,11 @@
 #define DISPATCH_SBP "sbp\n"             // command parameter
 
 /* send commands to AI */
-#define AI_INVENTORY \
-    "[food %li, linemate %li, deraumere %li, sibur %li, mendiane %li, phiras " \
-    "%li, thystame %li]\n"
 #define AI_EJECT "eject: %i\n"
+#define AI_INVENTORY \
+    "[food %li, linemate %li, deraumere %li, sibur %li, " \
+    "mendiane %li, phiras " \
+    "%li, thystame %li]\n"
 #define BASIC_VALID "ok\n"
 #define AI_DEATH "dead\n"
 #define VALID_INCANT "Current level: %zu\n"

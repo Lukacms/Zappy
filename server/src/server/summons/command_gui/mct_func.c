@@ -9,7 +9,7 @@
 #include <zappy/server.h>
 
 int mct_func(server_t *server, char __attribute__((unused)) * args[],
-             client_node_t *client)
+            client_node_t *client)
 {
     if (!server || !client)
         return FAILURE;

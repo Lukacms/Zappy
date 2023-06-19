@@ -33,7 +33,7 @@ bool loop_clients_level_up(server_t *server, client_node_t *client)
 
     if (!server || !client ||
         !(cli_tile = server->map.tiles[client->stats.pos.x][client->stats.pos.y]
-                         .players_uuid))
+                        .players_uuid))
         return FAILURE;
     for (int i = 0; cli_tile[i] != NULL; i += 1) {
         tmp = find_client_by_uuid(cli_tile[i], server);

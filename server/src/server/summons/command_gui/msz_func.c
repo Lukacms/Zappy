@@ -10,7 +10,7 @@
 #include <zappy/server/infos.h>
 
 int msz_func(server_t *server, char __attribute__((unused)) * args[],
-             client_node_t *client)
+            client_node_t *client)
 {
     if (!server || !client)
         return FAILURE;

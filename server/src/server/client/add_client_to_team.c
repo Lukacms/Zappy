@@ -24,7 +24,7 @@ static void send_infos(server_t *server, client_node_t *client, team_t *team)
 }
 
 int add_client_to_team(client_node_t *client, server_t *server,
-                       const char *team_name)
+                        const char *team_name)
 {
     int team_ind = -1;
 
