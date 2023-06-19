@@ -31,13 +31,12 @@ class Commands():
             look[i] = parts
         print("#########################")
         print(look)
+        value_up_to_date = True
 
     def nb_player_in_team(self, response, nb_player: int, value_up_to_date):
         nb_player = int(response)
         print("#########################")
         print(nb_player)
-        value_up_to_date = True
-        return value_up_to_date
 
     def broadcast(self, team, broadcast_text) -> str:
         action_to_do = "Broadcast " + set_broadcast_by_team(int(team.split("m")[1]) ,broadcast_text)
