@@ -98,7 +98,7 @@ void zappy::Player::animatePlayer(sf::Vector2i &size)
         animateWest(size);
 }
 
-void zappy::Player::animateSouth(sf::Vector2i &size)
+void zappy::Player::animateNorth(sf::Vector2i &size)
 {
     checkBoundaries(size);
     if (m_remain.y == 0.F) {
@@ -140,7 +140,7 @@ void zappy::Player::animateEast(sf::Vector2i &size)
     }
 }
 
-void zappy::Player::animateNorth(sf::Vector2i &size)
+void zappy::Player::animateSouth(sf::Vector2i &size)
 {
     checkBoundaries(size);
     if (m_remain.y == 0.F) {
