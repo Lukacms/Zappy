@@ -101,6 +101,8 @@ class Artifical_intelligence():
             return
 
     def check_if_evolution(self) -> bool:
+        if self.miam == False:
+            return False
         for item in ELEVATION_RITUAL[self.level].keys():
             if "player" in item:
                 continue

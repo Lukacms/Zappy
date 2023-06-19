@@ -55,7 +55,8 @@ class Client():
             return
         if "evolution" in message and \
             int(message[-1]) == self.ai.level and \
-                self.ai.go_levelup == False:
+                self.miam == True and \
+                    self.ai.go_levelup == False:
             self.ai.turn_to_broadcast(socket, cord)
             return
 
