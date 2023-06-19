@@ -27,6 +27,7 @@ class Artifical_intelligence():
         self.actif = False
         self.stay = False
         self.value_up_to_date = False
+        self.mentor = False
         self.look = {}
         self.inventory = {'food' : 0, 'linemate' : 0, 'deraumere' : 0, 'sibur' : 0, 'mendiane' : 0, 'phiras' : 0, 'thystame' : 0}
         self.nb_player = 1
@@ -211,7 +212,6 @@ class Artifical_intelligence():
             else:
                 self.prog_action.append("Inventory")
                 self.prog_action.append("Look")
-                self.prog_action.append("Connect_nbr")
                 self.value_up_to_date = True
         print("-------------------------")
         self.action_to_do = self.prog_action[0]
