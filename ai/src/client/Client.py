@@ -75,7 +75,8 @@ class Client():
             self.ai.level = int(response.split(':')[1].strip().split('\n')[0])
             return
         if "Elevation underway" in response:
-            self.ai.level_up()
+            self.stay = True
+            self.ai.actif = False
             return
         if response.isdigit() == True:
             self.ai.commands.nb_player_in_team(response, self.ai.nb_player, self.ai.value_up_to_date)
