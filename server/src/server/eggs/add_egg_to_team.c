@@ -9,14 +9,19 @@
 #include <stdlib.h>
 #include <zappy/server.h>
 #include <zappy/server/client.h>
+#include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
 static egg_t *fill_infos(server_t *server, egg_t *egg, char *const uuid,
-                        client_node_t *client)
+                         client_node_t *client)
 {
+    char output[BUFFER_SIZE] = {0};
+
     egg->nb = ++server->map.last_egg_id;
     egg->team_uuid = uuid;
     egg->pos = client->stats.pos;
+    sprintf(output, DISPATCH_ENW, egg->nb, client->cfd, egg->pos.x, egg->pos.y);
+    send_toall_guicli(server, output);
     return egg;
 }
 

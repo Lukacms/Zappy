@@ -15,7 +15,7 @@ int get_summon(server_t *, client_node_t *);
 int handle_summon(server_t *, int cfd);
 
 int send_toall_guicli(server_t *, char *str, ...);
-void dprint_tile(map_t, size_t, size_t, client_node_t *);
+void dprint_tile(map_t, ssize_t, ssize_t, client_node_t *);
 
 int parse_event_client(server_t *, char *, client_node_t *);
 
