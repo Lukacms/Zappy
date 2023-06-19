@@ -139,7 +139,11 @@ void zappy::Client::applyCommands(zappy::SceneManager &scene_manager, sf::Render
     parsed = parser(str);
     Packet variant = get_variant(parsed);
     auto *game = dynamic_cast<Game *>(scene_manager.getScenes()[1].get());
+    if (!game)
+        throw ZappyException{"dynamic_cast error\n"};
     auto *victory = dynamic_cast<Victory *>(scene_manager.getScenes()[2].get());
+    if (!victory)
+        throw ZappyException{"dynamic_cast error\n"};
     auto visitor = make_lambda_visitor(
         [&](Msz &arg) {
             arg.x_map_size = std::atoi(parsed[1].c_str());
