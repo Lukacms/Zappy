@@ -51,7 +51,8 @@ int from_egg_to_player_tile(server_t *s, client_node_t *client, egg_t *e)
     if (add_one_client_uuid(s, e, client) != SUCCESS)
         return FAILURE;
     for (u_int i = 0; s->map.tiles[e->pos.y][e->pos.x].eggs &&
-            s->map.tiles[e->pos.y][e->pos.x].eggs[i] != -1; i++) {
+         s->map.tiles[e->pos.y][e->pos.x].eggs[i] != -1;
+         i++) {
         if (s->map.tiles[e->pos.y][e->pos.x].eggs[i] == e->nb) {
             s->map.tiles[e->pos.y][e->pos.x].eggs =
                 shorten_array(s->map.tiles[e->pos.y][e->pos.x].eggs, i);
