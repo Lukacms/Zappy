@@ -5,7 +5,6 @@
 ## Commands
 ##
 
-import socket
 BUFFER_SIZE = 1024
 from ai.src.broadcast.broadcast import set_broadcast_by_team
 
@@ -50,3 +49,8 @@ class Commands():
     def set_object(self, object_to_set) -> str:
         action_to_do = "Set " + object_to_set
         return action_to_do
+
+    def eject(self, team) -> str:
+        print("Eject")
+        # action_to_do = "Eject " + team
+        # return action_to_do
