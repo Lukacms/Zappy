@@ -101,8 +101,6 @@ class Artifical_intelligence():
             return
 
     def check_if_evolution(self) -> bool:
-        if self.inventory['food'] < 6:
-            return False
         for item in ELEVATION_RITUAL[self.level].keys():
             if "player" in item:
                 continue

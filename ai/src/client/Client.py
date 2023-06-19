@@ -55,8 +55,7 @@ class Client():
             return
         if "evolution" in message and \
             int(message[-1]) == self.ai.level and \
-                self.ai.inventory['food'] >= 6 and \
-                    self.ai.go_levelup == False:
+                self.ai.go_levelup == False:
             self.ai.turn_to_broadcast(socket, cord)
             return
 
