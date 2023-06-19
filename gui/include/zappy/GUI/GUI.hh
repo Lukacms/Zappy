@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include "zappy/DisconnectPanel/DisconnectPanel.hh"
 #include <zappy/Scenes/SceneManager.hh>
 #include <zappy/Camera.hh>
 #include <zappy/GuiClient/GuiClient.hpp>
@@ -57,6 +58,7 @@ namespace zappy
 
             zappy::SceneManager m_scene_manager;
             zappy::Client m_client;
+            zappy::DisconnectPanel m_error_panel;
     };
 
 } // namespace zappy

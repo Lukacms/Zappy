@@ -185,6 +185,7 @@ add_executable(
     src/Scenes/SceneManager.cpp
     src/HUD/FrequencyPanel.cpp
     src/HUD/TextButton.cpp
+    src/DisconnectPanel/DisconnectPanel.cpp
     )
 
 # rules for zappy_gui project

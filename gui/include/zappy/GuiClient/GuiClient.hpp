@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <SFML/Network/Socket.hpp>
 #include <zappy/Scenes/SceneManager.hh>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Network.hpp>
@@ -31,6 +32,7 @@ namespace zappy
             void receiveCommand(zappy::SceneManager &scene_manager, sf::RenderWindow &window);
             void sendGraphic();
             bool WelcomeSuppressor();
+            [[nodiscard]] sf::Socket::Status getSocketStatus() const;
 
         private:
             zappy::Packet m_packet{};
@@ -39,6 +41,7 @@ namespace zappy
 
             zappy::Packet packet{};
             sf::TcpSocket m_socket{};
+            sf::Socket::Status m_status{};
             zappy::RingBuffer m_ring_buffer{};
     };
 

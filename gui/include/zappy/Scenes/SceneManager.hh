@@ -18,6 +18,12 @@
 namespace zappy
 {
 
+    enum class Scene {
+        MENU = 0,
+        GAME = 1,
+        WIN = 2,
+    };
+
     class SceneManager : IScene
     {
         public:
@@ -33,13 +39,14 @@ namespace zappy
             void manageEvent(sf::RenderWindow &window, sf::Event &event,
                              std::string &command_to_send) override;
             void changeScene(size_t index);
+            size_t getSceneIndex() const;
             std::array<std::unique_ptr<IScene>, 3> &getScenes();
 
         private:
             zappy::MusicManager m_music_manager;
 
-            std::size_t m_scene_index{1};
             std::array<std::unique_ptr<IScene>, 3> m_scenes;
+            zappy::Scene m_scene_index{1};
     };
 
 } // namespace zappy

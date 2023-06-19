@@ -38,15 +38,12 @@ void zappy::Client::sendCommand(const std::string &cmd)
     const char *data_ptr = cmd.c_str();
     std::size_t data_size = cmd.size();
     std::size_t total_sent = 0;
-    sf::Socket::Status send_status;
 
     while (total_sent < data_size) {
         std::size_t sent = 0;
-        send_status = m_socket.send(data_ptr + total_sent, data_size - total_sent, sent);
-        if (send_status == sf::Socket::Error) {
-            std::cerr << "Failed to send data to the server" << std::endl;
+        m_status = m_socket.send(data_ptr + total_sent, data_size - total_sent, sent);
+        if (m_status == sf::Socket::Error || m_status == sf::Socket::Disconnected)
             return;
-        }
         total_sent += sent;
     }
 }
@@ -276,4 +273,9 @@ void zappy::Client::applyCommands(zappy::SceneManager &scene_manager, sf::Render
             // game.servorMsg(arg);
         });
     std::visit(visitor, variant);
+}
+
+sf::Socket::Status zappy::Client::getSocketStatus() const
+{
+    return m_status;
 }
