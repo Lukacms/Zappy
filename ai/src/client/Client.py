@@ -55,7 +55,7 @@ class Client():
             return
         if "evolution" in message and \
             int(message[-1]) == self.ai.level and \
-                self.miam == True and \
+                self.ai.miam == True and \
                     self.ai.go_levelup == False:
             self.ai.turn_to_broadcast(socket, cord)
             return
@@ -65,40 +65,37 @@ class Client():
             self.ai.action_to_do = (self.name + '\n')
             self.ai.actif = True
             return
-        if "dead" in response:
+        elif "dead" in response:
             print("Death of player number: ", self.client_num)
             self.close()
             exit(EPITECH_SUCCESS)
-        if "Current level:" in response:
+        elif "Current level:" in response:
             self.stay = False
             self.ai.actif = True
             self.ai.level = int(response.split(':')[1].strip().split('\n')[0])
             return
-        if "Elevation underway" in response:
+        elif "Elevation underway" in response:
             self.stay = True
             self.ai.actif = False
             return
-        if response.isdigit() == True:
+        elif response.isdigit() == True:
             self.ai.commands.nb_player_in_team(response, self.ai.nb_player, self.ai.value_up_to_date)
             self.ai.actif = True
             return
-        if response.startswith("["):
+        elif response.startswith("["):
             if (response[7].isdigit() == True):
                 self.ai.commands.parse_inventory(response, self.ai.inventory)
             else:
                 self.ai.commands.parse_look(response, self.ai.look)
             self.ai.actif = True
             return
-        if "message" in response and "not my team" not in get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()):
+        elif "message" in response and "not my team" not in get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()):
             self.last_message = response
             self.get_broadcast_in_my_team(int(response.split(' ')[1][0]), get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()))
             return
-        if "message" in response:
-            print("not my team")
-            return
-        if "ok" in response or "ko" in response:
+        elif "ok" in response or "ko" in response:
             self.ai.actif = True
-        if self.init_condition == False:
+        elif self.init_condition == False:
             self.init_condition = True
             self.ai.actif = True
             print(f"init_condition: {self.init_condition}")

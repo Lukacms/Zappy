@@ -61,6 +61,9 @@ class Artifical_intelligence():
         self.go_levelup = True
         self.mentor = False
         self.value_up_to_date = False
+        if (direction == 0):
+            self.actif = False
+            return
         if (direction == 1):
             self.prog_action.append("Forward\n")
             return
@@ -177,31 +180,15 @@ class Artifical_intelligence():
     def track_player(self) -> bool:
         y = 0
         x = 0
-        max_y = 0
-        max_x = 0
-        max_tile = 0
-        value = 0
-        value_tmp = 0
         for tile in range(len(self.look)):
             if (self.check_if_alone(tile) == True):
                 self.go_track_player(tile, x, y)
                 return True
-            value_tmp = 0
-            for item in self.look[tile].split(' '):
-                if item in ITEM_VALUE:
-                    value_tmp += ITEM_VALUE.get(item, 0)
-            if value_tmp > value:
-                value = value_tmp
-                max_y = y
-                max_x = x
-                max_tile = tile
             if (y == x):
                 y += 1
                 x = y * -1
             else:
                 x += 1
-        if max_tile == 0:
-            return False
         return False
 
     def check_if_alone(self, tile) -> bool:
@@ -233,7 +220,7 @@ class Artifical_intelligence():
             return
 
     def requirements_analysis(self) -> None:
-        if (self.nb_player < 8 and random.randint(1, 10) >= 9):
+        if (random.randint(1, 10) >= 10 and self.level == 2):
             self.prog_action.append("Fork")
             self.fork = 1
             return
@@ -284,6 +271,9 @@ class Artifical_intelligence():
                 self.value_up_to_date = True
         print("-------------------------")
         self.action_to_do = self.prog_action[0]
-        self.prog_action = self.prog_action[1:]
+        if "Forward" in self.action_to_do:
+            self.prog_action.append("Look")
+        else:
+            self.prog_action = self.prog_action[1:]
         self.previous_action = self.action_to_do
         print("action to do: ", self.action_to_do)

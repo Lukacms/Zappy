@@ -22,7 +22,7 @@ class Commands():
             else:
                 print("Invalid inventory item:", item)
         print("#########################")
-        print(inventory)
+        print(f"{inventory}")
 
     def parse_look(self, response, look: dict):
         tab = response.removeprefix('[ ').removesuffix(' ]').split(',')
@@ -50,7 +50,7 @@ class Commands():
         action_to_do = "Set " + object_to_set
         return action_to_do
 
-    def eject(self, team) -> str:
+    def eject(self, team):
         print("Eject")
         # action_to_do = "Eject " + team
         # return action_to_do

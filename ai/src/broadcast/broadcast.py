@@ -11,9 +11,10 @@ from sys import exit, argv
 def get_broadcast_by_team(team: int, message: str) -> str:
     file = open('ai/asset/broadcast.json')
     data = json.load(file)
-    for i in data['Broadcast'][team - 1]:
-        if (data['Broadcast'][team - 1][i] == message):
-            return i
+    for itea in range(4):
+        for i in data['Broadcast'][itea]:
+            if (data['Broadcast'][itea][i] == message):
+                return i
     file.close()
     return "not my team"
 
