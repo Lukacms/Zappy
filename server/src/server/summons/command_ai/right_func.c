@@ -25,7 +25,6 @@ static int set_client_orientation(server_t *server, client_node_t *client,
                                   orientation_t orientation)
 {
     client->stats.orientation = orientation;
-    dprintf(client->cfd, BASIC_VALID);
     add_ticks_occupied(client, RESTRAINT_LEFT, server);
     send_infos(server, client);
     return SUCCESS;
