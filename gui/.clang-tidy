@@ -1,7 +1,7 @@
 Checks: '
     readability-*, -readability-implicit-bool-conversion,
     clang-analyzer-*, clang-analyzer-cplusplus*,
-    modernize-*, -modernize-use-trailing-return-type,
+    modernize-*, -modernize-use-trailing-return-type, -readability-magic-numbers,
     performance-unnecessary-value-param, -readability-braces-around-statements'
 
 CheckOptions:
