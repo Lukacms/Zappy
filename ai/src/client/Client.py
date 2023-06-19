@@ -53,7 +53,7 @@ class Client():
         if "evolution" in message and \
             int(message[-1]) == self.ai.level and \
                 self.ai.inventory['food'] >= 6 and \
-                self.ai.go_levelup == False:
+                    self.ai.go_levelup == False:
             self.ai.turn_to_broadcast(socket, cord)
             return
 
@@ -67,8 +67,10 @@ class Client():
             self.close()
             exit(EPITECH_SUCCESS)
         if "Current level:" in response:
+            self.stay = False
             self.ai.actif = True
-            self.ai.level = int(response.split(':')[1].strip())
+            self.ai.level = int(response.split(':')[1].strip().split('\n')[0])
+            return
         if "Elevation underway" in response:
             self.ai.level_up()
             return

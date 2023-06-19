@@ -24,6 +24,8 @@ BUFFER_SIZE = 4096
 
 class Artifical_intelligence():
     def __init__(self, team_name: str):
+        self.actif = False
+        self.stay = False
         self.value_up_to_date = False
         self.look = {}
         self.inventory = {'food' : 0, 'linemate' : 0, 'deraumere' : 0, 'sibur' : 0, 'mendiane' : 0, 'phiras' : 0, 'thystame' : 0}
@@ -34,9 +36,7 @@ class Artifical_intelligence():
         self.level = 1
         self.previous_action = ""
         self.action_to_do = ""
-        self.actif = False
         self.prog_action = []
-        self.go_levelup = False
         self.commands = Commands()
 
     def object_needed(self, value) -> bool:
@@ -49,7 +49,7 @@ class Artifical_intelligence():
 
     def get_object(self, value) -> bool:
         for item in self.look[value].split(' '):
-            if (item != 'player'):
+            if (item != 'player' and item != ''):
                 self.prog_action.append(self.commands.take_object(item))
         return True
 
@@ -62,10 +62,8 @@ class Artifical_intelligence():
     def turn_to_broadcast(self, socket, direction: int):
         self.prog_action = []
         self.look = {}
-        self.value_up_to_date = False
         self.go_levelup = True
-        if (direction == 0):
-            self.level_up()
+        self.value_up_to_date = False
         if (direction == 1):
             self.prog_action.append("Forward\n")
             self.prog_action.append("Look\n")
@@ -115,11 +113,11 @@ class Artifical_intelligence():
 
     def level_up(self):
         self.look = {}
+        self.stay = True
         self.actif = False
 
     def check_if_evolution(self) -> bool:
-        if self.inventory['food'] < 8 or self.look == {}:
-            self.look == {}
+        if self.inventory['food'] < 8:
             return False
         for item in ELEVATION_RITUAL[self.level].keys():
             if "player" in item:
@@ -167,8 +165,13 @@ class Artifical_intelligence():
                 return self.go_track_obj(tile, x, y)
             value_tmp = 0
             for item in self.look[tile].split(' '):
+<<<<<<< Updated upstream
                 if item != '':
                     value_tmp += ITEM_VALUE.get(item, 0)
+=======
+                if item in ITEM_VALUE:
+                    value_tmp += ITEM_VALUE[item]
+>>>>>>> Stashed changes
             if value_tmp > value:
                 value = value_tmp
                 max_y = y
@@ -195,12 +198,18 @@ class Artifical_intelligence():
     def algo(self) -> str:
         self.is_processing = True
         print(f"========================= lvl:{self.level}")
+        if self.stay == True:
+            self.stay = False
+            return
         if (self.prog_action == []):
             self.go_levelup = False
             if self.value_up_to_date == True:
                 if (self.check_if_evolution() == False):
                     print("+++++++++++++++++++++++++")
                     self.requirements_analysis()
+                    if (self.look != {} and self.level > 1 and self.look[0].count("player") == ELEVATION_RITUAL[self.level]["player"]):
+                        print("@@@@@@@@@@@@@@@@@@@@@@@@@")
+                        self.stay = True
                 else:
                     print("~~~~~~~~~~~~~~~~~~~~~~~~~")
                 self.value_up_to_date = False
