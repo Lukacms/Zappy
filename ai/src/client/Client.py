@@ -35,6 +35,7 @@ class Client():
         self.connected_player = 0
         self.pending_player = 0
         self.init_condition = False
+        self.last_message = ""
 
     def start_connection(self):
         try:
@@ -88,7 +89,7 @@ class Client():
             self.ai.actif = True
             return
         if "message" in response and "not my team" not in get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()):
-            self.ai.last_message = response
+            self.last_message = response
             self.get_broadcast_in_my_team(int(response.split(' ')[1][0]), get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()))
             return
         if "message" in response:
@@ -102,19 +103,22 @@ class Client():
             print(f"init_condition: {self.init_condition}")
             print(f"ai.actif: {self.ai.actif}")
             return
+        return
 
     def launcher(self):
+        tab_data = []
         try:
             while True:
                 event = self.selectors.select(timeout=None)
                 for _, mask in event:
                     if mask & selectors.EVENT_READ:
-                        print("\nEVENT READ")
-                        recieve_data = self.socket.recv(BUFFER_SIZE).decode(UNICODE)
-                        if recieve_data == self.ai.last_message:
-                            continue
-                        print(f"recieve_data: {recieve_data}")
-                        self.parse_response(recieve_data.strip())
+                        tab_data = self.socket.recv(BUFFER_SIZE).decode(UNICODE).split("\n")
+                        for recieve_data in tab_data:
+                            if recieve_data.strip() in self.last_message or recieve_data == "":
+                                continue
+                            print("\nEVENT READ")
+                            print(f"recieve_data: {recieve_data}")
+                            self.parse_response(recieve_data.strip())
 
                     if mask & selectors.EVENT_WRITE:
                         if (self.init_condition == True and self.ai.actif == True):

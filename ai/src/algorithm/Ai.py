@@ -30,14 +30,12 @@ class Artifical_intelligence():
         self.look = {}
         self.inventory = {'food' : 0, 'linemate' : 0, 'deraumere' : 0, 'sibur' : 0, 'mendiane' : 0, 'phiras' : 0, 'thystame' : 0}
         self.nb_player = 1
-        #self.connect_nbr = 0
         self.broadcast_text = ""
         self.team_name = team_name
         self.level = 1
         self.previous_action = ""
         self.action_to_do = ""
         self.prog_action = []
-        self.last_message = ""
         self.commands = Commands()
 
     def object_needed(self, value) -> bool:
@@ -139,17 +137,23 @@ class Artifical_intelligence():
         return True
 
     def go_track_obj(self, tile, x, y) -> bool:
+        print("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM")
         for _ in range(y):
+            print("Forward")
             self.prog_action.append("Forward\n")
         if (x < 0):
+            print("LEFT")
             self.prog_action.append("Left\n")
             x = x * -1
             for _ in range(x):
+                print("Forward")
                 self.prog_action.append("Forward\n")
             return self.get_object(tile)
         if (x > 0):
+            print("RIGHT")
             self.prog_action.append("Right\n")
             for _ in range(x):
+                print("Forward")
                 self.prog_action.append("Forward\n")
         return self.get_object(tile)
 
@@ -188,10 +192,10 @@ class Artifical_intelligence():
             self.fork = 1
             return
         if self.track_obj_set() == False:
-            print("N/A")
+            print("GO FORWARD")
             self.prog_action.append("Forward")
 
-    def algo(self) -> str:
+    def algo(self):
         self.is_processing = True
         print(f"========================= lvl:{self.level}")
         if self.stay == True:
