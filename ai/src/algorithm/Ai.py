@@ -10,14 +10,15 @@ import random
 from ai.src.client.Commands import Commands
 
 RESOURCES = ['food', 'linemate', 'deraumere', 'sibur', 'mendiane', 'phiras', 'thystame']
+
 ELEVATION_RITUAL = {
-    1: {'player' : 1, 'food' : 9, 'linemate' : 1},
-    2: {'player' : 2, 'food' : 9, 'linemate' : 1, 'deraumere' : 1, 'sibur' : 1},
-    3: {'player' : 2, 'food' : 9, 'linemate' : 2, 'sibur' : 1, 'phiras' : 2},
-    4: {'player' : 4, 'food' : 9, 'linemate' : 1, 'deraumere' : 1, 'sibur' : 2, 'phiras' : 1},
-    5: {'player' : 4, 'food' : 9, 'linemate' : 1, 'deraumere' : 2, 'sibur' : 1, 'mendiane' : 3},
-    6: {'player' : 6, 'food' : 9, 'linemate' : 1, 'deraumere' : 2, 'sibur' : 3, 'phiras' : 1},
-    7: {'player' : 6, 'food' : 9, 'linemate' : 2, 'deraumere' : 2, 'sibur' : 2, 'mendiane' : 2, 'phiras' : 2, 'thystame' : 1},
+    1: {'player' : 1, 'food' : 7, 'linemate' : 1},
+    2: {'player' : 2, 'food' : 7, 'linemate' : 1, 'deraumere' : 1, 'sibur' : 1},
+    3: {'player' : 2, 'food' : 7, 'linemate' : 2, 'sibur' : 1, 'phiras' : 2},
+    4: {'player' : 4, 'food' : 7, 'linemate' : 1, 'deraumere' : 1, 'sibur' : 2, 'phiras' : 1},
+    5: {'player' : 4, 'food' : 7, 'linemate' : 1, 'deraumere' : 2, 'sibur' : 1, 'mendiane' : 3},
+    6: {'player' : 6, 'food' : 7, 'linemate' : 1, 'deraumere' : 2, 'sibur' : 3, 'phiras' : 1},
+    7: {'player' : 6, 'food' : 7, 'linemate' : 2, 'deraumere' : 2, 'sibur' : 2, 'mendiane' : 2, 'phiras' : 2, 'thystame' : 1},
     }
 ITEM_VALUE = {'player' : -5, 'food' : 3, 'linemate' : 1, 'deraumere' : 2, 'sibur' : 3, 'mendiane' : 4, 'phiras' : 5, 'thystame' : 6}
 BUFFER_SIZE = 4096
@@ -25,9 +26,9 @@ BUFFER_SIZE = 4096
 class Artifical_intelligence():
     def __init__(self, team_name: str):
         self.actif = False
-        self.stay = False
         self.value_up_to_date = False
         self.mentor = False
+        self.miam = False
         self.look = {}
         self.inventory = {'food' : 0, 'linemate' : 0, 'deraumere' : 0, 'sibur' : 0, 'mendiane' : 0, 'phiras' : 0, 'thystame' : 0}
         self.nb_player = 1
@@ -39,6 +40,7 @@ class Artifical_intelligence():
         self.action_to_do = ""
         self.prog_action = []
         self.commands = Commands()
+        self.last_message = ""
 
     def object_needed(self, value) -> bool:
         for item in ELEVATION_RITUAL[self.level].keys():
@@ -64,6 +66,7 @@ class Artifical_intelligence():
         self.prog_action = []
         self.look = {}
         self.go_levelup = True
+        self.mentor = False
         self.value_up_to_date = False
         if (direction == 1):
             self.prog_action.append("Forward\n")
@@ -112,29 +115,23 @@ class Artifical_intelligence():
             self.prog_action.append("Look\n")
             return
 
-    def level_up(self):
-        self.look = {}
-        self.stay = True
-        self.actif = False
-
     def check_if_evolution(self) -> bool:
-        if self.inventory['food'] < 8:
-            return False
         for item in ELEVATION_RITUAL[self.level].keys():
             if "player" in item:
                 continue
             if self.inventory[item] < ELEVATION_RITUAL[self.level][item]:
+                self.mentor = False
                 return False
+        self.mentor = True
         if self.look[0].count("player") < ELEVATION_RITUAL[self.level]["player"]:
-            self.value_up_to_date = False
             self.prog_action.append(self.commands.broadcast(self.team_name ,"evolution" + str(self.level)))
             return True
         for item in ELEVATION_RITUAL[self.level].keys():
             if "food" not in item and \
                 "player" not in item and \
                     self.inventory[item] >= ELEVATION_RITUAL[self.level][item]:
-                self.prog_action.append(self.commands.set_object(item))
-                self.inventory[item] -= 1
+                for _ in range(ELEVATION_RITUAL[self.level][item]):
+                    self.prog_action.append(self.commands.set_object(item))
         self.prog_action.append("Incantation")
         return True
 
@@ -191,21 +188,23 @@ class Artifical_intelligence():
             print("N/A")
             self.prog_action.append("Forward")
 
-    def algo(self) -> str:
+    def algo(self):
         self.is_processing = True
         print(f"========================= lvl:{self.level}")
-        if self.stay == True:
-            self.stay = False
-            return
         if (self.prog_action == []):
+            self.last_message = ""
             self.go_levelup = False
             if self.value_up_to_date == True:
-                if (self.check_if_evolution() == False):
+                if (self.inventory["food"] < 6):
+                    self.miam = False
+                if (self.inventory["food"] > 9):
+                    self.miam = True
+                if self.miam == False:
+                    print("$$$$$$$$$$$$$$$$$$$$$$$$$")
+                    self.requirements_analysis()
+                elif (self.check_if_evolution() == False):
                     print("+++++++++++++++++++++++++")
                     self.requirements_analysis()
-                    if (self.look != {} and self.level > 1 and self.look[0].count("player") == ELEVATION_RITUAL[self.level]["player"]):
-                        print("@@@@@@@@@@@@@@@@@@@@@@@@@")
-                        self.stay = True
                 else:
                     print("~~~~~~~~~~~~~~~~~~~~~~~~~")
                 self.value_up_to_date = False

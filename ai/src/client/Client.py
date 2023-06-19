@@ -16,7 +16,7 @@ BUFFER_SIZE: int = 4096
 EPITECH_SUCCESS: int = 0
 EPITECH_ERROR: int = 84
 MAX_CONSECUTIVE_REQUESTS: int = 10
-UNICODE: str = "utf-8"
+UTF_UNICODE: str = "utf-8"
 
 
 class Client():
@@ -52,7 +52,7 @@ class Client():
     def get_broadcast_in_my_team(self, cord: int, message: str):
         if "evolution" in message and \
             int(message[-1]) == self.ai.level and \
-                self.ai.inventory['food'] >= 6 and \
+                self.ai.miam == True and \
                     self.ai.go_levelup == False:
             self.ai.turn_to_broadcast(socket, cord)
             return
@@ -62,63 +62,70 @@ class Client():
             self.ai.action_to_do = (self.name + '\n')
             self.ai.actif = True
             return
-        if "dead" in response:
+        elif "dead" in response:
             print("Death of player number: ", self.client_num)
             self.close()
             exit(EPITECH_SUCCESS)
-        if "Current level:" in response:
-            self.stay = False
+        elif "Current level:" in response:
             self.ai.actif = True
             self.ai.level = int(response.split(':')[1].strip().split('\n')[0])
+            if (self.ai.mentor == True):
+                self.ai.check_if_evolution()
+                self.ai.mentor = False
+            else:
+                for _ in range(10):
+                    self.ai.prog_action.append("Right")
+        elif "Elevation underway" in response:
+            self.actif = False
             return
-        if "Elevation underway" in response:
-            self.ai.level_up()
-            return
-        if response.isdigit() == True:
+        elif response.isdigit() == True:
             self.ai.commands.nb_player_in_team(response, self.ai.nb_player, self.ai.value_up_to_date)
             self.ai.actif = True
             return
-        if response.startswith("["):
+        elif response.startswith("["):
             if (response[7].isdigit() == True):
                 self.ai.commands.parse_inventory(response, self.ai.inventory)
             else:
                 self.ai.commands.parse_look(response, self.ai.look)
             self.ai.actif = True
             return
-        if "message" in response and "not my team" not in get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()):
+        elif "message" in response and "not my team" not in get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()):
+            self.ai.last_message = response
             self.get_broadcast_in_my_team(int(response.split(' ')[1][0]), get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()))
             return
-        if "message" in response:
+        elif "message" in response:
             print("not my team")
             return
-        if "ok" in response or "ko" in response:
+        elif "ok" in response or "ko" in response:
             self.ai.actif = True
-        if self.init_condition == False:
+        elif self.init_condition == False:
             self.init_condition = True
             self.ai.actif = True
-            print(f"init_condition: {self.init_condition}")
-            print(f"ai.actif: {self.ai.actif}")
             return
 
     def launcher(self):
+        tab_data = []
         try:
             while True:
                 event = self.selectors.select(timeout=None)
                 for _, mask in event:
                     if mask & selectors.EVENT_READ:
-                        print("\nEVENT READ")
-                        recieve_data = self.socket.recv(BUFFER_SIZE).decode(UNICODE)
-                        print(f"recieve_data: {recieve_data}")
-                        self.parse_response(recieve_data.strip())
+                        tab_data = self.socket.recv(BUFFER_SIZE).decode(UTF_UNICODE).split("\n")
+                        for recieve_data in tab_data:
+                            if recieve_data.strip() in self.ai.last_message or recieve_data == "":
+                                continue
+                            print("\nEVENT READ")
+                            print(f"recieve_data: \"{recieve_data}\"")
+                            self.parse_response(recieve_data.strip())
 
                     if mask & selectors.EVENT_WRITE:
                         if (self.init_condition == True and self.ai.actif == True):
                             self.ai.algo()
                         if (self.ai.action_to_do != "" and self.ai.actif == True):
-                            print("\nEVENT_WRITE")
                             if self.name in self.ai.action_to_do:
                                 self.init_condition == True
                             self.socket.sendall((self.ai.action_to_do + "\n").encode())
+                            print("\nEVENT_WRITE")
                             print(f"send data: {self.ai.action_to_do}")
                             self.ai.action_to_do = ""
                             self.ai.actif = False

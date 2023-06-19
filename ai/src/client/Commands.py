@@ -9,8 +9,8 @@ import socket
 BUFFER_SIZE = 1024
 from ai.src.broadcast.broadcast import set_broadcast_by_team
 
-class Commands():
 
+class Commands():
     def parse_inventory(self, response, inventory: dict) -> None:
         tab = response.removeprefix('[ ').removesuffix(' ]').strip().split(',')
         for item in tab:
@@ -25,7 +25,7 @@ class Commands():
         print("#########################")
         print(inventory)
 
-    def parse_look(self, response, look: dict) -> str:
+    def parse_look(self, response, look: dict):
         tab = response.removeprefix('[ ').removesuffix(' ]').split(',')
         for i,item in enumerate(tab):
             parts = item
