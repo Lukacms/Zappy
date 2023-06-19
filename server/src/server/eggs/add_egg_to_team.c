@@ -11,12 +11,12 @@
 #include <zappy/server/client.h>
 #include <zappy/server/utils.h>
 
-static egg_t *fill_infos(server_t *server, egg_t *egg, char *const uuid)
+static egg_t *fill_infos(server_t *server, egg_t *egg, char *const uuid,
+                         client_node_t *client)
 {
     egg->nb = ++server->map.last_egg_id;
     egg->team_uuid = uuid;
-    egg->pos.x = rand() % server->map.size.x;
-    egg->pos.y = rand() % server->map.size.y;
+    egg->pos = client->stats.pos;
     return egg;
 }
 
@@ -47,13 +47,13 @@ int add_egg_to_team(client_node_t *client, server_t *server)
 {
     int ind = -1;
 
-    if (!client || !server ||
-        (ind = find_team_by_uuid(client->uuid_team, server)) < 0)
+    if (!client || !server)
         return FAILURE;
-    if (update_team_infos(server, ind) != SUCCESS)
+    ind = find_team_by_uuid(client->uuid_team, server);
+    if (ind < 0 || update_team_infos(server, ind) != SUCCESS)
         return FAILURE;
     server->teams[ind]->eggs[server->teams[ind]->spots_free - 1] = fill_infos(
         server, server->teams[ind]->eggs[server->teams[ind]->spots_free - 1],
-        server->teams[ind]->uuid);
+        server->teams[ind]->uuid, client);
     return SUCCESS;
 }
