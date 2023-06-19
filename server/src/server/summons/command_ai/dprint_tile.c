@@ -14,7 +14,7 @@ static size_t check_cord(size_t csize, size_t cord)
     size_t result = cord;
 
     if (cord > csize)
-        result = cord - csize;
+        result = cord % csize;
     return result;
 }
 
