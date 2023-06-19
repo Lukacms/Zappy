@@ -75,7 +75,7 @@
 #define DISPATCH_PNW "pnw %d %zu %zu %d %zu %s\n" // connection of a new player
 #define DISPATCH_PPO "ppo %d %zu %zu %d\n"        // player’s position
 #define DISPATCH_PLV "plv %d %zu\n"               // player’s level
-#define DISPATCH_PIN \
+#define DISPATCH_PIN\
     "pin %d %zu %zu %zd %zd %zd %zd %zd %zd %zd\n" // player's inventory
 #define DISPATCH_PEX "pex %d\n"                    // expulsion
 #define DISPATCH_PBC "pbc %d %s\n"                 // broadcast

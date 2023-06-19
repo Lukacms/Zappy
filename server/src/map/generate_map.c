@@ -61,5 +61,5 @@ int generate_map(server_t *server)
             set_default_tile(server->map.tiles[i], server->map.size.x);
     }
     randomize_map(server);
-    return create_eggs(server);
+    return SUCCESS;
 }

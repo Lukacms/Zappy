@@ -113,6 +113,7 @@ typedef struct team_s {
     char **uuid_clients;
     egg_t **eggs;
     size_t nb_clients;
+    size_t init_clients;
     ssize_t spots_free;
 } team_t;
 

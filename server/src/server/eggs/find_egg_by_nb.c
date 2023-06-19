@@ -9,6 +9,8 @@
 
 static int is_egg_in_team(team_t *team, int nb)
 {
+    if (!team->eggs)
+        return -1;
     for (u_int i = 0; team->eggs[i]; i++)
         if (team->eggs[i]->nb == nb)
             return i;

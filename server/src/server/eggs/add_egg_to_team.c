@@ -13,7 +13,7 @@
 #include <zappy/server/utils.h>
 
 static egg_t *fill_infos(server_t *server, egg_t *egg, char *const uuid,
-                         client_node_t *client)
+                            client_node_t *client)
 {
     char output[BUFFER_SIZE] = {0};
 

@@ -49,7 +49,9 @@ Test(change_player_pos, change_player_pos)
     cr_assert_eq(create_default_server(&server, 4246), SUCCESS);
     client->uuid = generate_uuid();
     client->cfd = open("./tmp", O_CREAT | O_TRUNC | O_RDWR);
-    add_client_to_team(client, &server, server.teams[0]->team_name);
+    cr_assert_eq(
+        add_client_to_team(client, &server, server.teams[0]->team_name),
+        SUCCESS);
     cr_assert_eq(change_player_pos(NULL, NULL, invalid, invalid), FAILURE);
     cr_assert_eq(change_player_pos(&server, NULL, invalid, invalid), FAILURE);
     cr_assert_eq(change_player_pos(&server, client->uuid, invalid, invalid),
