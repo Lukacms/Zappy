@@ -331,23 +331,23 @@ void zappy::Player::expulsedWest()
 void zappy::Player::playerMovement()
 {
     if (m_remain.x < 0) {
-        m_position_map.x += 4;
-        m_remain.x += 4;
+        m_position_map.x += 10;
+        m_remain.x += 10;
         return;
     }
     if (m_remain.x > 0) {
-        m_position_map.x -= 4;
-        m_remain.x -= 4;
+        m_position_map.x -= 10;
+        m_remain.x -= 10;
         return;
     }
     if (m_remain.y < 0) {
-        m_position_map.y += 4;
-        m_remain.y += 4;
+        m_position_map.y += 10;
+        m_remain.y += 10;
         return;
     }
     if (m_remain.y > 0) {
-        m_position_map.y -= 4;
-        m_remain.y -= 4;
+        m_position_map.y -= 10;
+        m_remain.y -= 10;
         return;
     }
 }
