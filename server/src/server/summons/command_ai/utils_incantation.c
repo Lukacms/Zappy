@@ -37,6 +37,8 @@ bool loop_clients_level_up(server_t *server, client_node_t *client)
         return FAILURE;
     for (int i = 0; cli_tile[i] != NULL; i += 1) {
         tmp = find_client_by_uuid(cli_tile[i], server);
+        if (!tmp)
+            continue;
         if (tmp->stats.level == client->stats.level)
             players_able += 1;
     }

@@ -24,7 +24,7 @@ static void send_infos(server_t *server, client_node_t *client, int ind)
 
 int take_func(server_t *server, char *args[], client_node_t *client)
 {
-    if (!server || client)
+    if (!server || !client)
         return FAILURE;
     if (!args || array_len(args) != 2)
         return set_error(client->cfd, INVALID_ACTION, false);

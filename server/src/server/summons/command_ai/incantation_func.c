@@ -17,10 +17,10 @@ static void in_incantation(server_t *server, client_node_t *client)
     client_node_t *tmp = NULL;
     int idx = (INCANTATION_MANDATORY[client->stats.level - 1][0] - CHAR_INT);
     char **cli_in_tile =
-        server->map.tiles[client->stats.pos.x][client->stats.pos.y]
+        server->map.tiles[client->stats.pos.y][client->stats.pos.x]
             .players_uuid;
 
-    for (int i = 0; cli_in_tile[i] != NULL && idx > 0; i += 1) {
+    for (int i = 0; cli_in_tile[i] != NULL && idx > 1; i += 1) {
         tmp = find_client_by_uuid(cli_in_tile[i], server);
         if (tmp->stats.level == client->stats.level) {
             add_ticks_occupied(tmp, RESTRAINT_INCANTATION, server);
@@ -29,6 +29,9 @@ static void in_incantation(server_t *server, client_node_t *client)
             idx -= 1;
         }
     }
+    add_ticks_occupied(client, RESTRAINT_INCANTATION, server);
+    client->stats.action.type = INCANTATION;
+    dprintf(client->cfd, IN_INCANT);
 }
 
 int incantation_func(server_t *server, char *args[], client_node_t *client)
@@ -39,7 +42,6 @@ int incantation_func(server_t *server, char *args[], client_node_t *client)
         return set_error(client->cfd, INVALID_ACTION, false);
     if (mandatory_resources(server, client->stats.pos, client->stats.level) &&
         loop_clients_level_up(server, client)) {
-        add_ticks_occupied(client, RESTRAINT_INCANTATION, server);
         in_incantation(server, client);
     }
     return set_error(client->cfd, INVALID_ACTION, false);
