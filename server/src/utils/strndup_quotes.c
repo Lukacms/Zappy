@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *strndup_quotes(char *src, size_t n)
+char *strndup_quotes(const char *src, size_t n)
 {
     char *dest = NULL;
 

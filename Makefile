@@ -18,7 +18,9 @@ $(NAME_SERVER):
 	@make -C server
 .PHONY: $(NAME_SERVER)
 
-$(NAME_GUI):
+$(NAME_GUI)::
+	unzip gui/assets && mv assets gui
+$(NAME_GUI)::
 	cd gui && ./compile.sh --ninja
 .PHONY: $(NAME_GUI)
 
@@ -42,6 +44,7 @@ clean:
 .PHONY: clean
 
 fclean: clean
+	@rm -rf gui/assets
 	@rm -rf $(NAME_AI) $(NAME_GUI) $(NAME_SERVER)
 .PHONY: fclean
 

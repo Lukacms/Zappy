@@ -6,10 +6,10 @@
 */
 
 #include <sys/select.h>
+#include <time.h>
 #include <unistd.h>
-#include <zappy/config/arguments.h>
+#include <zappy/config/config.h>
 #include <zappy/server.h>
-#include <zappy/server/infos.h>
 #include <zappy/server/utils.h>
 
 static struct sockaddr_in create_server_infos(int const port)
@@ -32,6 +32,12 @@ static int bind_listen_server(server_t *serv)
     return SUCCESS;
 }
 
+static void init_clock(int freq, server_t *server)
+{
+    server->clock.freq = freq;
+    clock_gettime(CLOCK_MONOTONIC, &server->clock.value);
+}
+
 int create_server(server_t *server, args_config_t *args)
 {
     if (!server || !args)
@@ -44,5 +50,6 @@ int create_server(server_t *server, args_config_t *args)
     FD_ZERO(&server->clients_fd);
     FD_SET(server->server_fd, &server->clients_fd);
     server->running = true;
-    return SUCCESS;
+    init_clock(args->freq, server);
+    return update_server_with_args(server, args);
 }

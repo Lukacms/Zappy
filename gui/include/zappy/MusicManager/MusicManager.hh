@@ -13,7 +13,7 @@
 #include <string_view>
 
 constexpr std::string_view MUSIC_DAY_1{"./gui/assets/music/darkworld.ogg"};
-constexpr std::string_view MUSIC_DAY_2 {"./gui/assets/music/hyrulefield.ogg"};
+constexpr std::string_view MUSIC_DAY_2{"./gui/assets/music/hyrulefield.ogg"};
 constexpr std::string_view MUSIC_RAINY_1{"./gui/assets/music/songofstorms.ogg"};
 constexpr std::string_view MUSIC_NIGHT_1{"./gui/assets/music/insidehouse.ogg"};
 constexpr std::string_view MUSIC_NIGHT_2{"./gui/assets/music/stonetower.ogg"};
@@ -40,12 +40,12 @@ namespace zappy
             void pauseMusic();
 
         private:
-            sf::Music m_music;
-            sf::Clock m_clock;
+            sf::Music m_music{};
+            sf::Clock m_clock{};
 
             bool m_fade_in = false;
             bool m_fade_out = false;
-            std::string m_music_path;
+            std::string m_music_path{};
     };
 
 } // namespace zappy

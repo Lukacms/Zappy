@@ -7,14 +7,14 @@
 
 #pragma once
 
-#include <SFML/System/Vector2.hpp>
-#include <cstddef>
-#include <zappy/Map/Tile.hh>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/System/Vector2.hpp>
+#include <cstddef>
 #include <string>
+#include <zappy/Map/Tile.hh>
 
 namespace zappy
 {
@@ -31,15 +31,16 @@ namespace zappy
             TextButton &operator=(TextButton &&to_move) = default;
 
             void draw(sf::RenderWindow &window, sf::Text &text);
-            void manageEvent(sf::RenderWindow &window, sf::View &view, sf::Event &event, size_t &index);
+            void manageEvent(sf::RenderWindow &window, sf::View &view, sf::Event &event,
+                             size_t &index);
             void setPosition(sf::Vector2f &vector);
 
         private:
-            sf::Color m_color;
-            sf::Clock m_clock;
-    
-            Text m_text;
-            bool m_increment;
+            sf::Color m_color{};
+            sf::Clock m_clock{};
+
+            Text m_text{};
+            bool m_increment{};
     };
 
 } // namespace zappy

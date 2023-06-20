@@ -7,18 +7,19 @@
 
 #pragma once
 
+#include <stddef.h>
+
 /* default arguments */
 #define DEFAULT_PORT 4242
 #define DEFAULT_FREQ 100
 #define DEFAULT_HEIGHT 10
 #define DEFAULT_WIDTH 10
-#define DEFAULT_TEAMS { \
-        "Team1", "Team2", "Team3", "Team3", NULL \
-    }
 #define DEFAULT_CLIENTS 3
+static __attribute__((unused))
+const char *DEFAULT_TEAMS[] = {"Team1", "Team2", "Team3", "Team4", NULL};
 
 /* OPTARGS */
-#define SHORT_ARGS "p:x:y:n:c:h"
+#define SHORT_ARGS "p:x:y:n:c:hf:"
 
 /* errors */
 #define ERROR_PORT "Invalid port number. Must be a strictly positive int.\n"
@@ -30,8 +31,8 @@
 #define ERROR_TEAM_NAME "Team names must be unique.\n"
 
 typedef struct vector2i_s {
-    int x;
-    int y;
+    size_t x;
+    size_t y;
 } vector2i_t;
 
 /* store arguments information */

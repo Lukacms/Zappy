@@ -79,6 +79,8 @@ static std::vector<std::string> parser(const std::string &buff)
 
 static zappy::Packet get_variant(std::vector<std::string> &parsed)
 {
+    if (parsed.empty())
+        return zappy::Packet{zappy::Ukn{}};
     for (size_t i{0}; i < zappy::NB_MAX_CMD; i++) {
         if (parsed[0] == zappy::VARIANT_LIST[i].name)
             return zappy::VARIANT_LIST[i].packet;

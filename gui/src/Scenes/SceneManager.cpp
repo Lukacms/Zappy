@@ -26,7 +26,7 @@ void zappy::SceneManager::draw(sf::RenderWindow &window)
 }
 
 void zappy::SceneManager::manageEvent(sf::RenderWindow &window, sf::Event &event,
-                                      std::string &command_to_send)
+                                      std::vector<std::string> &command_to_send)
 {
     m_scenes[static_cast<size_t>(m_scene_index)]->manageEvent(window, event, command_to_send);
 }

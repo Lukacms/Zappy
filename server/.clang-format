@@ -20,6 +20,7 @@ BreakBeforeBinaryOperators: None
 BreakBeforeBraces: Linux
 BreakBeforeTernaryOperators: 'false'
 ColumnLimit: '80'
+IndentCaseLabels: 'true'
 IndentWidth: '4'
 Language: Cpp
 SeparateDefinitionBlocks: Always

@@ -11,6 +11,8 @@
 #include <SFML/Window/Event.hpp>
 #include <algorithm>
 #include <ios>
+#include <string>
+#include <vector>
 #include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/Player/Player.hh>
 #include <zappy/Player/PlayerManager.hh>
@@ -150,18 +152,22 @@ void zappy::PlayerManager::deletePlayers()
     }
 }
 
-bool zappy::PlayerManager::selectPlayer(sf::Event &event, sf::RenderWindow &window)
+bool zappy::PlayerManager::selectPlayer(sf::Event &event, sf::RenderWindow &window,
+                                        std::vector<std::string> &command_to_send)
 {
     sf::Vector2i tmp{event.mouseButton.x, event.mouseButton.y};
     const sf::Vector2f point = window.mapPixelToCoords(tmp);
     bool is_touched = false;
 
-    if (event.mouseButton.button == sf::Mouse::Left) {
+    if (event.type == sf::Event::MouseButtonPressed &&
+        event.mouseButton.button == sf::Mouse::Left) {
         for (auto &player : m_players) {
             if (player.getColliderBox().contains(point)) {
                 deselecPlayer(m_selected_player_id);
                 m_player_is_selected = true;
                 m_selected_player_id = player.getId();
+                command_to_send.emplace_back("pin " + std::to_string(player.getId()) + "\n");
+                command_to_send.emplace_back("plv " + std::to_string(player.getId()) + "\n");
                 m_selected_player = player;
                 player.triggerSelection(true);
                 is_touched = true;
@@ -240,4 +246,9 @@ void zappy::PlayerManager::verifySounds()
         else
             iterator++;
     }
+}
+
+std::vector<zappy::Player> &zappy::PlayerManager::getPlayers()
+{
+    return m_players;
 }

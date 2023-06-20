@@ -46,11 +46,14 @@ namespace zappy
             void setMapSize(sf::Vector2i &size);
             void expulsePlayer(Pex &expulsed_player);
             void playerDeath(Pdi &dead_player);
-            bool selectPlayer(sf::Event &event, sf::RenderWindow &window);
+            bool selectPlayer(sf::Event &event, sf::RenderWindow &window,
+                              std::vector<std::string> &command_to_send);
             void deletePlayers();
             void startIncantation(Pic &incantation);
             void endIncantation(Pie &end);
+
             [[nodiscard]] Player &getSelectedPlayer();
+            [[nodiscard]] std::vector<Player> &getPlayers();
 
         private:
             void depthManager();
@@ -58,15 +61,15 @@ namespace zappy
             void verifySounds();
 
             bool m_player_is_selected = false;
-            Player m_selected_player;
-            int m_selected_player_id;
-            std::vector<Player> m_players;
-            std::vector<int> m_elevating_players;
-            sf::Vector2i m_size;
-            sf::SoundBuffer m_death;
-            sf::SoundBuffer m_incantation;
-            sf::SoundBuffer m_success;
-            sf::SoundBuffer m_failure;
-            std::deque<sf::Sound> m_sounds;
+            Player m_selected_player{};
+            int m_selected_player_id{};
+            std::vector<Player> m_players{};
+            std::vector<int> m_elevating_players{};
+            sf::Vector2i m_size{};
+            sf::SoundBuffer m_death{};
+            sf::SoundBuffer m_incantation{};
+            sf::SoundBuffer m_success{};
+            sf::SoundBuffer m_failure{};
+            std::deque<sf::Sound> m_sounds{};
     };
 } // namespace zappy

@@ -13,6 +13,7 @@
 #include <SFML/Window/Event.hpp>
 #include <array>
 #include <memory>
+#include <vector>
 #include <zappy/Scenes/AScene.hh>
 
 namespace zappy
@@ -37,13 +38,13 @@ namespace zappy
 
             void draw(sf::RenderWindow &window) override;
             void manageEvent(sf::RenderWindow &window, sf::Event &event,
-                             std::string &command_to_send) override;
+                             std::vector<std::string> &command_to_send) override;
             void changeScene(size_t index);
             size_t getSceneIndex() const;
             std::array<std::unique_ptr<IScene>, 3> &getScenes();
 
         private:
-            zappy::MusicManager m_music_manager;
+            zappy::MusicManager m_music_manager{};
 
             std::array<std::unique_ptr<IScene>, 3> m_scenes;
             zappy::Scene m_scene_index{1};

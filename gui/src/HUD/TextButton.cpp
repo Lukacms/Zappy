@@ -40,7 +40,8 @@ void zappy::TextButton::manageEvent(sf::RenderWindow &window, sf::View &view, sf
 
     if (event.type == sf::Event::MouseMoved && m_text.m_box.contains(move_world_position)) {
         m_color = {47, 79, 79};
-    } else if (event.mouseButton.button == sf::Mouse::Left &&
+    } else if (event.type == sf::Event::MouseButtonPressed &&
+               event.mouseButton.button == sf::Mouse::Left &&
                m_text.m_box.contains(click_world_position) &&
                m_clock.getElapsedTime().asSeconds() > 0.5F) {
         m_clock.restart();

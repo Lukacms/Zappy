@@ -7,14 +7,14 @@
 
 #pragma once
 
-#include <zappy/Egg/EggManager.hh>
-#include <zappy/Weather/WeatherManager.hh>
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
 #include <string_view>
+#include <vector>
 #include <zappy/Camera.hh>
+#include <zappy/Egg/EggManager.hh>
 #include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/HUD/HUD.hh>
 #include <zappy/Map/Map.hh>
@@ -23,6 +23,7 @@
 #include <zappy/Player/Player.hh>
 #include <zappy/Player/PlayerManager.hh>
 #include <zappy/Scenes/AScene.hh>
+#include <zappy/Weather/WeatherManager.hh>
 
 constexpr std::string_view GAME_TEXTURE{"./gui/assets/sprites/Game_texture.png"};
 
@@ -41,7 +42,7 @@ namespace zappy
 
             void draw(sf::RenderWindow &window) final;
             void manageEvent(sf::RenderWindow &window, sf::Event &event,
-                             std::string &command_to_send) final;
+                             std::vector<std::string> &command_to_send) final;
 
             void createMap(Msz &map, sf::RenderWindow &window);
             void changeTileInventory(Bct &tile);
@@ -71,10 +72,10 @@ namespace zappy
             void servorMsg(Smg &message);
 
         private:
+            zappy::PlayerManager m_player_manager;
             zappy::HUD m_hud;
             zappy::Map m_map;
             zappy::Camera m_camera;
-            zappy::PlayerManager m_player_manager;
             zappy::MusicManager &m_music_manager;
             zappy::WeatherManager m_weather;
 

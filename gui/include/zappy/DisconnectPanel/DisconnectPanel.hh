@@ -37,11 +37,11 @@ namespace zappy
         private:
             void animatePanel(sf::RenderWindow &window);
 
-            sf::Texture m_texture;
-            sf::Sprite m_sprite;
-            sf::Vector2f m_position;
-            sf::Clock m_clock;
-            sf::View m_view;
+            sf::Texture m_texture{};
+            sf::Sprite m_sprite{};
+            sf::Vector2f m_position{};
+            sf::Clock m_clock{};
+            sf::View m_view{};
 
             bool m_is_active = false;
     };
