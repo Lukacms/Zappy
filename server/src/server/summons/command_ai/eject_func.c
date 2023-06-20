@@ -5,7 +5,6 @@
 ** zappy
 */
 
-#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <zappy/server.h>
@@ -29,6 +28,25 @@ static void check_orientation(server_t *server, client_node_t *tmp)
     }
 }
 
+static void send_ejected_infos(client_node_t *cli, server_t *server,
+                               orientation_t orientation)
+{
+    char output[BUFFER_SIZE] = {0};
+
+    dprintf(cli->cfd, AI_EJECT, orientation);
+    sprintf(output, DISPATCH_PPO, cli->cfd, cli->stats.pos.x, cli->stats.pos.y,
+            cli->stats.orientation);
+    send_toall_guicli(server, output);
+}
+
+static void send_ejecter_infos(client_node_t *client, server_t *server)
+{
+    char output[BUFFER_SIZE] = {0};
+
+    sprintf(output, DISPATCH_PEX, client->cfd);
+    send_toall_guicli(server, output);
+}
+
 int eject_func(server_t *server, char *args[], client_node_t *client)
 {
     client_node_t *tmp = NULL;
@@ -37,11 +55,12 @@ int eject_func(server_t *server, char *args[], client_node_t *client)
         return FAILURE;
     if (!args || array_len(args) != 2 || !(tmp = server->clients.head))
         return set_error(client->cfd, INVALID_ACTION, false);
+    send_ejecter_infos(client, server);
     for (unsigned int ind = 0; ind < server->clients.length; ind++) {
         if (same_tile(tmp->stats.pos, client->stats.pos) &&
             strcmp(tmp->uuid, client->uuid) != SUCCESS) {
-            dprintf(tmp->cfd, AI_EJECT, client->stats.orientation + 1);
             check_orientation(server, tmp);
+            send_ejected_infos(tmp, server, client->stats.orientation);
         }
         tmp = tmp->next;
     }
