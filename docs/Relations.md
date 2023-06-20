@@ -191,7 +191,6 @@ classDiagram
 ## Server
 ```mermaid
 classDiagram
-    note "Organisation of Zappy server code Code is in snake case"
     launch <-- parseArgs : get arguments and handle errors
     launch --> serverLoop : the application of the server
     link launch "https://github.com/Lukacms/Zappy/blob/main/server/src/launch.c"
@@ -199,67 +198,63 @@ classDiagram
     serverLoop --> handleSummon
     link serverLoop "https://github.com/Lukacms/Zappy/blob/main/server/src/server/server_loop.c"
     link parseArgs "https://github.com/Lukacms/Zappy/blob/main/server/src/load/parse_args.c"
-    namespace arguments {
-        class parseArgs {
-            options ["p", "f", "c", "n", "h", "x", "y"]
-            -getOpts()
-        }
+    class parseArgs {
+        options ["p", "f", "c", "n", "h", "x", "y"]
+        -getOpts()
     }
     handleSummon <|-- clientStatus
     commandsAI o-- handleSummon
     commandsGUI o-- handleSummon
-    namespace server {
-        class serverLoop {
-            +connectClient() : when a client first connect to the server
-            +handleSummon() : analyse the summons from clients
-            run in a loop while the boolean running is true
-            -select : handle clients to be analyzed
-        }
-        class connectClient {
-            -bind the client to the server
-            - initialize its members in 
-        }
-        class handleSummon {
-            -buffering of summons
-            -differenciation by clientStatus
-        }
-        class clientStatus {
-            <<enumeration>>
-            GUI,
-            AI,
-            NONE
-        }
-        class commandsAI {
-            sent from AI client
-            BROADCAST,
-            CONNECT_NBR,
-            EJECT,
-            FORK,
-            FORWARD,
-            INCANTATION,
-            LEFT,
-            LOOK,
-            RIGHT,
-            SET,
-            TAKE            
-        }
-        class commandsGUI {
-            BCT,
-            MCT,
-            MSZ,
-            PIN,
-            PLV,
-            PPO,
-            SGT,
-            SST,
-            TNA
-            note() other events can happen to triggers other indications to send to GUI client
-        }
-        class serverT {
-            -clients: list~clients~
-            -teams: array~team~
-            -map: array~tiles~
-            -running: bool
-        }
+    class serverLoop {
+        +connectClient() : when a client first connect to the server
+        +handleSummon() : analyse the summons from clients
+        run in a loop while the boolean running is true
+        -select : handle clients to be analyzed
+    }
+    class connectClient {
+        -bind the client to the server
+        - initialize its members in 
+    }
+    class handleSummon {
+        -buffering of summons
+        -differenciation by clientStatus
+    }
+    class clientStatus {
+        <<enumeration>>
+        GUI,
+        AI,
+        NONE
+    }
+    class commandsAI {
+        sent from AI client
+        BROADCAST,
+        CONNECT_NBR,
+        EJECT,
+        FORK,
+        FORWARD,
+        INCANTATION,
+        LEFT,
+        LOOK,
+        RIGHT,
+        SET,
+        TAKE            
+    }
+    class commandsGUI {
+        BCT,
+        MCT,
+        MSZ,
+        PIN,
+        PLV,
+        PPO,
+        SGT,
+        SST,
+        TNA
+        note() other events can happen to triggers other indications to send to GUI client
+    }
+    class serverT {
+        -clients: list~clients~
+        -teams: array~team~
+        -map: array~tiles~
+        -running: bool
     }
 ```

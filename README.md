@@ -6,12 +6,12 @@ The goal of this project is to create a network game where several teams confron
 resources.
 The winning team is the first one where at least 6 players who reach the maximum elevation.
 
-More informations about the project in the [docs](https://github.com/Lukacms/Zappy/tree/main/docs) folder.
+More informations about the project in the [docs](docs) folder.
 
 We had to create three binaries:
-* [`zappy_server`](https://github.com/Lukacms/Zappy/tree/main/server): c server that generates the game's world
-* [`zappy_gui`](https://github.com/Lukacms/Zappy/tree/main/gui): c++ graphical client; can be used to watch what happen in the world
-* [`zappy_ai`](https://github.com/Lukacms/Zappy/tree/main/ai): python client controlling one of the world's inhabitant
+* [`zappy_server`](server): c server that generates the game's world
+* [`zappy_gui`](gui): c++ graphical client; can be used to watch what happen in the world
+* [`zappy_ai`](ai): python client controlling one of the world's inhabitant
 
 ### Dependencies
 Langages used:
