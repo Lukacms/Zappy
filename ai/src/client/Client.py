@@ -84,11 +84,12 @@ class Client():
                 self.ai.value_up_to_date = True
             else:
                 self.ai.commands.parse_look(response, self.ai.look)
+                # self.ai.check_if_evolution()
             self.ai.actif = True
             return
         elif "message" in response:
             self.last_message = response
-            self.get_broadcast_in_my_team(int(response.split(' ')[1][0]), get_broadcast_by_team(response.split(',')[1].strip()))
+            self.get_broadcast_in_my_team(int(response.split(' ')[1][0]), get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()))
             return
         elif "ok" in response or "ko" in response:
             self.ai.actif = True

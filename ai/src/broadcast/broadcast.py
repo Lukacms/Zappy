@@ -7,7 +7,7 @@
 
 import json
 
-def get_broadcast_by_team(message: str) -> str:
+def get_broadcast_by_team(team: int, message: str) -> str:
     file = open('ai/asset/broadcast.json')
     data = json.load(file)
     for itea in range(4):
@@ -15,6 +15,7 @@ def get_broadcast_by_team(message: str) -> str:
             if (data['Broadcast'][itea][i] == message):
                 return i
     file.close()
+    return "not my team"
 
 def set_broadcast_by_team(team: int, message: str) -> str:
     file = open('ai/asset/broadcast.json')
