@@ -27,9 +27,14 @@ static void set_stats(client_node_t *client)
     client->stats.action.type = NOTHING;
     client->stats.action.ticks = -1;
     client->stats.level = 1;
+    client->stats.orientation = rand() % WEST + 1;
     for (unsigned int i = 0; i < INVENTORY_SLOTS; i++) {
         client->stats.inventory[i].resource = INVENTORY[i].resource;
         client->stats.inventory[i].units = INVENTORY[i].units;
+    }
+    for (u_int i = 0; i < MAX_WAITING_SUMMONS; i++) {
+        client->queue[i].size = -1;
+        client->queue[i].summon = NULL;
     }
 }
 

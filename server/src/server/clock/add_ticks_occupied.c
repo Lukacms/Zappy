@@ -10,7 +10,7 @@
 
 int add_ticks_occupied(client_node_t *client, int restraint, server_t *server)
 {
-    if (!client)
+    if (!client || !server)
         return FAILURE;
     client->stats.action.type = ACTION;
     client->stats.action.ticks = gettickselapsed(&server->clock) + restraint;

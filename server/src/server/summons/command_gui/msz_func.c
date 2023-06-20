@@ -14,7 +14,6 @@ int msz_func(server_t *server, char __attribute__((unused)) * args[],
 {
     if (!server || !client)
         return FAILURE;
-    dprintf(client->cfd, "msz %zu %zu\n", server->map.size.x,
-            server->map.size.y);
+    dprintf(client->cfd, DISPATCH_MSZ, server->map.size.x, server->map.size.y);
     return SUCCESS;
 }

@@ -18,13 +18,13 @@ char **realloc_array(char **ptr, u_int y, u_int x)
     if (!new_ptr)
         return NULL;
     for (i = 0; ptr && ptr[i]; i++)
-        new_ptr[i] = strdup(ptr[i]);
+        new_ptr[i] = ptr[i];
     for (; i < y; i++) {
         if (!(new_ptr[i] = malloc(sizeof(char) * (x + 1))))
             return NULL;
         memset(new_ptr[i], '\0', x);
     }
     new_ptr[y] = NULL;
-    free_array((void **)ptr);
+    free(ptr);
     return new_ptr;
 }

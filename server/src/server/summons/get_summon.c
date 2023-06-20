@@ -21,7 +21,7 @@ static int client_exists(server_t *server, client_node_t *client)
 {
     if (fcntl(client->cfd, F_GETFD) <= 0) {
         if (client->state == AI)
-            kill_player(server, client);
+            kill_player(server, client, false);
         else
             destroy_client(server, client);
         return FAILURE;
@@ -37,8 +37,10 @@ int get_summon(server_t *server, client_node_t *client)
     if (!server || !client)
         return FAILURE;
     memset(summon, '\0', BUFFER_SIZE);
-    if ((size = read(client->cfd, summon, BUFFER_SIZE)) <= 0)
+    if ((size = read(client->cfd, summon, BUFFER_SIZE)) <= 0) {
+        free(summon);
         return client_exists(server, client);
+    }
     summon[size - 1] = '\0';
     if (add_summon(summon, client) != SUCCESS)
         free(summon);

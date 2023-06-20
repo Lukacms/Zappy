@@ -27,6 +27,9 @@
 #define CHAR_INT 48
 #define DIRECTIONNAL 5
 
+#define CLIENTS_REQUIRED 6
+#define LVL_REQUIRED 8
+
 static const char __attribute__((unused)) *
     RESOURCES_INVENTORY[INVENTORY_SLOTS] = {
     "food", "linemate", "deraumere", "sibur", "mendiane", "phiras", "thystame",
@@ -49,10 +52,10 @@ typedef enum action_s {
 } action_t;
 
 typedef enum orientation_s {
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST,
+    NORTH = 1,
+    SOUTH = 3,
+    EAST = 2,
+    WEST = 4,
 } orientation_t;
 
 typedef enum player_s {
@@ -110,7 +113,8 @@ typedef struct team_s {
     char **uuid_clients;
     egg_t **eggs;
     size_t nb_clients;
-    size_t spots_free;
+    size_t init_clients;
+    ssize_t spots_free;
 } team_t;
 
 typedef struct tile_s {

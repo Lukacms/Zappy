@@ -13,13 +13,14 @@ int add_summon(char *, client_node_t *);
 char *pop_summon(client_node_t *);
 int get_summon(server_t *, client_node_t *);
 int handle_summon(server_t *, int cfd);
+int handle_client_summon(char *cmd, client_node_t *client, server_t *server);
 
 int send_toall_guicli(server_t *, char *str, ...);
-void dprint_tile(map_t, size_t, size_t, client_node_t *);
+void dprint_tile(map_t, ssize_t, ssize_t, client_node_t *);
 
-int parse_event_client(server_t *, const char *, client_node_t *);
+int parse_event_client(server_t *, char *, client_node_t *);
 
-/* IA funptr */
+/* AI funptr */
 int forward_north(server_t *, client_node_t *);
 int forward_south(server_t *, client_node_t *);
 int forward_east(server_t *, client_node_t *);
@@ -49,3 +50,6 @@ int take_func(server_t *, char *[], client_node_t *);
 int set_func(server_t *, char *[], client_node_t *);
 int incantation_func(server_t *, char *[], client_node_t *);
 int fork_func(server_t *, char *[], client_node_t *);
+int check_incantation_end(server_t *, client_node_t *, int);
+bool loop_clients_level_up(server_t *, client_node_t *);
+bool mandatory_resources(server_t *, vector2i_t, int);

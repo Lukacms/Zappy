@@ -14,23 +14,24 @@
 
 int bct_func(server_t *server, char *args[], client_node_t *client)
 {
-    int pos_x = 0;
-    int pos_y = 0;
+    ssize_t x = 0;
+    ssize_t y = 0;
 
-    if (!args || array_len(args) != 4)
+    if (!args || array_len(args) != 3 || !server || !client)
         return FAILURE;
-    pos_x = atoi(args[1]);
-    pos_y = atoi(args[2]);
-    if ((pos_x == 0 && (strlen(args[1]) != 1 || args[1][0] != '0')) ||
-        (pos_y == 0 && (strlen(args[2]) != 1 || args[2][0] != '0')))
+    x = atoi(args[1]);
+    y = atoi(args[2]);
+    if (x < 0 || !strisnum(args[1]) || y < 0 || !strisnum(args[2]))
         return FAILURE;
-    dprintf(client->cfd, "bct %i %i %li %li %li %li %li %li %li\n", pos_x,
-            pos_y, server->map.tiles[pos_x][pos_y].slots[FOOD].units,
-            server->map.tiles[pos_x][pos_y].slots[LINEMATE].units,
-            server->map.tiles[pos_x][pos_y].slots[DERAUMERE].units,
-            server->map.tiles[pos_x][pos_y].slots[SIBUR].units,
-            server->map.tiles[pos_x][pos_y].slots[MENDIANE].units,
-            server->map.tiles[pos_x][pos_y].slots[PHIRAS].units,
-            server->map.tiles[pos_x][pos_y].slots[THYSTAME].units);
+    if ((size_t)x >= server->map.size.x || (size_t)y >= server->map.size.y)
+        return FAILURE;
+    dprintf(client->cfd, DISPATCH_BCT, x, y,
+            server->map.tiles[y][x].slots[FOOD].units,
+            server->map.tiles[y][x].slots[LINEMATE].units,
+            server->map.tiles[y][x].slots[DERAUMERE].units,
+            server->map.tiles[y][x].slots[SIBUR].units,
+            server->map.tiles[y][x].slots[MENDIANE].units,
+            server->map.tiles[y][x].slots[PHIRAS].units,
+            server->map.tiles[y][x].slots[THYSTAME].units);
     return SUCCESS;
 }

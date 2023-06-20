@@ -51,6 +51,7 @@ int server_loop(server_t *server)
         clients_ready = server->clients_fd;
         manage_select(server, &clients_ready,
                     select(FD_SETSIZE + 1, &clients_ready, NULL, NULL, &val));
+        check_game_status(server);
         set_server(server);
     }
     destroy_server(server);

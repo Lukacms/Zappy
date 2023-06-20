@@ -6,10 +6,12 @@
 */
 
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
+#include <zappy/server.h>
 #include <zappy/server/summon/utils.h>
+#include <zappy/server/utils.h>
 
 static const double DIRECTIONNAL_VECTOR[4] = {0, 180, 90, 270};
 
@@ -27,7 +29,7 @@ static int get_angle(vector2i_t small_vector, client_node_t *client)
         my_angle -= 360;
     for (int i = 0; i < 8; i += 1) {
         if (my_angle > ANGLES[i][0] && my_angle < ANGLES[i][1])
-            return ANGLES[i][2];
+            return ((int)ANGLES[i][2] % WEST) + 1;
     }
     return 1;
 }
@@ -59,27 +61,28 @@ static int get_len(char *args[])
 {
     int result = 0;
 
+    if (!args)
+        return 0;
     for (int i = 1; args[i] != NULL; i += 1) {
         result += strlen(args[i]);
     }
     return result;
 }
 
-static void broadcast_message(char *message, client_node_t *list_clients,
+static void broadcast_message(char *message, clients_t *clients,
                             client_node_t *client, vector2i_t map_size)
 {
-    client_node_t *tmp_clients = list_clients;
+    client_node_t *tmp = clients->head;
 
-    while (tmp_clients) {
-        if (tmp_clients->state == AI && tmp_clients != client) {
-            dprintf(tmp_clients->cfd, "%s %i\n", message,
-                    get_oritation(tmp_clients->stats.pos, client->stats.pos,
-                                    map_size, client));
+    for (u_int i = 0; i < clients->length; i++) {
+        if (tmp->state == AI && tmp != client) {
+            dprintf(tmp->cfd, "%s %i\n", message,
+                    get_oritation(tmp->stats.pos, client->stats.pos, map_size,
+                                client));
         }
-        if (tmp_clients->state == GUI) {
-            dprintf(tmp_clients->cfd, "pbc %s %s\n", client->uuid, message);
-        }
-        tmp_clients = tmp_clients->next;
+        if (tmp->state == GUI)
+            dprintf(tmp->cfd, DISPATCH_PBC, client->cfd, message);
+        tmp = tmp->next;
     }
 }
 
@@ -88,11 +91,18 @@ int broadcast_func(server_t *server, char *args[], client_node_t *client)
     int len_message = get_len(args);
     char *message = malloc(sizeof(char) * (len_message + 1));
 
+    if (!client || !server || !message)
+        return FAILURE;
+    if (!args || array_len(args) < 2) {
+        free(message);
+        return set_error(client->cfd, INVALID_ACTION, false);
+    }
     message[len_message] = '\0';
     for (int i = 1; args[i] != NULL; i += 1) {
         message = strcat(message, args[i]);
     }
-    broadcast_message(message, server->clients.head, client, server->map.size);
-    dprintf(client->cfd, "ok");
-    return 0;
+    broadcast_message(message, &server->clients, client, server->map.size);
+    dprintf(client->cfd, BASIC_VALID);
+    free(message);
+    return SUCCESS;
 }

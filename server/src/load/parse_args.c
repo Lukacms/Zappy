@@ -72,7 +72,7 @@ int parse_args(args_config_t *args, int argc, char *const argv[])
     }
     if (optind != argc)
         return FAILURE;
-    if (!args->team_names)
+    if (!args->team_names && !args->help)
         return fill_default_teams(args);
     return SUCCESS;
 }

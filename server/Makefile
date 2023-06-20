@@ -28,19 +28,21 @@ SRC_LOAD	=	src/load/options/f_handler.c	\
 				src/load/update_server_with_args.c	\
 				src/load/create_server.c	\
 
-SRC_SUMMONS	=	src/server/summons/command_ia/dprint_tile.c	\
-				src/server/summons/command_ia/broadcast_func.c	\
-				src/server/summons/command_ia/inventory_func.c	\
-				src/server/summons/command_ia/look_func.c	\
-				src/server/summons/command_ia/set_func.c	\
-				src/server/summons/command_ia/left_func.c	\
-				src/server/summons/command_ia/right_func.c	\
-				src/server/summons/command_ia/take_func.c	\
-				src/server/summons/command_ia/incantation_func.c	\
-				src/server/summons/command_ia/eject_func.c	\
-				src/server/summons/command_ia/connect_nbr_func.c	\
-				src/server/summons/command_ia/forward_func.c	\
-				src/server/summons/command_ia/fork_func.c	\
+SRC_SUMMONS	=	src/server/summons/command_ai/set_func.c	\
+				src/server/summons/command_ai/left_func.c	\
+				src/server/summons/command_ai/take_func.c	\
+				src/server/summons/command_ai/fork_func.c	\
+				src/server/summons/command_ai/look_func.c	\
+				src/server/summons/command_ai/eject_func.c	\
+				src/server/summons/command_ai/right_func.c	\
+				src/server/summons/command_ai/dprint_tile.c	\
+				src/server/summons/command_ai/forward_func.c	\
+				src/server/summons/command_ai/broadcast_func.c	\
+				src/server/summons/command_ai/inventory_func.c	\
+				src/server/summons/command_ai/connect_nbr_func.c	\
+				src/server/summons/command_ai/incantation_func.c	\
+				src/server/summons/command_ai/utils_incantation.c	\
+				src/server/summons/command_ai/check_incantation_end.c	\
 				src/server/summons/add_summon.c	\
 				src/server/summons/handle_summon.c	\
 				src/server/summons/pop_summon.c	\
@@ -80,7 +82,7 @@ SRC	=	src/launch.c	\
 		src/server/clock/update_ticks.c	\
 		src/server/server_loop.c	\
 		src/server/handle_signal.c	\
-		src/server/client/delete_client_node.c	\
+		src/server/check_game_status.c	\
 		src/server/client/delete_client_from_team.c	\
 		src/server/client/connect_new_client.c	\
 		src/server/client/add_client_node.c	\
@@ -97,14 +99,20 @@ OBJ	=	$(SRC:.c=.o) $(SRC_MAIN:.c=.o)
 OBJ	+=	$(SRC_LOAD:.c=.o) $(SRC_UTILS:.c=.o) $(SRC_SUMMONS:.c=.o)
 
 SRC_TESTS	=	tests/redirect.c	\
-				tests/template.c	\
-				tests/load/tests_arguments.c	\
 				tests/load/test_arguments_ptr.c	\
-				tests/tests_launch.c	\
 				tests/load/tests_create_server.c	\
+				tests/load/tests_arguments.c	\
+				tests/tests_launch.c	\
 				tests/tests_utils.c	\
-				tests/server/create_server.c	\
+				tests/template.c	\
+				tests/server/tests_map.c	\
 				tests/server/tests_eggs.c	\
+				tests/server/tests_clock.c	\
+				tests/server/tests_misc.c	\
+				tests/server/tests_clients.c	\
+				tests/server/create_server.c	\
+				tests/server/tests_summons_ai.c	\
+				tests/server/tests_summons_gui.c	\
 
 OBJ_TESTS	=	$(SRC:.c=.o)  $(SRC_TESTS:.c=.o)
 OBJ_TESTS	+=	$(SRC_LOAD:.c=.o) $(SRC_UTILS:.c=.o) $(SRC_SUMMONS:.c=.o)

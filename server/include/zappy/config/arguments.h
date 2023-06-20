@@ -16,10 +16,10 @@
 #define DEFAULT_WIDTH 10
 #define DEFAULT_CLIENTS 3
 static __attribute__((unused))
-const char *DEFAULT_TEAMS[] = {"Team1", "Team2", "Team3", "Team3", NULL};
+const char *DEFAULT_TEAMS[] = {"Team1", "Team2", "Team3", "Team4", NULL};
 
 /* OPTARGS */
-#define SHORT_ARGS "p:x:y:n:c:h"
+#define SHORT_ARGS "p:x:y:n:c:hf:"
 
 /* errors */
 #define ERROR_PORT "Invalid port number. Must be a strictly positive int.\n"

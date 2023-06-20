@@ -29,13 +29,13 @@ static char **dup_array(const char *const origin[])
     return dest;
 }
 
-int create_default_server(server_t *server)
+int create_default_server(server_t *server, int port)
 {
     args_config_t args = {
         .freq = DEFAULT_FREQ,
         .help = false,
         .nb_clients_og = DEFAULT_CLIENTS,
-        .port = DEFAULT_PORT,
+        .port = port,
         .world = (vector2i_t){.x = DEFAULT_WIDTH, .y = DEFAULT_HEIGHT},
         .team_names = dup_array(DEFAULT_TEAMS),
     };

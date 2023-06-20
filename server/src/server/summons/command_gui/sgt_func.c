@@ -14,6 +14,6 @@ int sgt_func(server_t *server, char __attribute__((unused)) * args[],
 {
     if (!client || !server)
         return FAILURE;
-    dprintf(client->cfd, "sgt %i\n", server->clock.freq);
+    dprintf(client->cfd, DISPATCH_SGT, server->clock.freq);
     return SUCCESS;
 }

@@ -29,9 +29,10 @@ int stock(vector2i_t size, double density, int *stock_left)
 
 bool has_stock_left(const int *stock)
 {
-    for (u_int i = 0; i < INVENTORY_SLOTS; i++)
+    for (u_int i = 0; i < INVENTORY_SLOTS; i++) {
         if (stock[i] > 0)
             return true;
+    }
     return false;
 }
 

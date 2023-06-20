@@ -12,8 +12,8 @@
 char *pop_summon(client_node_t *client)
 {
     char *summon = NULL;
-
     if (!client || client->queue[0].size < 0)
+
         return NULL;
     summon = client->queue[0].summon;
     for (unsigned int i = 1; i < MAX_WAITING_SUMMONS; i++) {

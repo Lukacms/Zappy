@@ -33,8 +33,10 @@ static void randomize_map(server_t *server)
 
 static tile_t *set_default_tile(tile_t *tile, u_int size)
 {
-    for (u_int i = 0; i < size; i++) {
+    for (u_int i = 0; i <= size; i++) {
         tile[i] = (tile_t){0};
+        tile[i].eggs = NULL;
+        tile[i].players_uuid = NULL;
     }
     tile[size] = (tile_t){0};
     tile[size].end = true;
@@ -50,7 +52,7 @@ int generate_map(server_t *server)
     if (!server->map.tiles)
         return FAILURE;
     server->map.tiles[server->map.size.y] = NULL;
-    for (unsigned int i = 0; i < server->map.size.y; i++) {
+    for (u_int i = 0; i < server->map.size.y; i++) {
         server->map.tiles[i] =
             malloc(sizeof(tile_t) * (server->map.size.x + 1));
         if (!server->map.tiles[i])
@@ -59,5 +61,5 @@ int generate_map(server_t *server)
             set_default_tile(server->map.tiles[i], server->map.size.x);
     }
     randomize_map(server);
-    return create_eggs(server);
+    return SUCCESS;
 }

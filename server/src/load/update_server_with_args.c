@@ -21,8 +21,9 @@ static int fill_team_infos(team_t *team, args_config_t *args, u_int ind)
         return FAILURE;
     for (u_int i = 0; i < team->nb_clients; i++)
         team->uuid_clients[i] = NULL;
-    team->spots_free = team->nb_clients;
+    team->spots_free = 0;
     team->team_name = args->team_names[ind];
+    team->init_clients = args->nb_clients_og;
     return SUCCESS;
 }
 
