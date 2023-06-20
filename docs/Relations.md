@@ -5,7 +5,51 @@ Diagrams to show each of the projects' architecture.
 ## AI
 ```mermaid
 classDiagram
-    note "to be implemented"
+    class Argument {
+        +parse_arg()
+    }
+    class Artifical_intelligence {
+        +object_needed(value) : bool
+        +get_object(value) : bool
+        +turn_to_broadcast(direction: int)
+        +check_if_evolution() : bool
+        +go_track_obj(tile, x, y) : bool
+        +track_obj_set() : bool
+        +track_player() : bool
+        +check_if_alone(tile) : bool
+        +go_track_player(x, y)
+        +requirements_analysis()
+        +check_if_incantation() : bool
+        +decision_to_steal_object() : bool
+        +algo()
+    }
+    class Commands {
+        +parse_inventory(response, inventory: dict)
+        +parse_look(response, look: dict)
+        +nb_player_in_team(response, nb_player: int)
+        +broadcast(team, broadcast_text) : str
+        +take_object(object_to_take: str) : str
+        +set_object(object_to_set) : str
+        +eject()
+    }
+    class Client {
+        +start_connection()
+        +get_broadcast_in_my_team(cord: int, message: str)
+        +parse_response(response: str)
+        +launcher()
+        +close()
+    }
+    class Broadcast {
+        +get_broadcast_by_team(message: str) : str
+        +set_broadcast_by_team(team: int, message: str) : str
+    }
+
+    Argument --> Artifical_intelligence
+    Artifical_intelligence --> Commands
+    Artifical_intelligence --> Client
+    Artifical_intelligence --> Broadcast
+    Client --> Commands
+    Broadcast --> Client
 ```
 
 ## GUI
