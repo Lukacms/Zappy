@@ -19,7 +19,7 @@ bool same_tile(vector2i_t a, vector2i_t b)
 }
 
 static void check_orientation(server_t *server, client_node_t *tmp,
-    client_node_t *client)
+                              client_node_t *client)
 {
     switch (client->stats.orientation) {
         case NORTH: forward_north(server, tmp); break;
@@ -30,7 +30,7 @@ static void check_orientation(server_t *server, client_node_t *tmp,
 }
 
 static void send_ejected_infos(client_node_t *cli, server_t *server,
-    orientation_t orientation)
+                               orientation_t orientation)
 {
     char output[BUFFER_SIZE] = {0};
 
@@ -53,7 +53,7 @@ static int send_ejecter_infos(client_node_t *client, server_t *server, int ind)
 int eject_func(server_t *server, char *args[], client_node_t *client)
 {
     client_node_t *tmp = NULL;
-    int ejected_players = 0;
+    int eject = 0;
 
     if (!server || !client)
         return FAILURE;
@@ -64,11 +64,11 @@ int eject_func(server_t *server, char *args[], client_node_t *client)
             strcmp(tmp->uuid, client->uuid) != SUCCESS) {
             check_orientation(server, tmp, client);
             send_ejected_infos(tmp, server, client->stats.orientation);
-            ejected_players++;
+            eject++;
         }
         tmp = tmp->next;
     }
-    delete_eggs_from_tile(server, client->stats.pos);
+    eject += delete_eggs_from_tile(server, client->stats.pos);
     add_ticks_occupied(client, RESTRAINT_EJECT, server);
-    return send_ejecter_infos(client, server, ejected_players);
+    return send_ejecter_infos(client, server, eject);
 }

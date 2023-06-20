@@ -29,8 +29,10 @@ static egg_t **delete_from_egg_array(egg_t **src, u_int ind)
 
     if (!src || (size = array_len(src)) < ind)
         return src;
-    if (!(dest = malloc(sizeof(egg_t *) * (size))))
+    if (size <= 1 || !(dest = malloc(sizeof(egg_t *) * (size)))) {
+        free(src);
         return NULL;
+    }
     dest[size - 1] = NULL;
     for (u_int i = 0; i < size - 1; i++) {
         if (i == ind)
@@ -52,6 +54,7 @@ static int check_team_eggs(server_t *server, int id, u_int ind)
         if (teams[ind]->eggs[i]->nb == id) {
             send_infos(server, teams[ind]->eggs[i]->nb);
             teams[ind]->eggs = delete_from_egg_array(teams[ind]->eggs, i);
+            teams[ind]->spots_free--;
             flag = 1;
             break;
         }
