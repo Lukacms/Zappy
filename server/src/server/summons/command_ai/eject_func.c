@@ -18,9 +18,10 @@ bool same_tile(vector2i_t a, vector2i_t b)
     return (a.x == b.x && a.y == b.y);
 }
 
-static void check_orientation(server_t *server, client_node_t *tmp)
+static void check_orientation(server_t *server, client_node_t *tmp,
+                              client_node_t *client)
 {
-    switch (tmp->stats.orientation) {
+    switch (client->stats.orientation) {
         case NORTH: forward_north(server, tmp); break;
         case SOUTH: forward_south(server, tmp); break;
         case EAST: forward_east(server, tmp); break;
@@ -29,7 +30,7 @@ static void check_orientation(server_t *server, client_node_t *tmp)
 }
 
 static void send_ejected_infos(client_node_t *cli, server_t *server,
-                                orientation_t orientation)
+                               orientation_t orientation)
 {
     char output[BUFFER_SIZE] = {0};
 
@@ -61,7 +62,7 @@ int eject_func(server_t *server, char *args[], client_node_t *client)
     for (unsigned int ind = 0; ind < server->clients.length; ind++) {
         if (same_tile(tmp->stats.pos, client->stats.pos) &&
             strcmp(tmp->uuid, client->uuid) != SUCCESS) {
-            check_orientation(server, tmp);
+            check_orientation(server, tmp, client);
             send_ejected_infos(tmp, server, client->stats.orientation);
             ejected_players++;
         }
