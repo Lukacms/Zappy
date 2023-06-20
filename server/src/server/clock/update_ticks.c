@@ -11,7 +11,7 @@
 #include <zappy/server/summon/utils.h>
 
 static void update_ai(server_t *server, int ticks_elapsed,
-                        client_node_t *client)
+                      client_node_t *client)
 {
     if (client->stats.action.type == ACTION &&
         ticks_elapsed >= client->stats.action.ticks) {
@@ -31,7 +31,7 @@ static void update_ticks_clients(server_t *server, int ticks_elapsed)
     if (!(client = server->clients.head))
         return;
     for (unsigned int i = 0; i < server->clients.length; i++) {
-        if (client->state != AI)
+        if (client->state == AI)
             update_ai(server, ticks_elapsed, client);
         else {
             handle_client_summon(pop_summon(client), client, server);
