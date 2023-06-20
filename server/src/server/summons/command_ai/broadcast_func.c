@@ -80,9 +80,8 @@ static void broadcast_message(char *message, clients_t *clients,
                     get_oritation(tmp->stats.pos, client->stats.pos, map_size,
                                 client));
         }
-        if (tmp->state == GUI) {
+        if (tmp->state == GUI)
             dprintf(tmp->cfd, DISPATCH_PBC, client->cfd, message);
-        }
         tmp = tmp->next;
     }
 }
@@ -92,15 +91,18 @@ int broadcast_func(server_t *server, char *args[], client_node_t *client)
     int len_message = get_len(args);
     char *message = malloc(sizeof(char) * (len_message + 1));
 
-    if (!client || !server)
+    if (!client || !server || !message)
         return FAILURE;
-    if (!args || !message)
+    if (!args || array_len(args) < 2) {
+        free(message);
         return set_error(client->cfd, INVALID_ACTION, false);
+    }
     message[len_message] = '\0';
     for (int i = 1; args[i] != NULL; i += 1) {
         message = strcat(message, args[i]);
     }
     broadcast_message(message, &server->clients, client, server->map.size);
     dprintf(client->cfd, BASIC_VALID);
+    free(message);
     return SUCCESS;
 }
