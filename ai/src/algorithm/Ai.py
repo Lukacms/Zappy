@@ -19,7 +19,7 @@ ELEVATION_RITUAL = {
     6: {'player' : 6, 'food' : 7, 'linemate' : 1, 'deraumere' : 2, 'sibur' : 3, 'phiras' : 1},
     7: {'player' : 6, 'food' : 7, 'linemate' : 2, 'deraumere' : 2, 'sibur' : 2, 'mendiane' : 2, 'phiras' : 2, 'thystame' : 1},
     }
-ITEM_VALUE = {'player' : -100, 'food' : 3, 'linemate' : 1, 'deraumere' : 2, 'sibur' : 3, 'mendiane' : 4, 'phiras' : 5, 'thystame' : 6}
+ITEM_VALUE = {'player' : -5, 'food' : 3, 'linemate' : 1, 'deraumere' : 2, 'sibur' : 3, 'mendiane' : 4, 'phiras' : 5, 'thystame' : 6}
 BUFFER_SIZE = 4096
 
 class Artifical_intelligence():
@@ -44,6 +44,8 @@ class Artifical_intelligence():
         self.nb_player_ready_to_incantation = 0
 
     def object_needed(self, value) -> bool:
+        if self.look[value].count("player") > 2:
+            return False
         for item in ELEVATION_RITUAL[self.level].keys():
             if "player" not in item and \
                 item in self.look[value] and \
@@ -105,14 +107,6 @@ class Artifical_intelligence():
             self.prog_action.append("Forward\n")
             return
 
-    # def ready_for_bigger_incantation(self) -> bool:
-    #     if self.level == 4 and self.self.nb_player_ready_to_incantation == 4:
-    #         self.incantation_lvl_4 == True
-    #         return True
-    #     if self.level == 5 and self.self.nb_player_ready_to_incantation == 6:
-    #         self.incantation_lvl_6 == True
-    #         return True
-
     def check_if_evolution(self) -> bool:
         if self.miam == False:
             return False
@@ -134,29 +128,10 @@ class Artifical_intelligence():
         if self.look[0].count("player") < ELEVATION_RITUAL[self.level]["player"] and self.level > 3 and random.randint(1, 10) >= (self.level + 3) and self.delay_broadcast == 0:
           self.prog_action.append(self.commands.broadcast(self.team_name ,"evolution" + str(self.level)))
           return True
-        # elif:
-        #     if (self.track_player() == False):
-        #        self.prog_action.append("Forward")
-        #     return True
-        # if self.look[0].count("player") < ELEVATION_RITUAL[self.level]["player"] and self.delay_broadcast == 0:
-            #if random.randint(1, 16) >= self.level * 2:
-            # self.prog_action.append(self.commands.broadcast(self.team_name ,"evolution" + str(self.level)))
-            # return True
-            #else:
-            #   self.value_up_to_date = False
-            #   return False
-        # elif self.ready_for_bigger_incantation() == True:
-        #     self.track_player()
-        #     return True
-        # if self.look[0].count("player") < ELEVATION_RITUAL[self.level]["player"]:
-        #     self.nb_broadcast += 1
-        #     print(f"nb broad: {self.nb_broadcast}")
-        #     return False
         for item in ELEVATION_RITUAL[self.level].keys():
             if "food" not in item and "player" not in item and self.inventory[item] >= ELEVATION_RITUAL[self.level][item]:
                 for _ in range(ELEVATION_RITUAL[self.level][item]):
                     self.prog_action.append(self.commands.set_object(item))
-        print(self.look[0].count("player"))
         self.prog_action.append("Incantation")
         return True
 
@@ -189,7 +164,7 @@ class Artifical_intelligence():
         max_tile = 0
         value = 0
         value_tmp = 0
-        for tile in range(1, len(self.look)):
+        for tile in range(len(self.look)):
             if (self.object_needed(tile) == True):
                 return self.go_track_obj(tile, x, y)
             value_tmp = 0
