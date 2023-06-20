@@ -247,3 +247,8 @@ void zappy::PlayerManager::verifySounds()
             iterator++;
     }
 }
+
+std::vector<zappy::Player> &zappy::PlayerManager::getPlayers()
+{
+    return m_players;
+}

@@ -72,10 +72,10 @@ namespace zappy
             void servorMsg(Smg &message);
 
         private:
+            zappy::PlayerManager m_player_manager;
             zappy::HUD m_hud;
             zappy::Map m_map;
             zappy::Camera m_camera;
-            zappy::PlayerManager m_player_manager;
             zappy::MusicManager &m_music_manager;
             zappy::WeatherManager m_weather;
 

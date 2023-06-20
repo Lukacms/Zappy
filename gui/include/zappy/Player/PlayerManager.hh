@@ -51,7 +51,9 @@ namespace zappy
             void deletePlayers();
             void startIncantation(Pic &incantation);
             void endIncantation(Pie &end);
+
             [[nodiscard]] Player &getSelectedPlayer();
+            [[nodiscard]] std::vector<Player> &getPlayers();
 
         private:
             void depthManager();

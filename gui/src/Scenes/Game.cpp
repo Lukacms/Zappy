@@ -17,7 +17,7 @@
 
 // Constructor && Destructor
 
-zappy::Game::Game(zappy::MusicManager &music_manager) : m_music_manager{music_manager}
+zappy::Game::Game(zappy::MusicManager &music_manager) : m_hud{m_player_manager.getPlayers()}, m_music_manager{music_manager}
 {
     m_texture.loadFromFile(GAME_TEXTURE.data());
 }
@@ -136,6 +136,6 @@ void zappy::Game::playerEggConnect(Ebo &egg_selected)
     m_egg_manager.eggHatch(egg_selected);
 }
 
-void zappy::Game::eggGoingLayed(Pkf &player_layer)
+void zappy::Game::eggGoingLayed([[maybe_unused]] Pkf &player_layer)
 {
 }

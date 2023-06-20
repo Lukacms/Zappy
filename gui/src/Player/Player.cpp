@@ -59,20 +59,12 @@ void zappy::Player::drawPlayer(sf::RenderWindow &window, sf::Sprite &sprite, sf:
 
 void zappy::Player::movePlayer(int pos_x, int pos_y, Orientation orientation)
 {
-    int tmp_x = m_position.x - pos_x;
-    int tmp_y = m_position.y - pos_y;
     m_orientation = orientation;
     m_position.x = pos_x;
     m_position.y = pos_y;
 
-    if (tmp_x == -1 || tmp_x > 1)
-        m_remain = {-80, 0};
-    if (tmp_x == 1 || tmp_x < -1)
-        m_remain = {80, 0};
-    if (tmp_y == -1 || tmp_y > 1)
-        m_remain = {0, -80};
-    if (tmp_y == 1 || tmp_y < -1)
-        m_remain = {0, 80};
+    m_position_map.x = m_position.x * TILE_SIZE * SCALING + (TILE_SIZE * SCALING / 2);
+    m_position_map.y = m_position.y * TILE_SIZE * SCALING + (TILE_SIZE * SCALING / 2);
 }
 
 void zappy::Player::animatePlayer(sf::Vector2i &size)

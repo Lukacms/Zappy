@@ -28,7 +28,7 @@
 
 // Constructor && Destructor
 
-zappy::HUD::HUD()
+zappy::HUD::HUD(std::vector<zappy::Player> &players) : m_selection_panel{players}
 {
     m_font.loadFromFile(MAIN_FONT.data());
     m_color = sf::Color{255, 255, 255, 255};
@@ -52,8 +52,11 @@ void zappy::HUD::draw(sf::RenderWindow &window, sf::Sprite &sprite)
     window.setView(m_hud_view);
     m_frequency_panel.draw(window, m_text);
     animateHUD();
+    if (m_selection_panel.isPlayerSelected())
+        setFocusedPlayer(m_selection_panel.getSelectedPlayer());
     drawSprites(window, sprite);
     drawTexts(window);
+    m_selection_panel.draw(window, sprite, m_text);
     sprite.setColor({255, 255, 255, 255});
     window.setView(world_view);
 }
@@ -124,7 +127,7 @@ void zappy::HUD::animateRupees()
 
 void zappy::HUD::turnHUD(bool status1, bool status2)
 {
-    m_is_active = status1 || status2;
+    m_is_active = status1 || status2 || m_selection_panel.isPlayerSelected();
 }
 
 void zappy::HUD::eventManager(sf::Event &event, sf::RenderWindow &window,
@@ -136,6 +139,7 @@ void zappy::HUD::eventManager(sf::Event &event, sf::RenderWindow &window,
     if (event.type == sf::Event::MouseMoved)
         m_is_faded = m_parchment.m_box.contains(point);
     m_frequency_panel.manageEvent(window, m_hud_view, event, command_to_send);
+    m_selection_panel.manageEvent(window, event);
 }
 
 void zappy::HUD::initializeParchment()
@@ -303,6 +307,7 @@ void zappy::HUD::drawTexts(sf::RenderWindow &window)
         text.m_box = m_text.getGlobalBounds();
         window.draw(m_text);
     }
+    window.setView(m_hud_view);
 }
 
 void zappy::HUD::initializeBroadcastView()
