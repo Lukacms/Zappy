@@ -7,10 +7,10 @@
 
 import socket
 import random
+from time import sleep
 from ai.src.client.Commands import Commands
 
 RESOURCES = ['food', 'linemate', 'deraumere', 'sibur', 'mendiane', 'phiras', 'thystame']
-
 ELEVATION_RITUAL = {
     1: {'player' : 1, 'food' : 7, 'linemate' : 1},
     2: {'player' : 2, 'food' : 7, 'linemate' : 1, 'deraumere' : 1, 'sibur' : 1},
@@ -156,7 +156,7 @@ class Artifical_intelligence():
         max_tile = 0
         value = 0
         value_tmp = 0
-        for tile in range(len(self.look)):
+        for tile in range(1, len(self.look)):
             if (self.object_needed(tile) == True):
                 return self.go_track_obj(tile, x, y)
             value_tmp = 0
@@ -193,10 +193,8 @@ class Artifical_intelligence():
 
     def check_if_alone(self, tile) -> bool:
         if "player" in self.look[tile]:
-            self.alone_on_tile = True
-        else:
-            self.alone_on_tile = False
-        return self.alone_on_tile
+            return True
+        return False
 
     def go_track_player(self, tile, x, y) -> None:
         print("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU")
@@ -220,7 +218,7 @@ class Artifical_intelligence():
             return
 
     def requirements_analysis(self) -> None:
-        if (random.randint(1, 10) >= 10 and self.level == 2):
+        if (random.randint(1, 10) >= 9 and self.level == 1):
             self.prog_action.append("Fork")
             self.fork = 1
             return
@@ -263,7 +261,7 @@ class Artifical_intelligence():
                 else:
                     print("~~~~~~~~~~~~~~~~~~~~~~~~~")
                     if self.track_player() == False:
-                        self.track_obj_set()
+                        self.prog_action.append("Forward")
                 self.value_up_to_date = False
             else:
                 self.prog_action.append("Inventory")
@@ -271,9 +269,8 @@ class Artifical_intelligence():
                 self.value_up_to_date = True
         print("-------------------------")
         self.action_to_do = self.prog_action[0]
-        if "Forward" in self.action_to_do:
-            self.prog_action.append("Look")
-        else:
-            self.prog_action = self.prog_action[1:]
+        self.prog_action = self.prog_action[1:]
+        if "Broadcast" in self.action_to_do:
+            sleep(0.2)
         self.previous_action = self.action_to_do
         print("action to do: ", self.action_to_do)
