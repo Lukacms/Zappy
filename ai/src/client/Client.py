@@ -54,11 +54,8 @@ class Client():
     def get_broadcast_in_my_team(self, cord: int, message: str):
         if int(message[-1]) != self.ai.level:
             return
-        if "evolution" in message and \
-            int(message[-1]) == self.ai.level and \
-                self.ai.miam == True and \
-                    self.ai.go_levelup == False:
-            self.ai.turn_to_broadcast(socket, cord)
+        if "evolution" in message and int(message[-1]) == self.ai.level and self.ai.miam == True and self.ai.go_levelup == False:
+            self.ai.turn_to_broadcast(cord)
             return
 
     def parse_response(self, response: str):
@@ -67,31 +64,30 @@ class Client():
             self.ai.actif = True
             return
         elif "dead" in response:
-            print("Death of player number: ", self.client_num)
+            print("Death of player number: ")
             self.close()
             exit(EPITECH_SUCCESS)
         elif "Current level:" in response:
-            self.stay = False
             self.ai.actif = True
             self.ai.level = int(response.split(':')[1].strip().split('\n')[0])
             return
         elif "Elevation underway" in response:
-            self.stay = True
             self.ai.actif = False
             return
         elif response.isdigit() == True:
-            self.ai.commands.nb_player_in_team(response, self.ai.nb_player, self.ai.value_up_to_date)
+            self.ai.commands.nb_player_in_team(response, self.ai.nb_player)
             self.ai.actif = True
             return
         elif response.startswith("["):
             if (response[7].isdigit() == True):
                 self.ai.commands.parse_inventory(response, self.ai.inventory)
+                self.ai.value_up_to_date = True
             else:
                 self.ai.commands.parse_look(response, self.ai.look)
-                self.ai.check_if_evolution()
+                # self.ai.check_if_evolution()
             self.ai.actif = True
             return
-        elif "message" in response and "not my team" not in get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()):
+        elif "message" in response:
             self.last_message = response
             self.get_broadcast_in_my_team(int(response.split(' ')[1][0]), get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()))
             return
@@ -100,21 +96,23 @@ class Client():
         elif self.init_condition == False:
             self.init_condition = True
             self.ai.actif = True
-            print(f"init_condition: {self.init_condition}")
-            print(f"ai.actif: {self.ai.actif}")
             return
         return
 
     def launcher(self):
-        tab_data = []
+        data_array = []
+        recieve_data = ""
         try:
             while True:
                 event = self.selectors.select(timeout=None)
                 for _, mask in event:
                     if mask & selectors.EVENT_READ:
-                        tab_data = self.socket.recv(BUFFER_SIZE).decode(UNICODE).split("\n")
-                        for recieve_data in tab_data:
-                            if recieve_data.strip() in self.last_message or recieve_data == "":
+                        data_array = self.socket.recv(BUFFER_SIZE).decode(UNICODE).split("\n")
+                        for recieve_data in data_array:
+                            if recieve_data == "":
+                                continue
+                            if recieve_data.strip() in self.last_message and self.last_message != "":
+                                self.ai.algo()
                                 continue
                             print("\nEVENT READ")
                             print(f"recieve_data: {recieve_data}")
@@ -130,7 +128,13 @@ class Client():
                             self.socket.sendall((self.ai.action_to_do + "\n").encode())
                             print(f"send data: {self.ai.action_to_do}")
                             if "Broadcast" in self.ai.action_to_do:
-                                sleep(0.08)
+                                sleep(0.25)
+                            if self.ai.nb_broadcast > 4:
+                                self.ai.delay_broadcast += 1
+                                print(f"delay broad: {self.ai.nb_broadcast}")
+                            if self.ai.delay_broadcast >= 20:
+                                self.ai.nb_broadcast = 0
+                                self.ai.delay_broadcast = 0
                             self.ai.action_to_do = ""
                             self.ai.actif = False
 

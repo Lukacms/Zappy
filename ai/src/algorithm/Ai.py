@@ -7,7 +7,6 @@
 
 import socket
 import random
-from time import sleep
 from ai.src.client.Commands import Commands
 
 RESOURCES = ['food', 'linemate', 'deraumere', 'sibur', 'mendiane', 'phiras', 'thystame']
@@ -20,7 +19,7 @@ ELEVATION_RITUAL = {
     6: {'player' : 6, 'food' : 7, 'linemate' : 1, 'deraumere' : 2, 'sibur' : 3, 'phiras' : 1},
     7: {'player' : 6, 'food' : 7, 'linemate' : 2, 'deraumere' : 2, 'sibur' : 2, 'mendiane' : 2, 'phiras' : 2, 'thystame' : 1},
     }
-ITEM_VALUE = {'player' : -5, 'food' : 3, 'linemate' : 1, 'deraumere' : 2, 'sibur' : 3, 'mendiane' : 4, 'phiras' : 5, 'thystame' : 6}
+ITEM_VALUE = {'player' : -100, 'food' : 3, 'linemate' : 1, 'deraumere' : 2, 'sibur' : 3, 'mendiane' : 4, 'phiras' : 5, 'thystame' : 6}
 BUFFER_SIZE = 4096
 
 class Artifical_intelligence():
@@ -40,11 +39,14 @@ class Artifical_intelligence():
         self.prog_action = []
         self.commands = Commands()
         self.last_message = ""
+        self.nb_broadcast = 0
+        self.delay_broadcast = 0
+        self.nb_player_ready_to_incantation = 0
 
     def object_needed(self, value) -> bool:
         for item in ELEVATION_RITUAL[self.level].keys():
             if "player" not in item and \
-            item in self.look[value] and \
+                item in self.look[value] and \
                 self.inventory[item] < ELEVATION_RITUAL[self.level][item]:
                 return True
         return False
@@ -55,7 +57,7 @@ class Artifical_intelligence():
                 self.prog_action.append(self.commands.take_object(item))
         return True
 
-    def turn_to_broadcast(self, socket, direction: int):
+    def turn_to_broadcast(self, direction: int):
         self.prog_action = []
         self.look = {}
         self.go_levelup = True
@@ -103,6 +105,14 @@ class Artifical_intelligence():
             self.prog_action.append("Forward\n")
             return
 
+    # def ready_for_bigger_incantation(self) -> bool:
+    #     if self.level == 4 and self.self.nb_player_ready_to_incantation == 4:
+    #         self.incantation_lvl_4 == True
+    #         return True
+    #     if self.level == 5 and self.self.nb_player_ready_to_incantation == 6:
+    #         self.incantation_lvl_6 == True
+    #         return True
+
     def check_if_evolution(self) -> bool:
         if self.miam == False:
             return False
@@ -116,21 +126,44 @@ class Artifical_intelligence():
             return False
         self.mentor = True
         if self.look[0].count("player") < ELEVATION_RITUAL[self.level]["player"]:
-            self.prog_action.append(self.commands.broadcast(self.team_name ,"evolution" + str(self.level)))
-            return True
+            self.nb_broadcast += 1
+            print(f"nb broad: {self.nb_broadcast}")
+        if self.look[0].count("player") < ELEVATION_RITUAL[self.level]["player"] and self.delay_broadcast == 0 and self.level < 4:
+          self.prog_action.append(self.commands.broadcast(self.team_name ,"evolution" + str(self.level)))
+          return True
+        if self.look[0].count("player") < ELEVATION_RITUAL[self.level]["player"] and self.level > 3 and random.randint(1, 10) >= (self.level + 3) and self.delay_broadcast == 0:
+          self.prog_action.append(self.commands.broadcast(self.team_name ,"evolution" + str(self.level)))
+          return True
+        # elif:
+        #     if (self.track_player() == False):
+        #        self.prog_action.append("Forward")
+        #     return True
+        # if self.look[0].count("player") < ELEVATION_RITUAL[self.level]["player"] and self.delay_broadcast == 0:
+            #if random.randint(1, 16) >= self.level * 2:
+            # self.prog_action.append(self.commands.broadcast(self.team_name ,"evolution" + str(self.level)))
+            # return True
+            #else:
+            #   self.value_up_to_date = False
+            #   return False
+        # elif self.ready_for_bigger_incantation() == True:
+        #     self.track_player()
+        #     return True
+        # if self.look[0].count("player") < ELEVATION_RITUAL[self.level]["player"]:
+        #     self.nb_broadcast += 1
+        #     print(f"nb broad: {self.nb_broadcast}")
+        #     return False
         for item in ELEVATION_RITUAL[self.level].keys():
-            if "food" not in item and \
-                "player" not in item and \
-                    self.inventory[item] >= ELEVATION_RITUAL[self.level][item]:
+            if "food" not in item and "player" not in item and self.inventory[item] >= ELEVATION_RITUAL[self.level][item]:
                 for _ in range(ELEVATION_RITUAL[self.level][item]):
                     self.prog_action.append(self.commands.set_object(item))
+        print(self.look[0].count("player"))
         self.prog_action.append("Incantation")
         return True
 
     def go_track_obj(self, tile, x, y) -> bool:
-        print("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM")
+        print("********** TRACK OBJ *********")
         for _ in range(y):
-            print("Forward")
+            print(f"Forward")
             self.prog_action.append("Forward\n")
         if (x < 0):
             print("LEFT")
@@ -182,7 +215,7 @@ class Artifical_intelligence():
         x = 0
         for tile in range(1, len(self.look)):
             if (self.check_if_alone(tile) == True):
-                self.go_track_player(tile, x, y)
+                self.go_track_player(x, y)
                 return True
             if (y == x):
                 y += 1
@@ -196,8 +229,8 @@ class Artifical_intelligence():
             return True
         return False
 
-    def go_track_player(self, tile, x, y) -> None:
-        print("UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU")
+    def go_track_player(self, x, y) -> None:
+        print("********** TRACK PLAYER *********")
         for _ in range(y):
             print("Forward")
             self.prog_action.append("Forward\n")
@@ -215,7 +248,7 @@ class Artifical_intelligence():
             for _ in range(x):
                 print("Forward")
                 self.prog_action.append("Forward\n")
-            return
+        return
 
     def requirements_analysis(self) -> None:
         if (random.randint(1, 10) >= 9 and self.level == 1):
@@ -248,36 +281,22 @@ class Artifical_intelligence():
             self.last_message = ""
             self.go_levelup = False
             if self.value_up_to_date == True:
-                if (self.inventory["food"] < 6):
+                if (self.inventory["food"] < 8):
                     self.miam = False
-                if (self.inventory["food"] > 9):
+                if (self.inventory["food"] > 11):
                     self.miam = True
                 if self.miam == False:
-                    print("$$$$$$$$$$$$$$$$$$$$$$$$$")
                     self.requirements_analysis()
-                elif (self.check_if_evolution() == False):
-                    print("+++++++++++++++++++++++++")
+                if (self.check_if_evolution() == False):
                     self.requirements_analysis()
-                else:
-                    print("~~~~~~~~~~~~~~~~~~~~~~~~~")
-                    if self.track_player() == False:
-                        self.prog_action.append("Forward")
+                elif (self.track_player() == False):
+                    self.prog_action.append("Forward")
                 self.value_up_to_date = False
             else:
-                self.prog_action.append("Inventory")
                 self.prog_action.append("Look")
-                self.value_up_to_date = True
-        print("-------------------------")
-        self.action_to_do = self.prog_action[0]
-<<<<<<< Updated upstream
-        self.prog_action = self.prog_action[1:]
-        if "Broadcast" in self.action_to_do:
-            sleep(0.2)
-=======
-        if "Forward" in self.action_to_do:
-            self.prog_action[0] = "Look"
-        else:
+                self.prog_action.append("Inventory")
+        if (self.prog_action != []):
+            self.action_to_do = self.prog_action[0]
             self.prog_action = self.prog_action[1:]
->>>>>>> Stashed changes
-        self.previous_action = self.action_to_do
-        print("action to do: ", self.action_to_do)
+            self.previous_action = self.action_to_do
+            print("action to do: ", self.action_to_do)
