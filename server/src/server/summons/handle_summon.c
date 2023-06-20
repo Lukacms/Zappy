@@ -30,8 +30,7 @@ static int set_client_state(char *cmd, client_node_t *client, server_t *server)
     return status;
 }
 
-static int handle_client_summon(char *cmd, client_node_t *client,
-                                server_t *server)
+int handle_client_summon(char *cmd, client_node_t *client, server_t *server)
 {
     if (!cmd)
         return SUCCESS;
@@ -47,8 +46,6 @@ int handle_summon(server_t *server, int cfd)
     if (!server || cfd <= 0 || !(client = find_client_by_fd(cfd, server)))
         return FAILURE;
     if (get_summon(server, client) != SUCCESS)
-        return SUCCESS;
-    if (client->stats.action.type == NOTHING)
-        return handle_client_summon(pop_summon(client), client, server);
+        return FAILURE;
     return SUCCESS;
 }

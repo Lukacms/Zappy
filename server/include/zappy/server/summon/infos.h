@@ -79,8 +79,8 @@
     "pin %d %zu %zu %zd %zd %zd %zd %zd %zd %zd\n" // player's inventory
 #define DISPATCH_PEX "pex %d\n"                    // expulsion
 #define DISPATCH_PBC "pbc %d %s\n"                 // broadcast
-#define DISPATCH_PIC "pic %d %d %d %d %d\n"        // start of an incantation
-#define DISPATCH_PIE "pie %d %d %s\n"              // end of an incantation
+#define DISPATCH_PIC "pic %zu %zu %zu %d"          // start of an incantation
+#define DISPATCH_PIE "pie %zu %zu %d\n"            // end of an incantation
 #define DISPATCH_PFK "pfk %d\n"                    // egg laying by the player
 #define DISPATCH_PDR "pdr %d %d\n"                 // resource dropping
 #define DISPATCH_PGT "pgt %d %d\n"                 // resource collecting

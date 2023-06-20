@@ -29,7 +29,7 @@ static void check_orientation(server_t *server, client_node_t *tmp)
 }
 
 static void send_ejected_infos(client_node_t *cli, server_t *server,
-                               orientation_t orientation)
+                                orientation_t orientation)
 {
     char output[BUFFER_SIZE] = {0};
 
@@ -39,32 +39,35 @@ static void send_ejected_infos(client_node_t *cli, server_t *server,
     send_toall_guicli(server, output);
 }
 
-static void send_ejecter_infos(client_node_t *client, server_t *server)
+static int send_ejecter_infos(client_node_t *client, server_t *server, int ind)
 {
     char output[BUFFER_SIZE] = {0};
 
     sprintf(output, DISPATCH_PEX, client->cfd);
     send_toall_guicli(server, output);
+    dprintf(client->cfd, ind > 0 ? BASIC_VALID : INVALID_ACTION);
+    return SUCCESS;
 }
 
 int eject_func(server_t *server, char *args[], client_node_t *client)
 {
     client_node_t *tmp = NULL;
+    int ejected_players = 0;
 
     if (!server || !client)
         return FAILURE;
-    if (!args || array_len(args) != 2 || !(tmp = server->clients.head))
+    if (!args || array_len(args) != 1 || !(tmp = server->clients.head))
         return set_error(client->cfd, INVALID_ACTION, false);
-    send_ejecter_infos(client, server);
     for (unsigned int ind = 0; ind < server->clients.length; ind++) {
         if (same_tile(tmp->stats.pos, client->stats.pos) &&
             strcmp(tmp->uuid, client->uuid) != SUCCESS) {
             check_orientation(server, tmp);
             send_ejected_infos(tmp, server, client->stats.orientation);
+            ejected_players++;
         }
         tmp = tmp->next;
     }
     delete_eggs_from_tile(server, client->stats.pos);
     add_ticks_occupied(client, RESTRAINT_EJECT, server);
-    return SUCCESS;
+    return send_ejecter_infos(client, server, ejected_players);
 }

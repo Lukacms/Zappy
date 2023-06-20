@@ -29,7 +29,6 @@ void dprint_tile(map_t map, ssize_t cord_x, ssize_t cord_y,
 
     if (!client)
         return;
-    dprintf(client->cfd, "{%zu,%zu}\n", x, y);
     for (ssize_t user = array_len(map.tiles[y][x].players_uuid); user > 0;
             user -= 1)
         dprintf(client->cfd, " player");

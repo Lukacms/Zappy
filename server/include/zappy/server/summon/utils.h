@@ -13,6 +13,7 @@ int add_summon(char *, client_node_t *);
 char *pop_summon(client_node_t *);
 int get_summon(server_t *, client_node_t *);
 int handle_summon(server_t *, int cfd);
+int handle_client_summon(char *cmd, client_node_t *client, server_t *server);
 
 int send_toall_guicli(server_t *, char *str, ...);
 void dprint_tile(map_t, ssize_t, ssize_t, client_node_t *);

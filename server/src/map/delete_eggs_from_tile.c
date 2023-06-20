@@ -14,6 +14,8 @@ int delete_eggs_from_tile(server_t *server, vector2i_t pos)
 {
     if (!server)
         return FAILURE;
+    if (!server->map.tiles[pos.y][pos.x].eggs)
+        return SUCCESS;
     for (u_int i = 0; server->map.tiles[pos.y][pos.x].eggs[i]; i++) {
         delete_egg_from_team(server, server->map.tiles[pos.y][pos.x].eggs[i]);
     }
