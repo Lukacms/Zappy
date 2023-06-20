@@ -46,6 +46,18 @@ static void in_incantation(server_t *s, client_node_t *c)
     finish_start_incant(s, c, output, offset);
 }
 
+static int failed_incantation(server_t *server, client_node_t *client)
+{
+    char output[BUFFER_SIZE] = {0};
+
+    add_ticks_occupied(client, RESTRAINT_INCANTATION, server);
+    client->stats.action.type = INCANTATION;
+    sprintf(output, "pic %zu %zu %zu %d\n", client->stats.pos.x,
+            client->stats.pos.y, client->stats.level, client->cfd);
+    send_toall_guicli(server, output);
+    return FAILURE;
+}
+
 int incantation_func(server_t *server, char *args[], client_node_t *client)
 {
     if (!server || !client)
@@ -57,5 +69,5 @@ int incantation_func(server_t *server, char *args[], client_node_t *client)
         in_incantation(server, client);
         return SUCCESS;
     }
-    return set_error(client->cfd, INVALID_ACTION, false);
+    return failed_incantation(server, client);
 }

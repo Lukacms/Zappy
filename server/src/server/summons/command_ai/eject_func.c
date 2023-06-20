@@ -19,7 +19,7 @@ bool same_tile(vector2i_t a, vector2i_t b)
 }
 
 static void check_orientation(server_t *server, client_node_t *tmp,
-                              client_node_t *client)
+                                client_node_t *client)
 {
     switch (client->stats.orientation) {
         case NORTH: forward_north(server, tmp); break;
@@ -30,7 +30,7 @@ static void check_orientation(server_t *server, client_node_t *tmp,
 }
 
 static void send_ejected_infos(client_node_t *cli, server_t *server,
-                               orientation_t orientation)
+                                orientation_t orientation)
 {
     char output[BUFFER_SIZE] = {0};
 
