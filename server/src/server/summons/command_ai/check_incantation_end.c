@@ -15,7 +15,7 @@ static void stop_incantation(server_t *server, client_node_t *client)
     client_node_t *node = NULL;
     int idx = (INCANTATION_MANDATORY[client->stats.level - 1][0] - CHAR_INT);
     char **clients = server->map.tiles[client->stats.pos.x][client->stats.pos.y]
-                         .players_uuid;
+        .players_uuid;
     char output[BUFFER_SIZE] = {0};
 
     for (int i = 0; clients[i] != NULL && idx > 0; i += 1) {
