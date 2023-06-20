@@ -180,7 +180,7 @@ class Artifical_intelligence():
     def track_player(self) -> bool:
         y = 0
         x = 0
-        for tile in range(len(self.look)):
+        for tile in range(1, len(self.look)):
             if (self.check_if_alone(tile) == True):
                 self.go_track_player(tile, x, y)
                 return True
@@ -269,8 +269,15 @@ class Artifical_intelligence():
                 self.value_up_to_date = True
         print("-------------------------")
         self.action_to_do = self.prog_action[0]
+<<<<<<< Updated upstream
         self.prog_action = self.prog_action[1:]
         if "Broadcast" in self.action_to_do:
             sleep(0.2)
+=======
+        if "Forward" in self.action_to_do:
+            self.prog_action[0] = "Look"
+        else:
+            self.prog_action = self.prog_action[1:]
+>>>>>>> Stashed changes
         self.previous_action = self.action_to_do
         print("action to do: ", self.action_to_do)

@@ -8,6 +8,7 @@
 from sys import exit
 import socket
 import selectors
+from time import sleep
 from socket import AF_INET, SOCK_STREAM
 from ai.src.algorithm.Ai import Artifical_intelligence
 from ai.src.broadcast.broadcast import get_broadcast_by_team
@@ -87,6 +88,7 @@ class Client():
                 self.ai.commands.parse_inventory(response, self.ai.inventory)
             else:
                 self.ai.commands.parse_look(response, self.ai.look)
+                self.ai.check_if_evolution()
             self.ai.actif = True
             return
         elif "message" in response and "not my team" not in get_broadcast_by_team(int(self.ai.team_name.split('m')[1]), response.split(',')[1].strip()):
@@ -127,6 +129,8 @@ class Client():
                                 self.init_condition == True
                             self.socket.sendall((self.ai.action_to_do + "\n").encode())
                             print(f"send data: {self.ai.action_to_do}")
+                            if "Broadcast" in self.ai.action_to_do:
+                                sleep(0.08)
                             self.ai.action_to_do = ""
                             self.ai.actif = False
 
