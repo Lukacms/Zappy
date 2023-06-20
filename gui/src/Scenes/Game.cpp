@@ -8,6 +8,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <vector>
 #include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/Map/Map.hh>
 #include <zappy/MusicManager/MusicManager.hh>
@@ -16,7 +17,7 @@
 
 // Constructor && Destructor
 
-zappy::Game::Game(zappy::MusicManager &music_manager) : m_music_manager{music_manager}
+zappy::Game::Game(zappy::MusicManager &music_manager) : m_hud{m_player_manager.getPlayers()}, m_music_manager{music_manager}
 {
     m_texture.loadFromFile(GAME_TEXTURE.data());
 }
@@ -37,14 +38,15 @@ void zappy::Game::draw(sf::RenderWindow &window)
 }
 
 void zappy::Game::manageEvent(sf::RenderWindow &window, sf::Event &event,
-                              std::string &command_to_send)
+                              std::vector<std::string> &command_to_send)
 {
-    bool is_player_selected = m_player_manager.selectPlayer(event, window);
+    bool is_player_selected = m_player_manager.selectPlayer(event, window, command_to_send);
     bool is_tile_selected = m_map.selectTile(event, window);
 
     m_camera.cameraOnKeyPressed(event);
     m_camera.cameraOnKeyReleased(event);
     m_camera.moveView(window);
+
     m_hud.eventManager(event, window, command_to_send);
     m_hud.turnHUD(is_player_selected, is_tile_selected);
     if (is_tile_selected)
@@ -134,6 +136,6 @@ void zappy::Game::playerEggConnect(Ebo &egg_selected)
     m_egg_manager.eggHatch(egg_selected);
 }
 
-void zappy::Game::eggGoingLayed(Pkf &player_layer)
+void zappy::Game::eggGoingLayed([[maybe_unused]] Pkf &player_layer)
 {
 }

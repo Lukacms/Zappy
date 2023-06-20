@@ -14,6 +14,7 @@
 #include <SFML/Window/Event.hpp>
 #include <array>
 #include <cstddef>
+#include <vector>
 #include <zappy/HUD/TextButton.hh>
 #include <zappy/Map/Tile.hh>
 
@@ -33,17 +34,17 @@ namespace zappy
 
             void draw(sf::RenderWindow &window, sf::Text &text);
             void manageEvent(sf::RenderWindow &window, sf::View &view, sf::Event &event,
-                             std::string &command_to_send);
+                             std::vector<std::string> &command_to_send);
 
         private:
             void setPosition(sf::RenderWindow &window);
             void setBox(sf::Text &text);
 
-            sf::RectangleShape m_shape;
+            sf::RectangleShape m_shape{};
             sf::Color m_color{31, 31, 31};
 
-            std::vector<zappy::TextButton> m_buttons;
-            std::array<Text, 4> m_texts;
+            std::vector<zappy::TextButton> m_buttons{};
+            std::array<Text, 4> m_texts{};
             size_t m_frequency_index = 1;
             size_t m_old_index = 1;
     };

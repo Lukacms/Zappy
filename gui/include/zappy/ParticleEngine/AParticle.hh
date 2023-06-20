@@ -6,7 +6,6 @@
 */
 
 #pragma once
-
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Vector2.hpp>
@@ -33,8 +32,8 @@ namespace zappy
         protected:
             virtual void resetPosition();
 
-            sf::RectangleShape m_shape;
-            sf::Vector2f m_velocity;
+            sf::RectangleShape m_shape{};
+            sf::Vector2f m_velocity{};
             bool m_delete = false;
             bool m_must_be_delete = false;
     };

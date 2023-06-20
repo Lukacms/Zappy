@@ -46,7 +46,7 @@ void zappy::Victory::setVictoryTeam(const std::string &name)
 }
 
 void zappy::Victory::manageEvent(sf::RenderWindow &window, sf::Event &event,
-                                 [[maybe_unused]] std::string &command_to_send)
+                                 [[maybe_unused]] std::vector<std::string> &command_to_send)
 {
     if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
         window.close();

@@ -64,19 +64,20 @@ namespace zappy
             [[nodiscard]] sf::FloatRect getColliderBox() const;
             [[nodiscard]] const std::string &getTeam() const;
             [[nodiscard]] int getLevel() const;
+            [[nodiscard]] bool getDeathStatus() const;
 
         private:
-            int m_id;
-            int m_level;
-            Orientation m_orientation;
-            sf::Clock m_clock;
-            sf::Vector2i m_position;
-            sf::Vector2f m_remain;
-            sf::Vector2f m_position_map;
-            sf::IntRect m_rect;
-            sf::FloatRect m_box;
-            Inventory m_inventory;
-            std::string m_team;
+            int m_id{};
+            int m_level{};
+            Orientation m_orientation{};
+            sf::Clock m_clock{};
+            sf::Vector2i m_position{};
+            sf::Vector2f m_remain{};
+            sf::Vector2f m_position_map{};
+            sf::IntRect m_rect{};
+            sf::FloatRect m_box{};
+            Inventory m_inventory{};
+            std::string m_team{};
             void animateNorth(sf::Vector2i &size);
             void animateEast(sf::Vector2i &size);
             void animateSouth(sf::Vector2i &size);
@@ -98,7 +99,7 @@ namespace zappy
             bool m_expulse = false;
             bool m_elevate = false;
 
-            sf::Clock m_clock_selected;
+            sf::Clock m_clock_selected{};
             sf::Color m_color = {255, 255, 255};
     };
 } // namespace zappy

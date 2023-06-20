@@ -14,6 +14,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <string_view>
+#include <vector>
 #include <zappy/MusicManager/MusicManager.hh>
 #include <zappy/Scenes/AScene.hh>
 
@@ -37,7 +38,7 @@ namespace zappy
             void setVictoryTeam(const std::string &name);
             void draw(sf::RenderWindow &window) override;
             void manageEvent(sf::RenderWindow &window, sf::Event &event,
-                             std::string &command_to_send) override;
+                             std::vector<std::string> &command_to_send) override;
 
         private:
             sf::Font m_font;

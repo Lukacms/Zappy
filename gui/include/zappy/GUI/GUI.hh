@@ -7,13 +7,7 @@
 
 #pragma once
 
-#include <zappy/Scenes/SceneManager.hh>
-#include <zappy/Camera.hh>
-#include <zappy/GuiClient/GuiClient.hpp>
-#include <zappy/HUD/HUD.hh>
-#include <zappy/Scenes/Game.hh>
-#include <zappy/Scenes/IScene.hh>
-#include <zappy/Scenes/Victory.hh>
+#include "zappy/DisconnectPanel/DisconnectPanel.hh"
 #include <SFML/Audio.hpp>
 #include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics.hpp>
@@ -23,7 +17,14 @@
 #include <memory>
 #include <string_view>
 #include <vector>
+#include <zappy/Camera.hh>
+#include <zappy/GuiClient/GuiClient.hpp>
+#include <zappy/HUD/HUD.hh>
 #include <zappy/Map/Map.hh>
+#include <zappy/Scenes/Game.hh>
+#include <zappy/Scenes/IScene.hh>
+#include <zappy/Scenes/SceneManager.hh>
+#include <zappy/Scenes/Victory.hh>
 
 constexpr std::string_view GUI_TITLE{"Zappy Gui"};
 constexpr unsigned int FRAMELIMIT{60};
@@ -53,10 +54,11 @@ namespace zappy
             int start();
 
         private:
-            sf::RenderWindow m_window;
+            sf::RenderWindow m_window{};
 
-            zappy::SceneManager m_scene_manager;
+            zappy::SceneManager m_scene_manager{};
             zappy::Client m_client;
+            zappy::DisconnectPanel m_error_panel{};
     };
 
 } // namespace zappy

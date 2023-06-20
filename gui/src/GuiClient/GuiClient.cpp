@@ -38,15 +38,12 @@ void zappy::Client::sendCommand(const std::string &cmd)
     const char *data_ptr = cmd.c_str();
     std::size_t data_size = cmd.size();
     std::size_t total_sent = 0;
-    sf::Socket::Status send_status;
 
     while (total_sent < data_size) {
         std::size_t sent = 0;
-        send_status = m_socket.send(data_ptr + total_sent, data_size - total_sent, sent);
-        if (send_status == sf::Socket::Error) {
-            std::cerr << "Failed to send data to the server" << std::endl;
+        m_status = m_socket.send(data_ptr + total_sent, data_size - total_sent, sent);
+        if (m_status == sf::Socket::Error || m_status == sf::Socket::Disconnected)
             return;
-        }
         total_sent += sent;
     }
 }
@@ -82,6 +79,8 @@ static std::vector<std::string> parser(const std::string &buff)
 
 static zappy::Packet get_variant(std::vector<std::string> &parsed)
 {
+    if (parsed.empty())
+        return zappy::Packet{zappy::Ukn{}};
     for (size_t i{0}; i < zappy::NB_MAX_CMD; i++) {
         if (parsed[0] == zappy::VARIANT_LIST[i].name)
             return zappy::VARIANT_LIST[i].packet;
@@ -139,7 +138,11 @@ void zappy::Client::applyCommands(zappy::SceneManager &scene_manager, sf::Render
     parsed = parser(str);
     Packet variant = get_variant(parsed);
     auto *game = dynamic_cast<Game *>(scene_manager.getScenes()[1].get());
+    if (!game)
+        throw ZappyException{"dynamic_cast error\n"};
     auto *victory = dynamic_cast<Victory *>(scene_manager.getScenes()[2].get());
+    if (!victory)
+        throw ZappyException{"dynamic_cast error\n"};
     auto visitor = make_lambda_visitor(
         [&](Msz &arg) {
             arg.x_map_size = std::atoi(parsed[1].c_str());
@@ -272,4 +275,9 @@ void zappy::Client::applyCommands(zappy::SceneManager &scene_manager, sf::Render
             // game.servorMsg(arg);
         });
     std::visit(visitor, variant);
+}
+
+sf::Socket::Status zappy::Client::getSocketStatus() const
+{
+    return m_status;
 }

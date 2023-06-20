@@ -5,6 +5,7 @@
 ** SceneManager
 */
 
+#include <cstddef>
 #include <zappy/Scenes/Game.hh>
 #include <zappy/Scenes/SceneManager.hh>
 #include <zappy/Scenes/Victory.hh>
@@ -21,13 +22,13 @@ zappy::SceneManager::SceneManager()
 
 void zappy::SceneManager::draw(sf::RenderWindow &window)
 {
-    m_scenes[m_scene_index]->draw(window);
+    m_scenes[static_cast<size_t>(m_scene_index)]->draw(window);
 }
 
 void zappy::SceneManager::manageEvent(sf::RenderWindow &window, sf::Event &event,
-                                      std::string &command_to_send)
+                                      std::vector<std::string> &command_to_send)
 {
-    m_scenes[m_scene_index]->manageEvent(window, event, command_to_send);
+    m_scenes[static_cast<size_t>(m_scene_index)]->manageEvent(window, event, command_to_send);
 }
 
 std::array<std::unique_ptr<zappy::IScene>, 3> &zappy::SceneManager::getScenes()
@@ -37,5 +38,10 @@ std::array<std::unique_ptr<zappy::IScene>, 3> &zappy::SceneManager::getScenes()
 
 void zappy::SceneManager::changeScene(size_t index)
 {
-    m_scene_index = index;
+    m_scene_index = static_cast<Scene>(index);
+}
+
+size_t zappy::SceneManager::getSceneIndex() const
+{
+    return static_cast<size_t>(m_scene_index);
 }

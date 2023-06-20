@@ -46,7 +46,7 @@ void zappy::EggManager::eggDeath(Edi &egg_infos)
         return;
     if (m_eggs_infos[static_cast<size_t>(index)].is_hatching)
         m_eggs_infos[static_cast<size_t>(index)].is_hatching = false;
-    m_eggs_infos[static_cast<size_t>(egg_infos.egg_number)].is_dead = true;
+    m_eggs_infos[static_cast<size_t>(index)].is_dead = true;
     m_eggs_infos[static_cast<size_t>(index)].rect.left = 304;
 }
 

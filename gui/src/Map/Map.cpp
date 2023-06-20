@@ -71,7 +71,8 @@ bool zappy::Map::selectTile(sf::Event &event, sf::RenderWindow &window)
     const sf::Vector2f point = window.mapPixelToCoords(tmp);
     bool is_touched = false;
 
-    if (event.mouseButton.button == sf::Mouse::Left) {
+    if (event.type == sf::Event::MouseButtonPressed &&
+        event.mouseButton.button == sf::Mouse::Left) {
         for (auto height : m_map) {
             for (auto width : height) {
                 if (width.m_box.contains(point)) {
