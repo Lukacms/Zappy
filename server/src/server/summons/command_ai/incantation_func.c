@@ -51,6 +51,7 @@ static int failed_incantation(server_t *server, client_node_t *client)
     char output[BUFFER_SIZE] = {0};
 
     add_ticks_occupied(client, RESTRAINT_INCANTATION, server);
+    dprintf(client->cfd, INVALID_ACTION, false);
     client->stats.action.type = INCANTATION;
     sprintf(output, "pic %zu %zu %zu %d\n", client->stats.pos.x,
             client->stats.pos.y, client->stats.level, client->cfd);
