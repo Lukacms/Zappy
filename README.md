@@ -70,4 +70,3 @@ Once the project is build, all the executables will be at the root of the projec
 * [Édouard Pradie](https://github.com/EdouardPradie)
 * [Léopold Sallan](https://github.com/sgLeopold)
 * [Ayman Tebini](https://github.com/aymteb)
-* [Nathan Moinard](https://github.com/Ecluvost)
