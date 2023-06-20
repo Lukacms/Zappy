@@ -65,6 +65,10 @@ static int add_client_from_egg(client_node_t *client, server_t *server,
             (*team)->spots_free + (*team)->init_clients, server->map.size.x,
             server->map.size.y);
     send_toall_guicli(server, output);
+    sprintf(output, DISPATCH_PNW, client->cfd, client->stats.pos.x,
+            client->stats.pos.y, client->stats.orientation, client->stats.level,
+            (*team)->team_name);
+    send_toall_guicli(server, output);
     return SUCCESS;
 }
 
