@@ -5,9 +5,6 @@
 ** GUI
 */
 
-#include <zappy/Scenes/IScene.hh>
-#include <zappy/Scenes/SceneManager.hh>
-#include <zappy/Scenes/Victory.hh>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -25,6 +22,9 @@
 #include <zappy/Map/Map.hh>
 #include <zappy/Map/Tile.hh>
 #include <zappy/Scenes/Game.hh>
+#include <zappy/Scenes/IScene.hh>
+#include <zappy/Scenes/SceneManager.hh>
+#include <zappy/Scenes/Victory.hh>
 
 // Constructor && Destructor
 
@@ -58,7 +58,7 @@ int zappy::GUI::start()
 void zappy::GUI::eventManager()
 {
     sf::Event event;
-    std::string command_to_send{};
+    std::vector<std::string> command_to_send{};
 
     while (m_window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
@@ -67,5 +67,6 @@ void zappy::GUI::eventManager()
         m_error_panel.manageEvent(m_window, event);
     }
     if (!command_to_send.empty())
-        m_client.sendCommand(command_to_send);
+        for (std::string str : command_to_send)
+            m_client.sendCommand(str);
 }

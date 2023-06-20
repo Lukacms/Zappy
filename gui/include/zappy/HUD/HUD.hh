@@ -24,6 +24,7 @@
 #include <deque>
 #include <string>
 #include <string_view>
+#include <vector>
 #include <zappy/GuiCommand/GuiCommand.hh>
 #include <zappy/HUD/FrequencyPanel.hh>
 #include <zappy/Map/Tile.hh>
@@ -72,7 +73,7 @@ namespace zappy
             void setFocusedTile(zappy::Tile &tile);
             void setFocusedPlayer(zappy::Player &player);
             void eventManager(sf::Event &event, sf::RenderWindow &window,
-                              std::string &command_to_send);
+                              std::vector<std::string> &command_to_send);
             void turnHUD(bool status1, bool status2);
             void addBroadcast(Pbc &broadcast);
 

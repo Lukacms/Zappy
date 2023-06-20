@@ -14,6 +14,7 @@
 #include <SFML/Window/Event.hpp>
 #include <array>
 #include <cstddef>
+#include <vector>
 #include <zappy/HUD/TextButton.hh>
 #include <zappy/Map/Tile.hh>
 
@@ -33,7 +34,7 @@ namespace zappy
 
             void draw(sf::RenderWindow &window, sf::Text &text);
             void manageEvent(sf::RenderWindow &window, sf::View &view, sf::Event &event,
-                             std::string &command_to_send);
+                             std::vector<std::string> &command_to_send);
 
         private:
             void setPosition(sf::RenderWindow &window);

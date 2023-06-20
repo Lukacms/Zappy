@@ -46,7 +46,8 @@ namespace zappy
             void setMapSize(sf::Vector2i &size);
             void expulsePlayer(Pex &expulsed_player);
             void playerDeath(Pdi &dead_player);
-            bool selectPlayer(sf::Event &event, sf::RenderWindow &window);
+            bool selectPlayer(sf::Event &event, sf::RenderWindow &window,
+                              std::vector<std::string> &command_to_send);
             void deletePlayers();
             void startIncantation(Pic &incantation);
             void endIncantation(Pie &end);

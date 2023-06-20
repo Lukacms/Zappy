@@ -10,6 +10,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Window/Event.hpp>
+#include <vector>
 
 namespace zappy
 {
@@ -27,6 +28,6 @@ namespace zappy
 
             virtual void draw(sf::RenderWindow &window) = 0;
             virtual void manageEvent(sf::RenderWindow &window, sf::Event &event,
-                                     std::string &command_to_send) = 0;
+                                     std::vector<std::string> &command_to_send) = 0;
     };
 } // namespace zappy

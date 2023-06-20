@@ -128,7 +128,7 @@ void zappy::HUD::turnHUD(bool status1, bool status2)
 }
 
 void zappy::HUD::eventManager(sf::Event &event, sf::RenderWindow &window,
-                              std::string &command_to_send)
+                              std::vector<std::string> &command_to_send)
 {
     sf::Vector2i tmp{event.mouseMove.x, event.mouseMove.y};
     sf::Vector2f point = window.mapPixelToCoords(tmp, m_hud_view);
