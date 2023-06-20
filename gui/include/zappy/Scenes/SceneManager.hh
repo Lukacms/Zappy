@@ -44,7 +44,7 @@ namespace zappy
             std::array<std::unique_ptr<IScene>, 3> &getScenes();
 
         private:
-            zappy::MusicManager m_music_manager;
+            zappy::MusicManager m_music_manager{};
 
             std::array<std::unique_ptr<IScene>, 3> m_scenes;
             zappy::Scene m_scene_index{1};

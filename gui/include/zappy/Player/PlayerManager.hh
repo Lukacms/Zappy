@@ -59,15 +59,15 @@ namespace zappy
             void verifySounds();
 
             bool m_player_is_selected = false;
-            Player m_selected_player;
-            int m_selected_player_id;
-            std::vector<Player> m_players;
-            std::vector<int> m_elevating_players;
-            sf::Vector2i m_size;
-            sf::SoundBuffer m_death;
-            sf::SoundBuffer m_incantation;
-            sf::SoundBuffer m_success;
-            sf::SoundBuffer m_failure;
-            std::deque<sf::Sound> m_sounds;
+            Player m_selected_player{};
+            int m_selected_player_id{};
+            std::vector<Player> m_players{};
+            std::vector<int> m_elevating_players{};
+            sf::Vector2i m_size{};
+            sf::SoundBuffer m_death{};
+            sf::SoundBuffer m_incantation{};
+            sf::SoundBuffer m_success{};
+            sf::SoundBuffer m_failure{};
+            std::deque<sf::Sound> m_sounds{};
     };
 } // namespace zappy

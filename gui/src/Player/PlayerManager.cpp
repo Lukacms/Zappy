@@ -159,7 +159,8 @@ bool zappy::PlayerManager::selectPlayer(sf::Event &event, sf::RenderWindow &wind
     const sf::Vector2f point = window.mapPixelToCoords(tmp);
     bool is_touched = false;
 
-    if (event.mouseButton.button == sf::Mouse::Left) {
+    if (event.type == sf::Event::MouseButtonPressed &&
+        event.mouseButton.button == sf::Mouse::Left) {
         for (auto &player : m_players) {
             if (player.getColliderBox().contains(point)) {
                 deselecPlayer(m_selected_player_id);

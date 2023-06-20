@@ -57,7 +57,7 @@ int zappy::GUI::start()
 
 void zappy::GUI::eventManager()
 {
-    sf::Event event;
+    sf::Event event{};
     std::vector<std::string> command_to_send{};
 
     while (m_window.pollEvent(event)) {

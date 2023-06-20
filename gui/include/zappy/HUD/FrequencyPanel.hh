@@ -40,11 +40,11 @@ namespace zappy
             void setPosition(sf::RenderWindow &window);
             void setBox(sf::Text &text);
 
-            sf::RectangleShape m_shape;
+            sf::RectangleShape m_shape{};
             sf::Color m_color{31, 31, 31};
 
-            std::vector<zappy::TextButton> m_buttons;
-            std::array<Text, 4> m_texts;
+            std::vector<zappy::TextButton> m_buttons{};
+            std::array<Text, 4> m_texts{};
             size_t m_frequency_index = 1;
             size_t m_old_index = 1;
     };
