@@ -6,7 +6,6 @@
 ##
 
 import json
-from sys import exit, argv
 
 def get_broadcast_by_team(message: str) -> str:
     file = open('ai/asset/broadcast.json')

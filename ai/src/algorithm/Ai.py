@@ -115,10 +115,10 @@ class Artifical_intelligence():
     #         self.incantation_lvl_6 == True
     #         return True
 
-    def put_inventory(self):
-        for item in self.inventory:
-            for _ in range(self.inventory[item]):
-                self.prog_action.append(self.commands.set_object(item))
+    # def put_inventory(self):
+    #     for item in self.inventory:
+    #         for _ in range(self.inventory[item]):
+    #             self.prog_action.append(self.commands.set_object(item))
 
     def check_if_enough_object(self) -> bool:
         for item in ELEVATION_RITUAL[self.level].keys():
@@ -146,27 +146,6 @@ class Artifical_intelligence():
         if self.look[0].count("player") < ELEVATION_RITUAL[self.level]["player"] and self.delay_broadcast == 0 and self.level < 4:
           self.prog_action.append(self.commands.broadcast(self.team_name ,"evolution" + str(self.level)))
           return True
-        # if self.look[0].count("player") < ELEVATION_RITUAL[self.level]["player"] and self.level > 3 and random.randint(1, 10) >= (self.level + 3) and self.delay_broadcast == 0:
-        #   self.prog_action.append(self.commands.broadcast(self.team_name ,"evolution" + str(self.level)))
-        #   return True
-        # elif:
-        #     if (self.track_player() == False):
-        #        self.prog_action.append("Forward")
-        #     return True
-        # if self.look[0].count("player") < ELEVATION_RITUAL[self.level]["player"] and self.delay_broadcast == 0:
-            #if random.randint(1, 16) >= self.level * 2:
-            # self.prog_action.append(self.commands.broadcast(self.team_name ,"evolution" + str(self.level)))
-            # return True
-            #else:
-            #   self.value_up_to_date = False
-            #   return False
-        # elif self.ready_for_bigger_incantation() == True:
-        #     self.track_player()
-        #     return True
-        # if self.look[0].count("player") < ELEVATION_RITUAL[self.level]["player"]:
-        #     self.nb_broadcast += 1
-        #     print(f"nb broad: {self.nb_broadcast}")
-        #     return False
         for item in ELEVATION_RITUAL[self.level].keys():
             if "food" not in item and "player" not in item and self.inventory[item] >= ELEVATION_RITUAL[self.level][item]:
                 for _ in range(ELEVATION_RITUAL[self.level][item]):
