@@ -19,6 +19,7 @@ static void randomize_map(server_t *server)
     for (u_int i = 0; i < INVENTORY_SLOTS; i++) {
         server->map.init_stock[i] =
             server->map.size.x * server->map.size.y * DENSITY_INVENTORY[i];
+        server->map.current_stocks[i] = server->map.current_stocks[i];
         init_stock[i] = server->map.init_stock[i];
     }
     while (has_stock_left(init_stock)) {

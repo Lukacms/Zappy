@@ -35,18 +35,18 @@ static int get_angle(vector2i_t small_vector, client_node_t *client)
 }
 
 static int get_oritation(vector2i_t receptor, vector2i_t emittor,
-                         vector2i_t map_size, client_node_t *client)
+                            vector2i_t map_size, client_node_t *client)
 {
     vector2i_t vectors[DIRECTIONNAL] = {
         {.x = emittor.x - receptor.x, .y = emittor.y - receptor.y},
         {.x = emittor.x - (receptor.x + map_size.x),
-         .y = emittor.y - receptor.y},
+            .y = emittor.y - receptor.y},
         {.x = emittor.x - receptor.x,
-         .y = emittor.y - (receptor.y + map_size.y)},
+            .y = emittor.y - (receptor.y + map_size.y)},
         {.x = emittor.x - ((-1 * map_size.x) - receptor.x),
-         .y = emittor.y - receptor.y},
+            .y = emittor.y - receptor.y},
         {.x = emittor.x - receptor.x,
-         .y = emittor.y - ((-1 * map_size.y) + receptor.y)}};
+            .y = emittor.y - ((-1 * map_size.y) + receptor.y)}};
     vector2i_t small_vector = vectors[0];
 
     for (int i = 1; i < DIRECTIONNAL; i += 1) {
@@ -71,7 +71,7 @@ static int get_len(char *args[])
 }
 
 static void broadcast_message(char *message, clients_t *clients,
-                              client_node_t *client, vector2i_t map_size)
+                            client_node_t *client, vector2i_t map_size)
 {
     client_node_t *tmp = clients->head;
 
@@ -79,7 +79,7 @@ static void broadcast_message(char *message, clients_t *clients,
         if (tmp->state == AI && tmp != client) {
             dprintf(tmp->cfd, "message %i, %s\n",
                     get_oritation(tmp->stats.pos, client->stats.pos, map_size,
-                                  client),
+                                    client),
                     message);
         }
         if (tmp->state == GUI)
@@ -91,7 +91,6 @@ static void broadcast_message(char *message, clients_t *clients,
 int broadcast_func(server_t *server, char *args[], client_node_t *client)
 {
     int len_message = get_len(args);
-    int idx = 0;
     char *message = malloc(sizeof(char) * (len_message + 1));
 
     if (!client || !server || !message)
@@ -100,15 +99,8 @@ int broadcast_func(server_t *server, char *args[], client_node_t *client)
         free(message);
         return set_error(client->cfd, INVALID_ACTION, false);
     }
-    message[len_message] = '\0';
-    for (int i = 1; args[i] != NULL; i += 1) {
-        for (int j = 0; args[i][j] != '\0'; j += 1) {
-            message[idx] = args[i][j];
-            idx += 1;
-        }
-        message[idx] = ' ';
-        idx += 1;
-    }
+    memset(message, '\0', len_message + 1);
+    message = fill_broadcast_summon(args, message);
     broadcast_message(message, &server->clients, client, server->map.size);
     dprintf(client->cfd, BASIC_VALID);
     free(message);

@@ -12,6 +12,13 @@
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
+static void update_stocks(server_t *server)
+{
+    for (u_int i = 0; i < INVENTORY_SLOTS; i++) {
+        server->map.current_stocks[i] += server->map.init_stock[i];
+    }
+}
+
 static int set_client_state(char *cmd, client_node_t *client, server_t *server)
 {
     char **tab = NULL;
@@ -23,8 +30,10 @@ static int set_client_state(char *cmd, client_node_t *client, server_t *server)
         return set_error(client->cfd, UNKNOWN_COMMAND, false);
     if (strcmp(tab[0], ZAPPY_GUI_CONNECT) == SUCCESS)
         status = gui_connect_func(server, tab, client);
-    else
+    else {
+        update_stocks(server);
         status = add_client_to_team(client, server, tab[0]);
+    }
     free_array(tab);
     free(cmd);
     return status;

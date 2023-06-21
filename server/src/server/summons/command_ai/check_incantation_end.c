@@ -33,11 +33,23 @@ static void stop_incantation(server_t *server, client_node_t *client)
             continue;
         if (node->stats.level == client->stats.level &&
             node->stats.action.type == INCANTATION) {
-                stop_incantation_client(node);
+            stop_incantation_client(node);
             idx -= 1;
         }
     }
     sprintf(output, DISPATCH_PIE, client->stats.pos.x, client->stats.pos.y, 0);
+    send_toall_guicli(server, output);
+}
+
+static void finish_incantation_client(server_t *server, client_node_t *node)
+{
+    char output[BUFFER_SIZE] = {0};
+
+    node->stats.level += 1;
+    node->stats.action.type = NOTHING;
+    node->stats.action.ticks = -1;
+    dprintf(node->cfd, VALID_INCANT, node->stats.level);
+    sprintf(output, DISPATCH_PLV, node->cfd, node->stats.level);
     send_toall_guicli(server, output);
 }
 
@@ -48,21 +60,18 @@ static void finish_incantation(server_t *s, client_node_t *c)
     char **clients = s->map.tiles[c->stats.pos.y][c->stats.pos.x].players_uuid;
     char output[BUFFER_SIZE] = {0};
 
+    sprintf(output, DISPATCH_PIE, c->stats.pos.x, c->stats.pos.y, 1);
+    send_toall_guicli(s, output);
     for (int i = 0; clients[i] != NULL && idx > 0; i += 1) {
         node = find_client_by_uuid(clients[i], s);
         if (!node)
             continue;
         if (node->stats.level == c->stats.level &&
             node->stats.action.type == INCANTATION) {
-            node->stats.level += 1;
-            node->stats.action.type = NOTHING;
-            node->stats.action.ticks = -1;
-            dprintf(node->cfd, VALID_INCANT, node->stats.level);
+            finish_incantation_client(s, node);
             idx -= 1;
         }
     }
-    sprintf(output, DISPATCH_PIE, c->stats.pos.x, c->stats.pos.y, 1);
-    send_toall_guicli(s, output);
 }
 
 int check_incantation_end(server_t *server, client_node_t *client, int ticks)

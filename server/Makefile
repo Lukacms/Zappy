@@ -41,7 +41,7 @@ SRC_SUMMONS	=	src/server/summons/command_ai/set_func.c	\
 				src/server/summons/command_ai/inventory_func.c	\
 				src/server/summons/command_ai/connect_nbr_func.c	\
 				src/server/summons/command_ai/incantation_func.c	\
-				src/server/summons/command_ai/utils_incantation.c	\
+				src/server/summons/command_ai/utils_summons.c	\
 				src/server/summons/command_ai/check_incantation_end.c	\
 				src/server/summons/add_summon.c	\
 				src/server/summons/handle_summon.c	\

@@ -16,7 +16,7 @@ int c_handler(args_config_t *args, char __attribute__((unused)) *const argv[],
 {
     if (!strisnum(optarg))
         return set_error(STDERR_FILENO, ERROR_CLIENTS, false);
-    if ((args->port = atoi(optarg)) <= 0)
+    if ((args->nb_clients_og = atoi(optarg)) <= 0)
         return set_error(STDERR_FILENO, ERROR_CLIENTS, false);
     return SUCCESS;
 }
