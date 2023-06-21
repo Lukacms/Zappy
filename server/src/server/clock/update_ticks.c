@@ -57,7 +57,7 @@ void update_ticks(server_t *server)
     update_ticks_clients(server, ticks_elapsed);
     update_map_ticks(server, ticks_elapsed);
     if (ticks_elapsed >= server->clients.last_meal) {
-        server->clients.last_meal += MEAL_TIME;
+        server->clients.last_meal = ticks_elapsed + MEAL_TIME;
         starve_players(server);
     }
 }
