@@ -29,7 +29,7 @@ static int get_angle(vector2i_t small_vector, client_node_t *client)
         my_angle -= 360;
     for (int i = 0; i < 8; i += 1) {
         if (my_angle > ANGLES[i][0] && my_angle < ANGLES[i][1])
-            return ((int)ANGLES[i][2] % WEST) + 1;
+            return (int)ANGLES[i][2];
     }
     return 1;
 }
