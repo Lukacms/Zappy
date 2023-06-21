@@ -10,6 +10,13 @@
 #include <zappy/server/client.h>
 #include <zappy/server/summon/utils.h>
 
+static void stop_incantation_client(client_node_t *node)
+{
+    node->stats.action.type = NOTHING;
+    node->stats.action.ticks = -1;
+    dprintf(node->cfd, INVALID_ACTION);
+}
+
 static void stop_incantation(server_t *server, client_node_t *client)
 {
     client_node_t *node = NULL;
@@ -18,15 +25,15 @@ static void stop_incantation(server_t *server, client_node_t *client)
                         .players_uuid;
     char output[BUFFER_SIZE] = {0};
 
+    if (!clients)
+        return;
     for (int i = 0; clients[i] != NULL && idx > 0; i += 1) {
         node = find_client_by_uuid(clients[i], server);
         if (!node)
             continue;
         if (node->stats.level == client->stats.level &&
             node->stats.action.type == INCANTATION) {
-            node->stats.action.type = NOTHING;
-            node->stats.action.ticks = -1;
-            dprintf(node->cfd, INVALID_ACTION);
+                stop_incantation_client(node);
             idx -= 1;
         }
     }

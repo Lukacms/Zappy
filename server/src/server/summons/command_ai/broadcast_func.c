@@ -65,6 +65,7 @@ static int get_len(char *args[])
         return 0;
     for (int i = 1; args[i] != NULL; i += 1) {
         result += strlen(args[i]);
+        result += 1;
     }
     return result;
 }
@@ -105,6 +106,8 @@ int broadcast_func(server_t *server, char *args[], client_node_t *client)
             message[idx] = args[i][j];
             idx += 1;
         }
+        message[idx] = ' ';
+        idx += 1;
     }
     broadcast_message(message, &server->clients, client, server->map.size);
     dprintf(client->cfd, BASIC_VALID);
