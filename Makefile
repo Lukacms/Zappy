@@ -19,7 +19,7 @@ $(NAME_SERVER):
 .PHONY: $(NAME_SERVER)
 
 $(NAME_GUI)::
-	unzip gui/assets && mv assets gui
+	yes | unzip gui/assets -d gui/assets
 $(NAME_GUI)::
 	cd gui && ./compile.sh --ninja
 .PHONY: $(NAME_GUI)

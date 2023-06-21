@@ -53,6 +53,8 @@ class Client():
             print("Server connexion error:", e)
 
     def get_broadcast_in_my_team(self, cord: int, message: str):
+        if message is None:
+            return
         if int(message[-1]) != self.ai.level:
             return
         if "evolution" in message and int(message[-1]) == self.ai.level and self.ai.miam == True and self.ai.go_levelup == False:
