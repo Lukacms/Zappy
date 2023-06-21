@@ -70,14 +70,14 @@ int look_func(server_t *server, char *args[], client_node_t *client)
         return FAILURE;
     if (!args || array_len(args) != 1)
         return set_error(client->cfd, INVALID_ACTION, false);
-    dprintf(client->cfd, "[");
+    dprintf(client->cfd, "[ ");
     switch (client->stats.orientation) {
         case NORTH: look_north(server, client); break;
         case SOUTH: look_south(server, client); break;
         case EAST: look_east(server, client); break;
         case WEST: look_west(server, client); break;
     }
-    dprintf(client->cfd, "]\n");
+    dprintf(client->cfd, " ]\n");
     add_ticks_occupied(client, RESTRAINT_LOOK, server);
     return SUCCESS;
 }

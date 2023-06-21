@@ -89,6 +89,7 @@ static void broadcast_message(char *message, clients_t *clients,
 int broadcast_func(server_t *server, char *args[], client_node_t *client)
 {
     int len_message = get_len(args);
+    int idx = 0;
     char *message = malloc(sizeof(char) * (len_message + 1));
 
     if (!client || !server || !message)
@@ -99,7 +100,10 @@ int broadcast_func(server_t *server, char *args[], client_node_t *client)
     }
     message[len_message] = '\0';
     for (int i = 1; args[i] != NULL; i += 1) {
-        message = strcat(message, args[i]);
+        for (int j = 0; args[i][j] != '\0'; j += 1) {
+            message[idx] = args[i][j];
+            idx += 1;
+        }
     }
     broadcast_message(message, &server->clients, client, server->map.size);
     dprintf(client->cfd, BASIC_VALID);
