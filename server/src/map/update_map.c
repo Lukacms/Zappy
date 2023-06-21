@@ -10,16 +10,6 @@
 #include <zappy/server/map_utils.h>
 #include <zappy/server/summon/utils.h>
 
-static int find_stocks(map_t map, u_int ind)
-{
-    int stock = 0;
-
-    for (u_int y = 0; y < map.size.y; y++)
-        for (u_int x = 0; x < map.size.x; x++)
-            stock += map.tiles[y][x].slots[ind].units;
-    return stock;
-}
-
 static void send_infos(server_t *server)
 {
     client_node_t *node = server->clients.head;
@@ -40,11 +30,11 @@ int update_map(server_t *server)
     if (!server)
         return FAILURE;
     for (u_int i = 0; i < INVENTORY_SLOTS; i++)
-        stocks[i] = server->map.init_stock[i] - find_stocks(server->map, i);
+        stocks[i] = server->map.init_stock[i];
     while (has_stock_left(stocks)) {
         tmp = rand() % (INVENTORY_SLOTS + 1);
         pos = (vector2i_t){rand() % server->map.size.x,
-                            rand() % server->map.size.y};
+                           rand() % server->map.size.y};
         server->map.tiles[pos.y][pos.x].slots[tmp].units +=
             stock(server->map.size, DENSITY_INVENTORY[tmp], &(stocks[tmp]));
     }
