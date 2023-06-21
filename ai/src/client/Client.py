@@ -116,9 +116,9 @@ class Client():
                         for recieve_data in data_array:
                             if recieve_data == "":
                                 continue
-                            if recieve_data.strip() in self.last_message and self.last_message != "":
-                                self.ai.algo()
-                                continue
+                            # if recieve_data.strip() in self.last_message and self.last_message != "":
+                            #     self.ai.algo()
+                            #     continue
                             print("\nEVENT READ")
                             if recieve_data.startswith("["):
                                 self.looking_or_inventory = True
@@ -139,7 +139,7 @@ class Client():
                         if (self.ai.action_to_do != "" and self.ai.actif == True):
                             print("\nEVENT_WRITE")
                             if self.name in self.ai.action_to_do:
-                                self.init_condition == True
+                                self.init_condition = True
                             self.socket.sendall((self.ai.action_to_do + "\n").encode())
                             print(f"send data: {self.ai.action_to_do}")
                             if "Broadcast" in self.ai.action_to_do:
