@@ -13,7 +13,7 @@
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
-static const double DIRECTIONNAL_VECTOR[4] = {0, 180, 90, 270};
+static const double DIRECTIONNAL_VECTOR[4] = {0, 90, 180, 270};
 
 static const double ANGLES[7][3] = {
     {67.5, 112.5, 7},  {112.5, 157.5, 6}, {157.5, 202.5, 5}, {202.5, 247.5, 4},
@@ -23,11 +23,11 @@ static const double ANGLES[7][3] = {
 static int get_angle(vector2i_t small_vector, client_node_t *client)
 {
     double my_angle = (atan2(small_vector.y, small_vector.x) * 180 / M_PI) +
-        DIRECTIONNAL_VECTOR[client->stats.orientation];
+        DIRECTIONNAL_VECTOR[client->stats.orientation - 1];
 
     if (my_angle > 360)
         my_angle -= 360;
-    for (int i = 0; i < 8; i += 1) {
+    for (int i = 0; i < 7; i += 1) {
         if (my_angle > ANGLES[i][0] && my_angle < ANGLES[i][1])
             return (int)ANGLES[i][2];
     }
