@@ -39,6 +39,9 @@ int kill_player(server_t *server, client_node_t *client, bool alive)
 {
     if (!server || !client)
         return FAILURE;
+    for (u_int i = 0; i < INVENTORY_SLOTS; i++) {
+        server->map.current_stocks[i] -= server->map.init_stock[i];
+    }
     rebase_nodes(server, client);
     send_infos(server, client, alive);
     delete_client_from_team(client, server);

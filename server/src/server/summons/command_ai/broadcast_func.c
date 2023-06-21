@@ -13,7 +13,7 @@
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
-static const double DIRECTIONNAL_VECTOR[4] = {180, 270, 180, 90};
+static const double DIRECTIONNAL_VECTOR[4] = {0, 90, 180, 270};
 
 static const double ANGLES[7][3] = {
     {67.5, 112.5, 7},  {112.5, 157.5, 6}, {157.5, 202.5, 5}, {202.5, 247.5, 4},
@@ -49,9 +49,11 @@ static int get_oritation(vector2i_t receptor, vector2i_t emittor,
             .y = emittor.y - ((-1 * map_size.y) + receptor.y)}};
     vector2i_t small_vector = vectors[0];
 
+    if (receptor.x == emittor.x && receptor.y == emittor.y)
+        return 0;
     for (int i = 1; i < DIRECTIONNAL; i += 1) {
         if (sqrt(pow(vectors[i].x, 2) + pow(vectors[i].y, 2)) <
-            sqrt(pow(small_vector.y, 2) + pow(small_vector.y, 2)))
+            sqrt(pow(small_vector.x, 2) + pow(small_vector.y, 2)))
             small_vector = vectors[i];
     }
     return get_angle(small_vector, client);

@@ -141,6 +141,7 @@ debug: ../$(NAME)
 
 clean:
 	@rm -f $(OBJ) $(OBJ_TESTS)
+	@find -name "*.o" -delete
 	@find -name "*.gcno" -delete
 	@find -name "*.gcda" -delete
 .PHONY:	clean
