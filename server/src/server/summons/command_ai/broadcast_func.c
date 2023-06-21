@@ -35,18 +35,18 @@ static int get_angle(vector2i_t small_vector, client_node_t *client)
 }
 
 static int get_oritation(vector2i_t receptor, vector2i_t emittor,
-                        vector2i_t map_size, client_node_t *client)
+                         vector2i_t map_size, client_node_t *client)
 {
     vector2i_t vectors[DIRECTIONNAL] = {
         {.x = emittor.x - receptor.x, .y = emittor.y - receptor.y},
         {.x = emittor.x - (receptor.x + map_size.x),
-            .y = emittor.y - receptor.y},
+         .y = emittor.y - receptor.y},
         {.x = emittor.x - receptor.x,
-            .y = emittor.y - (receptor.y + map_size.y)},
+         .y = emittor.y - (receptor.y + map_size.y)},
         {.x = emittor.x - ((-1 * map_size.x) - receptor.x),
-            .y = emittor.y - receptor.y},
+         .y = emittor.y - receptor.y},
         {.x = emittor.x - receptor.x,
-            .y = emittor.y - ((-1 * map_size.y) + receptor.y)}};
+         .y = emittor.y - ((-1 * map_size.y) + receptor.y)}};
     vector2i_t small_vector = vectors[0];
 
     for (int i = 1; i < DIRECTIONNAL; i += 1) {
@@ -70,15 +70,16 @@ static int get_len(char *args[])
 }
 
 static void broadcast_message(char *message, clients_t *clients,
-                            client_node_t *client, vector2i_t map_size)
+                              client_node_t *client, vector2i_t map_size)
 {
     client_node_t *tmp = clients->head;
 
     for (u_int i = 0; i < clients->length; i++) {
         if (tmp->state == AI && tmp != client) {
-            dprintf(tmp->cfd, "%s %i\n", message,
+            dprintf(tmp->cfd, "message %i, %s\n",
                     get_oritation(tmp->stats.pos, client->stats.pos, map_size,
-                                client));
+                                  client),
+                    message);
         }
         if (tmp->state == GUI)
             dprintf(tmp->cfd, DISPATCH_PBC, client->cfd, message);
