@@ -40,9 +40,9 @@ int update_map(server_t *server)
     if (!server)
         return FAILURE;
     for (u_int i = 0; i < INVENTORY_SLOTS; i++)
-        stocks[i] = server->map.init_stock[i] - find_stocks(server->map, i);
+        stocks[i] = server->map.current_stocks[i] - find_stocks(server->map, i);
     while (has_stock_left(stocks)) {
-        tmp = rand() % (INVENTORY_SLOTS + 1);
+        tmp = rand() % INVENTORY_SLOTS;
         pos = (vector2i_t){rand() % server->map.size.x,
                             rand() % server->map.size.y};
         server->map.tiles[pos.y][pos.x].slots[tmp].units +=

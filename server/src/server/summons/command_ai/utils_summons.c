@@ -32,9 +32,9 @@ bool loop_clients_level_up(server_t *server, client_node_t *client)
     char **cli_tile = NULL;
 
     if (!server || !client ||
-        !(cli_tile = server->map.tiles[client->stats.pos.x][client->stats.pos.y]
+        !(cli_tile = server->map.tiles[client->stats.pos.y][client->stats.pos.x]
                         .players_uuid))
-        return FAILURE;
+        return false;
     for (int i = 0; cli_tile[i] != NULL; i += 1) {
         tmp = find_client_by_uuid(cli_tile[i], server);
         if (!tmp)
@@ -44,4 +44,19 @@ bool loop_clients_level_up(server_t *server, client_node_t *client)
     }
     return players_able >=
         (INCANTATION_MANDATORY[client->stats.level - 1][0] - CHAR_INT);
+}
+
+char *fill_broadcast_summon(char *args[], char *message)
+{
+    int idx = 0;
+
+    for (int i = 1; args[i] != NULL; i += 1) {
+        for (int j = 0; args[i][j] != '\0'; j += 1) {
+            message[idx] = args[i][j];
+            idx += 1;
+        }
+        message[idx] = ' ';
+        idx += 1;
+    }
+    return message;
 }

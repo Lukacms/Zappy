@@ -128,6 +128,7 @@ typedef struct map_s {
     vector2i_t size;
     tile_t **tiles;
     int init_stock[INVENTORY_SLOTS];
+    int current_stocks[INVENTORY_SLOTS];
     int last_updated;
     int last_egg_id;
 } map_t;

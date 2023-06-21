@@ -11,7 +11,7 @@ from ai.src.broadcast.broadcast import set_broadcast_by_team
 
 class Commands():
     def parse_inventory(self, response, inventory: dict) -> None:
-        tab = response.removeprefix('[ ').removesuffix(' ]').strip().split(',')
+        tab = response.removeprefix('[').removesuffix(']').strip().split(',')
         for item in tab:
             parts = item.strip().split(' ')
             if len(parts) >= 2:
@@ -25,7 +25,7 @@ class Commands():
         print(f"Inventory: {inventory}")
 
     def parse_look(self, response, look: dict):
-        tab = response.removeprefix('[ ').removesuffix(' ]').split(',')
+        tab = response.removeprefix('[').removesuffix(']').split(',')
         for i,item in enumerate(tab):
             parts = item
             look[i] = parts

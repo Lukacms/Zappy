@@ -36,6 +36,7 @@ class Client():
         self.connected_player = 0
         self.pending_player = 0
         self.init_condition = False
+        self.looking_or_inventory = False
         self.last_message = ""
 
     def start_connection(self):
@@ -70,6 +71,10 @@ class Client():
         elif "Current level:" in response:
             self.ai.actif = True
             self.ai.level = int(response.split(':')[1].strip().split('\n')[0])
+            if self.ai.level == 8:
+                print("VICTOIRE")
+                self.close()
+                exit(EPITECH_SUCCESS)
             return
         elif "Elevation underway" in response:
             self.ai.actif = False
@@ -79,7 +84,7 @@ class Client():
             self.ai.actif = True
             return
         elif response.startswith("["):
-            if (response[7].isdigit() == True):
+            if (response[6].isdigit() == True or response[7].isdigit() == True):
                 self.ai.commands.parse_inventory(response, self.ai.inventory)
                 self.ai.value_up_to_date = True
             else:
@@ -100,6 +105,7 @@ class Client():
 
     def launcher(self):
         data_array = []
+        tmp = ""
         recieve_data = ""
         try:
             while True:
@@ -110,12 +116,22 @@ class Client():
                         for recieve_data in data_array:
                             if recieve_data == "":
                                 continue
-                            if recieve_data.strip() in self.last_message and self.last_message != "":
-                                self.ai.algo()
-                                continue
+                            # if recieve_data.strip() in self.last_message and self.last_message != "":
+                            #     self.ai.algo()
+                            #     continue
                             print("\nEVENT READ")
-                            print(f"recieve_data: {recieve_data}")
-                            self.parse_response(recieve_data.strip())
+                            if recieve_data.startswith("["):
+                                self.looking_or_inventory = True
+                            if recieve_data.endswith("]"):
+                                tmp += recieve_data
+                                recieve_data = tmp
+                                tmp = ""
+                                self.looking_or_inventory = False
+                            if self.looking_or_inventory == True:
+                                tmp += recieve_data
+                            else:
+                                print(f"recieve_data: {recieve_data}")
+                                self.parse_response(recieve_data.strip())
 
                     if mask & selectors.EVENT_WRITE:
                         if (self.init_condition == True and self.ai.actif == True):
@@ -123,7 +139,7 @@ class Client():
                         if (self.ai.action_to_do != "" and self.ai.actif == True):
                             print("\nEVENT_WRITE")
                             if self.name in self.ai.action_to_do:
-                                self.init_condition == True
+                                self.init_condition = True
                             self.socket.sendall((self.ai.action_to_do + "\n").encode())
                             print(f"send data: {self.ai.action_to_do}")
                             if "Broadcast" in self.ai.action_to_do:

@@ -70,7 +70,7 @@ int forward_func(server_t *server, char *args[], client_node_t *client)
 
     if (!server || !client)
         return FAILURE;
-    if (!args || array_len(args) != 1)
+    if (!args || array_len(args) != 1 || client->stats.action.type != NOTHING)
         return set_error(client->cfd, INVALID_ACTION, false);
     switch (client->stats.orientation) {
         case NORTH: forward_north(server, client); break;

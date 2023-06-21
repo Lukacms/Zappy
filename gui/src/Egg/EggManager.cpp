@@ -50,7 +50,7 @@ void zappy::EggManager::eggDeath(Edi &egg_infos)
     m_eggs_infos[static_cast<size_t>(index)].rect.left = 304;
 }
 
-void zappy::EggManager::eggHatchAnimation(size_t index, zappy::PlayerManager &player_manager)
+void zappy::EggManager::eggHatchAnimation(size_t index, zappy::PlayerManager & /* player_manager */)
 {
     if (!(m_eggs_infos[index].anim_clock.getElapsedTime().asSeconds() > 1.2F))
         return;

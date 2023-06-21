@@ -13,6 +13,13 @@
 #include <zappy/server/summon/utils.h>
 #include <zappy/server/utils.h>
 
+static void update_stocks(server_t *server)
+{
+    for (u_int i = 0; i < INVENTORY_SLOTS; i++) {
+        server->map.current_stocks[i] += server->map.init_stock[i];
+    }
+}
+
 static int add_one_client_uuid(server_t *s, client_node_t *client,
                                 vector2i_t pos)
 {
@@ -45,6 +52,7 @@ static int init_client(server_t *server, client_node_t *client, team_t *team,
             client->stats.pos.y, client->stats.orientation, client->stats.level,
             team->team_name);
     send_toall_guicli(server, output);
+    update_stocks(server);
     return SUCCESS;
 }
 
